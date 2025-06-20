@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx"
+    "./globals.css": "./src/styles/globals.css",
+    "./postcss.config": "./postcss.config.mjs",
+    "./lib/*": "./src/lib/*.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./hooks/*": "./src/hooks/*.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -21,7 +25,15 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.10",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.518.0",
+    "postcss": "^8.5.6",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.10",
+    "tw-animate-css": "^1.3.4"
   }
 }
