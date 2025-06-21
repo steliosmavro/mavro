@@ -9,14 +9,16 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@repo/ui": "*",
         "@radix-ui/react-slot": "^1.2.3",
+        "@radix-ui/react-switch": "^1.2.5",
         "next": "15.3.4",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },
     "devDependencies": {
-        "@repo/eslint-config": "*",
         "@eslint/eslintrc": "^3",
+        "@repo/eslint-config": "*",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20",
         "@types/react": "^19",
