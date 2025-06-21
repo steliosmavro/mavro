@@ -4,7 +4,11 @@
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+
+            // The following is needed only for the shadcn cli to move the components added
+            // by the `add` command from the app to the ui package.
+            "@repo/ui/*": ["./src/*"]
         }
     },
     "include": ["src"],
