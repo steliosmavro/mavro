@@ -3,6 +3,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import turboPlugin from 'eslint-plugin-turbo';
 import tseslint from 'typescript-eslint';
 import onlyWarn from 'eslint-plugin-only-warn';
+import importPlugin from 'eslint-plugin-import';
 
 /**
  * A shared ESLint configuration for the repository.
@@ -24,6 +25,19 @@ export const config = [
     {
         plugins: {
             onlyWarn,
+        },
+    },
+    {
+        plugins: {
+            import: importPlugin,
+        },
+        rules: {
+            ...importPlugin.configs.recommended.rules,
+        },
+        settings: {
+            'import/resolver': {
+                typescript: {}, // uses tsconfig.json automatically
+            },
         },
     },
     {
