@@ -33,6 +33,7 @@ export const config = [
         },
         rules: {
             ...importPlugin.configs.recommended.rules,
+            'import/no-relative-packages': 'error',
         },
         settings: {
             'import/resolver': {
