@@ -41,7 +41,7 @@ npm run build
 
 ## 🤖 CI/CD
 
-Linting, type-checking, and builds are automatically enforced by pre-commit hooks and GitHub Actions. You usually don't need to run them manually.
+Linting, type-checking, dependency version consistency, and builds are automatically enforced by pre-commit hooks and GitHub Actions. You usually don't need to run them manually.
 
 ---
 
@@ -89,7 +89,7 @@ To auto-fix them:
 npm run sync:fix
 ```
 
-> 💡 After major dependency updates, use `npm run clean:deep && npm install` to reset all package-lock files and node_modules across the monorepo.
+> 💡 After major dependency updates, use `npm run clean && npm install` to reset all package-lock files and node_modules across the monorepo.
 
 ---
 

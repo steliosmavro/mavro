@@ -15,10 +15,8 @@ A modern monorepo for full-stack applications and shared packages, powered by [T
 - **Shared UI & Config**: Reusable components and configuration for consistency and speed.
 - **TypeScript, ESLint, Prettier**: Modern tooling for quality and maintainability.
 - **CI/CD Pipelines**:
-    - Local CI with **Husky** pre-commit hooks
-    - Remote CI with **GitHub Actions**
-    - Checks include: **ESLint**, **Prettier**, **TypeScript type-checking**, and **Build**
-    - Uses **Conventional Commits**, enforced with commit message validation
+    - Using **Husky** pre-commit hooks and **GitHub Actions** for CI/CD
+    - Checks include: **Conventional Commits**, **ESLint**, **Syncpack**, **Prettier**, **TypeScript type-checking**, and **Build**
 
 ## 🚀 Quickstart
 
