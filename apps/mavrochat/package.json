@@ -9,24 +9,24 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@repo/ui": "*",
+        "@repo/ui": "0.0.0",
         "@radix-ui/react-slot": "^1.2.3",
         "@radix-ui/react-switch": "^1.2.5",
         "next": "15.3.4",
-        "react": "^19.0.0",
-        "react-dom": "^19.0.0"
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0"
     },
     "devDependencies": {
-        "@repo/typescript-config": "*",
-        "@repo/eslint-config": "*",
+        "@repo/typescript-config": "0.0.0",
+        "@repo/eslint-config": "0.0.0",
         "@eslint/eslintrc": "^3",
-        "@tailwindcss/postcss": "^4",
-        "@types/node": "^20",
-        "@types/react": "^19",
-        "@types/react-dom": "^19",
-        "eslint": "^9",
+        "@tailwindcss/postcss": "^4.1.10",
+        "@types/node": "^22.15.3",
+        "@types/react": "19.1.0",
+        "@types/react-dom": "19.1.1",
+        "eslint": "^9.29.0",
         "eslint-config-next": "15.3.4",
-        "tailwindcss": "^4",
-        "typescript": "^5"
+        "tailwindcss": "^4.1.10",
+        "typescript": "^5.8.2"
     }
 }

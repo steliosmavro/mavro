@@ -59,3 +59,27 @@ To enable:
 ```sh
 npx turbo login
 ```
+
+---
+
+## 📦 Dependency Management
+
+To ensure consistent dependency versions across all apps and packages:
+
+- We use [Syncpack](https://github.com/JamieMason/syncpack).
+- All shared dependencies must use the exact same version.
+- Ideally there should be only one node_modules in the root.
+
+To check for mismatches:
+
+```sh
+npm run sync:check
+```
+
+To auto-fix them:
+
+```sh
+npm run sync:fix
+```
+
+> 💡 After major dependency updates, use `npm run clean:deep && npm install` to reset all package-lock files and node_modules across the monorepo.
