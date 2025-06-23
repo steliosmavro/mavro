@@ -22,16 +22,16 @@ npm install
 npm run dev
 ```
 
+### Lint
+
+```sh
+npm run lint
+```
+
 ### Build
 
 ```sh
 npm run build
-```
-
-### Lint Everything
-
-```sh
-npm run lint
 ```
 
 > 💡 To run a command in a specific workspace, use the --workspace=\<name> flag.
@@ -39,14 +39,21 @@ npm run lint
 
 ---
 
+## 🤖 CI/CD
+
+Linting, type-checking, and builds are automatically enforced by pre-commit hooks and GitHub Actions. You usually don't need to run them manually.
+
+---
+
 ## 🏗️ Adding New Apps or Packages
 
-Each new package/app must include:
+When adding a new app or package, follow these conventions:
 
-1. Its own `README.md`
+1. Include its own `README.md`
 2. Extend shared config packages. e.g., `@repo/typescript-config`, `@repo/eslint-config`
-3. All public entrypoints must be explicitly listed in the `exports` field of `package.json`.  
-   Do not rely on `tsconfig.json` path aliases for importing across packages — they are not respected by Node or bundlers.
+3. List all public entrypoints in the `exports` field of `package.json`.  
+   Do not rely on `tsconfig.json` path aliases for importing across packages - they are not respected by Node or bundlers.
+4. A a `"check-types": "tsc --noEmit"` script in `package.json`, to ensure the package participates in [Turborepo's type checking](https://turborepo.com/docs/guides/tools/typescript#linting-your-codebase).
 
 > 💡 For details about a specific app or package, see its local `README.md` or `CONTRIBUTING.md` file, if available.
 
@@ -83,3 +90,23 @@ npm run sync:fix
 ```
 
 > 💡 After major dependency updates, use `npm run clean:deep && npm install` to reset all package-lock files and node_modules across the monorepo.
+
+---
+
+## ✅ Commit Messages
+
+This repo uses [Conventional Commits](https://www.conventionalcommits.org/) to enforce consistent commit message formatting.
+
+### Format
+
+```
+<type>(<scope>): <short summary>
+```
+
+### Example
+
+```
+feat(ui): add dark mode toggle
+```
+
+> ℹ️ All commits are validated via Husky + commitlint before they are allowed. If your commit doesn't follow the format, it will be rejected.

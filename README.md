@@ -2,20 +2,25 @@
 
 A modern monorepo for full-stack applications and shared packages, powered by [Turborepo](https://turborepo.com/).
 
-## What's inside?
+## ❓ What's inside?
 
 - **MavroChat**: AI-powered chat application.
 - **mavrodev**: Personal website and blog.
 - **@repo/ui**: Shared React component library.
 - **@repo/eslint-config** and **@repo/typescript-config**: Shared configuration for code quality and type safety.
 
-## Architecture
+## 🏗️ Architecture
 
 - **Monorepo**: All apps and packages managed in a single repository.
 - **Shared UI & Config**: Reusable components and configuration for consistency and speed.
 - **TypeScript, ESLint, Prettier**: Modern tooling for quality and maintainability.
+- **CI/CD Pipelines**:
+    - Local CI with **Husky** pre-commit hooks
+    - Remote CI with **GitHub Actions**
+    - Checks include: **ESLint**, **Prettier**, **TypeScript type-checking**, and **Build**
+    - Uses **Conventional Commits**, enforced with commit message validation
 
-## Quickstart
+## 🚀 Quickstart
 
 ```sh
 nvm install
@@ -26,7 +31,7 @@ npm run dev
 npm run dev --workspace=mavrochat
 ```
 
-## Remote Caching
+## ⚡ Remote Caching
 
 This repo uses [Turborepo Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) for faster builds.
 To enable, run:
