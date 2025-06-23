@@ -14,6 +14,8 @@
         "clean": "find . -type d -name 'node_modules' -prune -exec rm -rf '{}' + && find . -name 'package-lock.json' -exec rm -f '{}' +"
     },
     "devDependencies": {
+        "@commitlint/cli": "^19.8.1",
+        "@commitlint/config-conventional": "^19.8.1",
         "husky": "^9.1.7",
         "prettier": "^3.5.3",
         "syncpack": "^13.0.4",
