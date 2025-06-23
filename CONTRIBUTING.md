@@ -74,8 +74,8 @@ npx turbo login
 To ensure consistent dependency versions across all apps and packages:
 
 - We use [Syncpack](https://github.com/JamieMason/syncpack).
-- All shared dependencies must use the exact same version.
-- Ideally there should be only one node_modules in the root.
+- All apps & packages must use the exact same version.
+- Syncpack does not keep track of transitive dependencies, it's ok.
 
 To check for mismatches:
 

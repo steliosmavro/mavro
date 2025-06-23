@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack",
+        "dev": "next dev --turbopack -p 3001",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
@@ -15,7 +15,10 @@
         "@radix-ui/react-switch": "^1.2.5",
         "next": "15.3.4",
         "react": "^19.1.0",
-        "react-dom": "^19.1.0"
+        "react-dom": "^19.1.0",
+        "react-markdown": "^10.1.0",
+        "rehype-highlight": "^7.0.2",
+        "highlight.js": "^11.9.0"
     },
     "devDependencies": {
         "@repo/typescript-config": "0.0.0",

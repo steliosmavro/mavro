@@ -25,6 +25,8 @@
         "typescript": "^5.8.2"
     },
     "dependencies": {
+        "@radix-ui/react-avatar": "^1.1.10",
+        "@radix-ui/react-slot": "^1.2.3",
         "@radix-ui/react-switch": "^1.2.5",
         "@tailwindcss/postcss": "^4.1.10",
         "class-variance-authority": "^0.7.1",
