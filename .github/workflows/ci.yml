@@ -1,0 +1,35 @@
+name: CI
+
+on:
+    push:
+        branches: ['main']
+    pull_request:
+        types: [opened, synchronize]
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        env:
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 2
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Lint code
+              run: npm run lint
+
+            - name: Type-check code
+              run: npm run check-types
