@@ -1,6 +1,6 @@
 'use client';
-import { Input } from '@repo/ui/components/input';
-import { Button } from '@repo/ui/components/button';
+import { Input } from '@repo/ui/components/Input';
+import { Button } from '@repo/ui/components/Button';
 import { useState } from 'react';
 import { useChat, ChatMessage } from '../context/ChatContext';
 

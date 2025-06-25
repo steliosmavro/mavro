@@ -1,0 +1,22 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mavroGradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="64" fill="url(#mavroGradient)"/>
+  <text
+    x="50%"
+    y="50%"
+    dy=".36em"
+    text-anchor="middle"
+    font-size="90"
+    font-weight="700"
+    fill="white"
+    font-family="Inter, 'IBM Plex Sans', Arial, Helvetica, sans-serif"
+    letter-spacing="-2"
+  >
+    M
+  </text>
+</svg>

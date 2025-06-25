@@ -1,3 +1,4 @@
+/* For shadcn UI */
 @import 'tailwindcss';
 @source "../../../apps/**/*.{ts,tsx}";
 @source "../../../components/**/*.{ts,tsx}";
@@ -123,4 +124,31 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* For apps */
+:root {
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+}
+
+body {
+    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+header,
+footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: 1px solid var(--input);
+    background-color: var(--background);
 }

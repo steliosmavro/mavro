@@ -1,10 +1,10 @@
 'use client';
-import { Card } from '@repo/ui/components/card';
+import { Card } from '@repo/ui/components/Card';
 import {
     Avatar,
     AvatarImage,
     AvatarFallback,
-} from '@repo/ui/components/avatar';
+} from '@repo/ui/components/Avatar';
 import { useEffect, useRef } from 'react';
 import { useChat } from '../context/ChatContext';
 import ReactMarkdown from 'react-markdown';

@@ -1,7 +1,7 @@
 'use client';
-import { Card } from '@repo/ui/components/card';
-import { Input } from '@repo/ui/components/input';
-import { Textarea } from '@repo/ui/components/textarea';
+import { Card } from '@repo/ui/components/Card';
+import { Input } from '@repo/ui/components/Input';
+import { Textarea } from '@repo/ui/components/Textarea';
 import { useChat } from '../context/ChatContext';
 import { useEffect } from 'react';
 import ThemeToggle from './ThemeToggle';

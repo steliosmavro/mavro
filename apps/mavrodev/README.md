@@ -11,9 +11,16 @@ npm run dev --workspace=mavrodev
 
 ## 📁 Structure
 
-- `src/app`: App directory
-- `src/components`: Page-level and shared components
-- `src/lib`: Utility logic and helpers
+Recommended structure:
+
+- `src/app/` – Application routes, layouts, and pages (App Router)
+- `src/components/` – UI and shared components
+- `src/lib/` – Application logic, utilities, and data fetching
+- `src/content/` – Content files (e.g., markdown, MDX)
+- `public/` – Static assets (images, fonts, etc.)
+- `types/` – TypeScript type definitions
+
+> **Note:** This project follows the [Next.js project structure guide](https://nextjs.org/docs/app/getting-started/project-structure) for organizing files and routes.
 
 ## 🧩 Uses
 
