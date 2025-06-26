@@ -53,7 +53,7 @@ When adding a new app or package, follow these conventions:
 2. Extend shared config packages. e.g., `@repo/typescript-config`, `@repo/eslint-config`
 3. List all public entrypoints in the `exports` field of `package.json`.  
    Do not rely on `tsconfig.json` path aliases for importing across packages - they are not respected by Node or bundlers.
-4. A a `"check-types": "tsc --noEmit"` script in `package.json`, to ensure the package participates in [Turborepo's type checking](https://turborepo.com/docs/guides/tools/typescript#linting-your-codebase).
+4. Add a `"check-types": "tsc --noEmit"` script in `package.json`, to ensure the package participates in [Turborepo's type checking](https://turborepo.com/docs/guides/tools/typescript#linting-your-codebase).
 
 > 💡 For details about a specific app or package, see its local `README.md` or `CONTRIBUTING.md` file, if available.
 
@@ -76,6 +76,7 @@ To ensure consistent dependency versions across all apps and packages:
 - We use [Syncpack](https://github.com/JamieMason/syncpack).
 - All apps & packages must use the exact same version.
 - Syncpack does not keep track of transitive dependencies, it's ok.
+- Dependencies should be installed in the **specific app or package that uses them** (use `--workspace=<name>`).
 
 To check for mismatches:
 
@@ -90,6 +91,19 @@ npm run sync:fix
 ```
 
 > 💡 After major dependency updates, use `npm run clean && npm install` to reset all package-lock files and node_modules across the monorepo.
+
+---
+
+## 🔐 Environment Variables
+
+Each app may define its own `.env.development` file for local builds. To initialize it:
+
+```sh
+cp .env.example .env.development
+```
+
+If an environment variable affects build output, declare it in `turbo.json` under `env` or `globalEnv`.  
+More info: [Turborepo Env Handling](https://vercel.com/docs/monorepos/turborepo#handling-environment-variables)
 
 ---
 
