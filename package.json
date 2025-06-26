@@ -23,7 +23,7 @@
         "typescript": "^5.8.2"
     },
     "engines": {
-        "node": ">=18"
+        "node": "20.x"
     },
     "packageManager": "npm@10.1.0",
     "workspaces": [
