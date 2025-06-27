@@ -1,0 +1,62 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Guidelines for AI
+
+## Coding Standards
+- Use clear, descriptive variable and function names (prefer snake_case for variables, camelCase for functions).
+- Write self-documenting code; add comments where logic is non-obvious.
+- Prefer functional programming patterns where possible.
+- All new code must include relevant unit tests.
+
+## Architectural Principles
+- Follow the repository pattern for data access.
+- Use dependency injection for services and business logic.
+- Keep business logic out of controllers/routes; use service layers.
+- Organize code by feature/domain when possible.
+
+## Best Practices
+- Validate all API inputs using Zod schema validator.
+- Handle errors gracefully and log them appropriately.
+- Write modular, reusable components.
+- Keep functions small and focused.
+
+## Core Project Structure
+- **apps/**
+  - **mavrochat/**: AI-powered chat app (Next.js, src/components, src/context, src/lib)
+  - **mavrodev/**: Personal website/blog (Next.js, src/components, src/content/blog, src/lib)
+- **packages/**
+  - **ui/**: Shared React component library (src/components, src/lib, src/styles)
+  - **eslint-config/**: Shared ESLint config (base.js, next.js, react-internal.js)
+  - **typescript-config/**: Shared TS config (base.json, nextjs.json, react-library.json)
+- **.github/**: GitHub workflows and templates
+- **.husky/**: Git hooks
+- **.turbo/**: Turborepo cache and state
+- **.cursor/**: Cursor AI rules and state
+- **README.md**: Project overview
+- **CONTRIBUTING.md**: Contribution workflow
+- **turbo.json**: Turborepo config
+- **package.json**: Root npm config
+- **.gitignore**, **.prettierrc**, **.nvmrc**, **.npmrc**: Tooling config
+
+## Navigation Hints for AI
+- Apps are in `apps/`, each with Next.js structure and their own components, context, and utilities.
+- Shared code is in `packages/`, with a UI library, lint config, and TS config.
+- Content (like blog posts) and utilities are organized by feature/domain.
+- Monorepo is managed by Turborepo (`turbo.json`), with shared scripts and caching.
+- CI/CD and code quality are enforced via Husky, GitHub Actions, ESLint, Prettier, and Syncpack.
+
+## Folder Structure
+- `apps/` contains application entry points (e.g., frontend, backend apps).
+- `packages/` contains shared libraries (e.g., UI, config, types).
+- Use nested `.cursor/rules/` for domain-specific rules as needed.
+
+## References
+- See `CONTRIBUTING.md` for contribution workflow and more details.
+- See `README.md` for project overview and setup instructions.
+
+---
+
+Feel free to expand or split this rule as your project evolves. For more, see: https://docs.cursor.com/context/rules

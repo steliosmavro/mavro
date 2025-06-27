@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# MavroDev App Guidelines
+
+- Follow project-wide standards in `.cursor/rules/project-guidelines.mdc`.
+- This is a personal portfolio and blog built with Next.js (App Router).
+- Uses `@repo/ui` for shared UI components, `@repo/eslint-config` and `@repo/typescript-config` for linting and TS config.
+- Key structure:
+  - `src/app/`: Application routes, layouts, and pages (App Router, includes blog, projects, contact)
+  - `src/components/`: UI and shared components (e.g., RenderMdx)
+  - `src/content/`: Content files (e.g., markdown, MDX, blog posts)
+  - `src/lib/`: Application logic, utilities (e.g., getBlogPosts)
+  - `public/`: Static assets
+  - `types/`: TypeScript type definitions
+- Follows [Next.js project structure guide](mdc:https:/nextjs.org/docs/app/getting-started/project-structure).
+- Use `npm run dev --workspace=mavrodev` for local development.
+- Integrate with shared packages from `packages/`.
+- For build and deploy, see Turborepo docs: https://turbo.build/repo/docs
+
+---
+Reference: [Turborepo Docs](mdc:https:/turbo.build/repo/docs)

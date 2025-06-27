@@ -39,3 +39,12 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Cursor IDE
+.cursor/
+!.cursor/rules
+!.cursor/rules/**
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
