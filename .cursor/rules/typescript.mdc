@@ -1,0 +1,26 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# TypeScript Guidelines
+
+## Coding & Architectural Standards
+- Use idiomatic TypeScript conventions (camelCase for variables/functions, PascalCase for types/classes/components).
+- All new code must include relevant unit tests.
+- Prefer functional programming patterns (immutability, pure functions, no side effects) where possible, especially for utilities and business logic.
+- Use arrow functions only for small (e.g., 1-line) functions; otherwise, prefer standard function declarations for clarity and better stack traces.
+- Validate all API inputs using Zod schemas.
+- Whenever a function is provided by lodash, use it. Don't create it from scratch.
+- Keep business logic out of routes/controllers; use service layers and repository pattern for data access.
+- Use dependency injection for services/business logic.
+- Write modular, reusable components and keep functions small and focused.
+- Handle errors gracefully and log appropriately.
+
+## Backend Structure
+- **Controllers:** Delegate work to services; do not contain business logic.
+- **Services:** Handle business logic, interact with state, and make external requests.
+- **Utils:** Small, pure, reusable functions; depend only on their parameters, have no side effects, and always return the same output for the same input.
+
+## References
+- See `CONTRIBUTING.md` for workflows and advanced usage.

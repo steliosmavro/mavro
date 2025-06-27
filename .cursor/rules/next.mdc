@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Next.js & React Guidelines
+
+## Component Patterns
+- Organize code by feature/domain within `src/` (e.g., `components/`, `lib/`, `context/`, `content/`).
+- **Pages (smart components):** Orchestrate state, interact with services, allocate tasks, and compose UI components.
+- **UI (dumb/pure components):** Stateless, expect data only as props, have no side effects, and always return the same output for the same input.
+
+## Linting & Formatting
+- Use the shared ESLint config (`@repo/eslint-config`) and Prettier for formatting.
+- No relative package imports (`import/no-relative-packages`).
+- Enforced rules for React/Next.js best practices and hooks.
+- All code is type-checked (`tsc --noEmit`).
+
+## References
+- See `CONTRIBUTING.md` for workflows and advanced usage.

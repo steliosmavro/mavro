@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Turborepo Guidelines
+
+## Monorepo Structure & Dependency Management
+- Apps live in `apps/` (Next.js structure).
+- Shared code in `packages/` (UI, config, types).
+- Use workspace protocol for internal dependencies (`"@repo/ui": "workspace:*"`).
+- Use Syncpack to keep dependency versions in sync (`npm run sync:check`/`sync:fix`).
+- Install dependencies in the specific app/package that uses them.
+
+## Environment Variables
+- Each app/package can have its own `.env.development`.
+- If an env var affects build output, declare it in `turbo.json` under `env` or `globalEnv`.
+
+## CI/CD & Commit Conventions
+- CI/CD checks: lint, type-check, build, dependency sync, commit format.
+- Use Conventional Commits (`type(scope): summary`).
+
+## Turborepo Core Concepts (References)
+- **Remote Caching:** Use `npx turbo login` to enable shared build cache for faster CI/local builds. [Remote Caching Docs](mdc:https:/turborepo.com/docs/core-concepts/remote-caching)
+- **Package Types:** Distinguish between application packages (`apps/`, deployable) and library packages (`packages/`, shared code). [Package Types Docs](mdc:https:/turborepo.com/docs/core-concepts/package-types)
+- **Internal Packages:** Use workspace protocol for internal packages; see [Internal Packages Docs](mdc:https:/turborepo.com/docs/core-concepts/internal-packages)
+- **Package & Task Graph:** Turborepo builds and caches tasks based on dependency graph. [Package and Task Graph Docs](mdc:https:/turborepo.com/docs/core-concepts/package-and-task-graph)
+
+## References
+- See `CONTRIBUTING.md` for workflows, dependency management, and advanced usage.
+- See `README.md` for project overview and quickstart.
