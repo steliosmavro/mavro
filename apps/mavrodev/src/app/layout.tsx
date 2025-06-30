@@ -7,6 +7,7 @@ import { ModeToggle } from '@repo/ui/components/ModeToggle';
 import './globals.css';
 import { Button } from '@repo/ui/components/Button';
 import { ElementHeightObserver } from '@repo/ui/components/ElementalHeightObserver';
+import { LogoButton } from '../components/LogoButton';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
         site: '@steliosmavro',
     },
     icons: {
-        icon: '/logo.svg',
+        icon: '/tab-icon.svg',
     },
     robots: {
         index: true,
@@ -79,13 +80,7 @@ export default function RootLayout({
                     <header className="sticky top-0 z-30 w-full flex items-center justify-between py-2">
                         <div className="w-full flex items-center justify-between lg:max-w-[1200px] lg:mx-auto">
                             <nav className="flex items-center">
-                                <Button
-                                    asChild
-                                    variant="ghost"
-                                    className="font-bold"
-                                >
-                                    <Link href="/">mavro.dev</Link>
-                                </Button>
+                                <LogoButton className="mr-2" />
                                 <Button asChild variant="link">
                                     <Link href="/projects">Projects</Link>
                                 </Button>

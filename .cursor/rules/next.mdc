@@ -12,6 +12,7 @@ alwaysApply: true
 
 ## Linting & Formatting
 - Use the shared ESLint config (`@repo/eslint-config`) and Prettier for formatting.
+- Prefer Tailwind CSS for styling components.
 - No relative package imports (`import/no-relative-packages`).
 - Enforced rules for React/Next.js best practices and hooks.
 - All code is type-checked (`tsc --noEmit`).
