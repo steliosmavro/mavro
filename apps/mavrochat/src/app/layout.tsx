@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '@repo/ui/globals.css';
+import './globals.css';
 import { Providers } from '../providers';
-import { ChatProvider } from '../context/ChatContext';
 import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
 
 const geistSans = Geist({
@@ -67,7 +67,7 @@ export default function RootLayout({
                     <div className="fixed top-4 right-4 z-50">
                         <ThemeToggle />
                     </div>
-                    <ChatProvider>{children}</ChatProvider>
+                    {children}
                 </Providers>
             </body>
         </html>
