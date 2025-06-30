@@ -5,16 +5,15 @@ export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
     try {
-        const { messages, apiKey, model, systemPrompt, temperature } =
-            await req.json();
-        if (!apiKey || !messages || !model) {
+        const { messages } = await req.json();
+        if (!messages) {
             return errorResponse('Missing required fields', 400);
         }
-        const finalMessages = prepareMessages(messages, systemPrompt);
-        const safeTemperature = Math.max(
-            0,
-            Math.min(2, typeof temperature === 'number' ? temperature : 1.0),
-        );
+        const apiKey = process.env.OPENAI_API_KEY;
+        if (!apiKey) {
+            return errorResponse('OpenAI API key not set in environment', 500);
+        }
+        const finalMessages = prepareMessages(messages);
         const openaiRes = await fetch(
             'https://api.openai.com/v1/chat/completions',
             {
@@ -24,10 +23,9 @@ export async function POST(req: NextRequest) {
                     Authorization: `Bearer ${apiKey}`,
                 },
                 body: JSON.stringify({
-                    model,
+                    model: 'gpt-3.5-turbo',
                     messages: finalMessages,
                     stream: true,
-                    temperature: safeTemperature,
                 }),
             },
         );

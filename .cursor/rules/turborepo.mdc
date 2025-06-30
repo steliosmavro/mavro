@@ -29,3 +29,6 @@ alwaysApply: true
 ## References
 - See `CONTRIBUTING.md` for workflows, dependency management, and advanced usage.
 - See `README.md` for project overview and quickstart.
+
+## Installing Dependencies
+- Always install dependencies from within the app or package that uses them.

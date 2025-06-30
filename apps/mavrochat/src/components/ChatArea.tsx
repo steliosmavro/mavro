@@ -7,9 +7,6 @@ import {
 } from '@repo/ui/components/Avatar';
 import { useEffect, useRef } from 'react';
 import { useChat } from '../context/ChatContext';
-import ReactMarkdown from 'react-markdown';
-import rehypeHighlight from 'rehype-highlight';
-import 'highlight.js/styles/github.css';
 
 export default function ChatArea() {
     const { messages } = useChat();
@@ -54,15 +51,9 @@ export default function ChatArea() {
                                     </span>
                                 </div>
                                 <div className="prose prose-neutral max-w-none">
-                                    {msg.role === 'assistant' ? (
-                                        <ReactMarkdown
-                                            rehypePlugins={[rehypeHighlight]}
-                                        >
-                                            {msg.content}
-                                        </ReactMarkdown>
-                                    ) : (
-                                        msg.content
-                                    )}
+                                    {msg.role === 'assistant'
+                                        ? msg.content
+                                        : msg.content}
                                 </div>
                             </div>
                         </div>

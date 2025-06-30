@@ -5,8 +5,7 @@ import { useState } from 'react';
 import { useChat, ChatMessage } from '../context/ChatContext';
 
 export default function ChatInput() {
-    const { messages, setMessages, model, apiKeys, systemPrompt, temperature } =
-        useChat();
+    const { messages, setMessages } = useChat();
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -17,25 +16,11 @@ export default function ChatInput() {
         setMessages([...messages, userMsg]);
         setInput('');
         setLoading(true);
-        const endpoint =
-            model === 'openai' ? '/api/chat/openai' : '/api/chat/anthropic';
-        const apiKey = model === 'openai' ? apiKeys.openai : apiKeys.anthropic;
-        const body =
-            model === 'openai'
-                ? {
-                      messages: [...messages, userMsg],
-                      apiKey,
-                      model: 'gpt-3.5-turbo',
-                      systemPrompt,
-                      temperature,
-                  }
-                : {
-                      messages: [...messages, userMsg],
-                      apiKey,
-                      model: 'claude-3-opus-20240229',
-                      systemPrompt,
-                      temperature,
-                  };
+        const endpoint = '/api/chat/openai';
+        const body = {
+            messages: [...messages, userMsg],
+            model: 'gpt-3.5-turbo',
+        };
         try {
             const res = await fetch(endpoint, {
                 method: 'POST',
@@ -60,17 +45,7 @@ export default function ChatInput() {
                         try {
                             const parsed = JSON.parse(data);
                             let content = '';
-                            if (model === 'openai') {
-                                content =
-                                    parsed.choices?.[0]?.delta?.content || '';
-                            } else if (model === 'anthropic') {
-                                if (
-                                    parsed.type === 'content_block_delta' &&
-                                    parsed.delta?.text
-                                ) {
-                                    content = parsed.delta.text;
-                                }
-                            }
+                            content = parsed.choices?.[0]?.delta?.content || '';
                             if (content) {
                                 assistantMsg += content;
                                 setMessages((msgs: ChatMessage[]) => {
