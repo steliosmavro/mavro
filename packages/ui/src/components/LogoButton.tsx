@@ -1,15 +1,20 @@
 'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
-import { Button } from '@repo/ui/components/Button';
+import { Button } from './Button';
 
-export function LogoButton({ className }: { className?: string }) {
+export function LogoButton({
+    className,
+    lightLogoSrc,
+    darkLogoSrc,
+}: {
+    className?: string;
+    lightLogoSrc: string;
+    darkLogoSrc: string;
+}) {
     const { theme } = useTheme();
-    // Fallback to dark if theme is undefined (before hydration)
-    const logoSrc =
-        theme === 'light' ? '/light-theme-logo.svg' : '/dark-theme-logo.svg';
+    const logoSrc = theme === 'light' ? lightLogoSrc : darkLogoSrc;
 
     return (
         <Button asChild variant="ghost" size="icon" className={className}>

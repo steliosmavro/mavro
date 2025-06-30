@@ -7,7 +7,7 @@ import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
 import './globals.css';
 import { Button } from '@repo/ui/components/Button';
 import { ElementHeightObserver } from '@repo/ui/components/ElementalHeightObserver';
-import { LogoButton } from '../components/LogoButton';
+import { LogoButton } from '@repo/ui/components/LogoButton';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -31,6 +31,14 @@ export const metadata: Metadata = {
         url: 'https://mavro.dev',
         siteName: 'mavro.dev',
         type: 'website',
+        images: [
+            {
+                url: '/dark-theme-logo.svg',
+                width: 512,
+                height: 512,
+                alt: 'Mavro Logo',
+            },
+        ],
     },
     twitter: {
         card: 'summary_large_image',
@@ -38,6 +46,7 @@ export const metadata: Metadata = {
         description:
             'Personal site, portfolio, and developer blog for Stelios Mavro — a full-stack focused on AI-powered applications, automation, and developer tools.',
         site: '@steliosmavro',
+        images: ['/dark-theme-logo.svg'],
     },
     icons: {
         icon: '/tab-icon.svg',
@@ -80,7 +89,11 @@ export default function RootLayout({
                     <header className="sticky top-0 z-30 w-full flex items-center justify-between py-2">
                         <div className="w-full flex items-center justify-between lg:max-w-[1200px] lg:mx-auto">
                             <nav className="flex items-center">
-                                <LogoButton className="mr-2" />
+                                <LogoButton
+                                    className="mr-2"
+                                    lightLogoSrc="/light-theme-logo.svg"
+                                    darkLogoSrc="/dark-theme-logo.svg"
+                                />
                                 <Button asChild variant="link">
                                     <Link href="/projects">Projects</Link>
                                 </Button>

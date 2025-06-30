@@ -4,6 +4,7 @@ import { Input } from '@repo/ui/components/Input';
 import { Textarea } from '@repo/ui/components/Textarea';
 import { useChat } from '../context/ChatContext';
 import { useEffect } from 'react';
+import { LogoButton } from '@repo/ui/components/LogoButton';
 
 export default function Sidebar() {
     const {
@@ -29,8 +30,14 @@ export default function Sidebar() {
     return (
         <aside className="flex flex-col gap-4 p-4 w-80 min-h-screen bg-muted/40 border-r">
             <div className="flex items-center justify-between mb-2">
-                <div className="font-bold text-lg tracking-tight">
-                    mavro.chat
+                <div className="flex items-center gap-2">
+                    <LogoButton
+                        lightLogoSrc="/light-theme-logo.svg"
+                        darkLogoSrc="/dark-theme-logo.svg"
+                    />
+                    <span className="font-bold text-lg tracking-tight">
+                        mavro.chat
+                    </span>
                 </div>
             </div>
             <Card className="mb-2 p-4">
