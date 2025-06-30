@@ -4,7 +4,6 @@ import { Input } from '@repo/ui/components/Input';
 import { Textarea } from '@repo/ui/components/Textarea';
 import { useChat } from '../context/ChatContext';
 import { useEffect } from 'react';
-import ThemeToggle from './ThemeToggle';
 
 export default function Sidebar() {
     const {
@@ -33,7 +32,6 @@ export default function Sidebar() {
                 <div className="font-bold text-lg tracking-tight">
                     mavro.chat
                 </div>
-                <ThemeToggle />
             </div>
             <Card className="mb-2 p-4">
                 <div className="font-semibold mb-2">Model Selection</div>

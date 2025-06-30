@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@repo/ui/components/Button';
 
-export function ModeToggle() {
+export function ThemeToggle() {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 

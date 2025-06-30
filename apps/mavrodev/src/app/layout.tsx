@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import Link from 'next/link';
 import '@repo/ui/globals.css';
 import { ThemeProvider } from '@repo/ui/components/ThemeProvider';
-import { ModeToggle } from '@repo/ui/components/ModeToggle';
+import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
 import './globals.css';
 import { Button } from '@repo/ui/components/Button';
 import { ElementHeightObserver } from '@repo/ui/components/ElementalHeightObserver';
@@ -100,7 +100,7 @@ export default function RootLayout({
                                     </Link>
                                 </Button>
                             </nav>
-                            <ModeToggle />
+                            <ThemeToggle />
                         </div>
                     </header>
                     {children}
