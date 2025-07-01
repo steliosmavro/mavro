@@ -17,5 +17,6 @@
             "cache": false,
             "persistent": true
         }
-    }
+    },
+    "globalEnv": ["NEXT_PUBLIC_ENVIRONMENT", "OPENAI_API_KEY"]
 }
