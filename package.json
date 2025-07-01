@@ -5,6 +5,7 @@
         "build": "turbo run build",
         "dev": "turbo run dev",
         "dev:mavrochat": "npm run dev --workspace=mavrochat",
+        "dev:mavrodev": "npm run dev --workspace=mavrodev",
         "lint": "turbo run lint",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "check-types": "turbo run check-types",

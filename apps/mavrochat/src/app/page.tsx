@@ -20,7 +20,7 @@ export default function Page() {
                         <div className="font-bold mb-2">
                             {message.role === 'user' ? 'You' : 'Assistant'}
                         </div>
-                        <div className="prose space-y-2">
+                        <div className="prose markdown-content space-y-2">
                             {message.parts.map((part, i) => {
                                 switch (part.type) {
                                     case 'text':
