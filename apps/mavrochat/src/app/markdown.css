@@ -6,7 +6,7 @@
 .markdown-content {
     /* Enhanced code block styling for better visibility */
     .hljs {
-        border-radius: 0.375rem;
+        border-radius: var(--radius-sm);
         padding: 1rem;
         margin: 0.5rem 0;
         overflow-x: auto;
@@ -17,19 +17,21 @@
         background-color: var(--muted);
         color: var(--muted-foreground);
         padding: 0.125rem 0.25rem;
-        border-radius: 0.25rem;
+        border-radius: var(--radius-sm);
         font-size: 0.875rem;
         font-family: var(--font-mono), 'Courier New', monospace;
     }
 
-    /* Table styling for better GFM support */
+    /* Table wrapper for border and radius */
     table {
         border-collapse: collapse;
         width: 100%;
         margin: 1rem 0;
-        border: 1px solid var(--border);
-        border-radius: 0.375rem;
+        border-radius: var(--radius-sm);
         overflow: hidden;
+        /* Workaround for border-collapse + border-radius issue */
+        border-style: hidden;
+        box-shadow: 0 0 0 1px var(--border);
     }
 
     th,
@@ -110,7 +112,7 @@
         border-left: 6px solid var(--border);
         background-color: var(--sidebar);
         padding: 1rem 1.5rem;
-        border-radius: 0 0.375rem 0.375rem 0;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
         font-style: italic;
         color: var(--muted-foreground);
     }
@@ -211,16 +213,12 @@
     pre {
         background-color: var(--muted);
         border: 1px solid var(--border);
-        border-radius: 0.375rem;
+        border-radius: var(--radius-sm);
         overflow-x: auto;
-        /* font-family: var(--font-mono), 'Courier New', monospace; */
+        padding: 0;
 
         code {
             background: none;
-            padding: 0;
-            border-radius: 0;
-            font-size: inherit;
-            font-family: inherit;
         }
     }
 
@@ -228,7 +226,7 @@
     img {
         max-width: 100%;
         height: auto;
-        border-radius: 0.375rem;
+        border-radius: var(--radius-sm);
         margin: 1rem 0;
     }
 }

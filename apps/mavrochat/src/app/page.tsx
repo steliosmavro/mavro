@@ -6,8 +6,12 @@ import { MemoizedMarkdown } from '../components/memoized-markdown';
 import { Input } from '@repo/ui/components/Input';
 import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
 import { defaultMessages } from '../lib/defaultMessages';
+import { useHighlightTheme } from '../hooks/useHighlightTheme';
 
 export default function Page() {
+    // Dynamically load GitHub highlight.js themes based on current theme
+    useHighlightTheme();
+
     const { messages } = useChat({
         id: 'chat',
         maxSteps: 5,
@@ -26,7 +30,7 @@ export default function Page() {
                 </div>
 
                 <div className="flex-1">
-                    <div className="w-full max-w-xl mx-auto px-4 py-4 space-y-8">
+                    <div className="w-full max-w-3xl mx-auto px-4 py-4 space-y-8">
                         {displayMessages.map((message) => (
                             <div key={message.id}>
                                 <div className="font-bold mb-2">
