@@ -3,6 +3,7 @@ import React from 'react';
 
 import { useChat } from '@ai-sdk/react';
 import { MemoizedMarkdown } from '../components/memoized-markdown';
+import { Input } from '@repo/ui/components/Input';
 
 export default function Page() {
     const { messages } = useChat({
@@ -57,13 +58,18 @@ export default function Page() {
 const MessageInput = () => {
     const { input, handleSubmit, handleInputChange } = useChat({ id: 'chat' });
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                className="fixed bottom-0 w-full max-w-xl p-2 mb-8 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 rounded shadow-xl"
-                placeholder="Say something..."
-                value={input}
-                onChange={handleInputChange}
-            />
+        <form
+            onSubmit={handleSubmit}
+            className="fixed bottom-0 w-full max-w-xl mb-8"
+        >
+            <div className="flex gap-2">
+                <Input
+                    placeholder="Say something..."
+                    value={input}
+                    onChange={handleInputChange}
+                    className="flex-1"
+                />
+            </div>
         </form>
     );
 };
