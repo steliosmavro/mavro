@@ -4,6 +4,7 @@ import { memo, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
+import { CodeBlock } from './CodeBlock';
 
 function parseMarkdownIntoBlocks(markdown: string): string[] {
     const tokens = marked.lexer(markdown);
@@ -20,6 +21,13 @@ const MemoizedMarkdownBlock = memo(
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}
+                components={{
+                    pre: ({ children }) => (
+                        <CodeBlock>
+                            <pre>{children}</pre>
+                        </CodeBlock>
+                    ),
+                }}
             >
                 {content}
             </ReactMarkdown>

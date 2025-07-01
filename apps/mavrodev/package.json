@@ -14,6 +14,7 @@
         "@radix-ui/react-slot": "^1.2.3",
         "@radix-ui/react-switch": "^1.2.5",
         "framer-motion": "^12.19.1",
+        "lucide-react": "^0.518.0",
         "next": "15.3.4",
         "react": "^19.1.0",
         "react-dom": "^19.1.0"
@@ -21,7 +22,6 @@
     "devDependencies": {
         "@repo/eslint-config": "0.0.0",
         "@repo/typescript-config": "0.0.0",
-        "@repo/eslint-config": "0.0.0",
         "@eslint/eslintrc": "^3",
         "@tailwindcss/postcss": "^4.1.10",
         "@types/node": "^22.15.3",
