@@ -26,7 +26,7 @@ export function ChatContainer() {
                         <div className="font-bold mb-2">
                             {message.role === 'user' ? 'You' : 'Assistant'}
                         </div>
-                        <div className="prose markdown-content space-y-2">
+                        <div className="markdown-content">
                             {message.parts.map((part, i) => {
                                 switch (part.type) {
                                     case 'text':

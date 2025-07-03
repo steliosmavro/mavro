@@ -1,0 +1,100 @@
+/* 
+ * Typography styles based on the updated shadcn
+ */
+
+/* H1 - based on TypographyH1 (removed text-center) */
+h1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight text-balance;
+}
+
+/* H2 - based on TypographyH2 (removed border-b) */
+h2 {
+    @apply scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0;
+}
+
+/* H3 - based on TypographyH3 */
+h3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+}
+
+/* H4 - based on TypographyH4 */
+h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+}
+
+/* P - based on TypographyP */
+p {
+    @apply leading-7;
+}
+
+p:not(:first-child) {
+    @apply mt-6;
+}
+
+/* Blockquote - based on TypographyBlockquote */
+blockquote {
+    @apply mt-6 border-l-2 pl-6 italic;
+}
+
+/* Table - based on TypographyTable (combining wrapper + table styles for markdown) */
+table {
+    @apply my-6 w-full overflow-y-auto;
+}
+
+/* Table rows - based on TypographyTable tr styles */
+tr {
+    @apply even:bg-muted m-0 border-t p-0;
+}
+
+/* Table headers - based on TypographyTable th styles (with alignment variants) */
+th {
+    @apply border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
+}
+
+/* Table cells - based on TypographyTable td styles (with alignment variants) */
+td {
+    @apply border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+}
+
+/* UL - based on TypographyList */
+ul {
+    @apply my-6 ml-6 list-disc;
+}
+
+ul > li {
+    @apply mt-2;
+}
+
+/* OL - same pattern as UL but with decimal bullets */
+ol {
+    @apply my-6 ml-6 list-decimal;
+}
+
+ol > li {
+    @apply mt-2;
+}
+
+/* Inline Code - based on TypographyInlineCode */
+code {
+    @apply bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
+}
+
+/* Lead text - based on TypographyLead */
+.lead {
+    @apply text-muted-foreground text-xl;
+}
+
+/* Large text - based on TypographyLarge */
+.large {
+    @apply text-lg font-semibold;
+}
+
+/* Small text - based on TypographySmall */
+small {
+    @apply text-sm leading-none font-medium;
+}
+
+/* Muted text - based on TypographyMuted */
+.muted {
+    @apply text-muted-foreground text-sm;
+}

@@ -1,6 +1,6 @@
 // import { getPostMeta } from '../../..//lib/getBlogPosts';
 // import type { Metadata } from 'next';
-import { TypographyH1, TypographyP } from '@repo/ui/components/Typography';
+
 import { Card, CardContent } from '@repo/ui/components/Card';
 
 // export async function generateMetadata({
@@ -37,13 +37,13 @@ export default function BlogPostPage() {
             <Card className="flex flex-col items-center gap-4 px-10 py-16">
                 <CardContent className="flex flex-col items-center gap-4">
                     <span className="text-5xl">🚧</span>
-                    <TypographyH1 className="mb-2 text-2xl font-bold text-brand">
+                    <h1 className="mb-2 text-2xl font-bold text-brand">
                         Coming Soon
-                    </TypographyH1>
-                    <TypographyP className="max-w-xs text-center text-slate-600">
+                    </h1>
+                    <p className="max-w-xs text-center text-slate-600">
                         Blog posts will be available soon. Check back for
                         updates!
-                    </TypographyP>
+                    </p>
                 </CardContent>
             </Card>
         </main>

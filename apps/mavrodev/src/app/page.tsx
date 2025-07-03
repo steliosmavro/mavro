@@ -5,13 +5,7 @@ import { motion } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
 import { Badge } from '@repo/ui/components/Badge';
 import { Button } from '@repo/ui/components/Button';
-import {
-    TypographyH1,
-    TypographyH2,
-    TypographyP,
-    TypographyH3,
-    TypographyBlockquote,
-} from '@repo/ui/components/Typography';
+
 import {
     Card,
     CardHeader,
@@ -26,7 +20,7 @@ export default function Home() {
             <section className="mt-24 w-full lg:max-w-[1200px] lg:mx-auto">
                 <div className="flex flex-col items-center gap-8 sm:gap-12 lg:flex-row lg:items-start lg:justify-between">
                     <div className="flex flex-1 flex-col gap-8 text-left lg:items-start lg:text-left">
-                        <TypographyH1>Stelios Mavro</TypographyH1>
+                        <h1>Stelios Mavro</h1>
                         <div className="flex flex-wrap gap-1 font-mono text-md uppercase tracking-wider">
                             {[
                                 'Full-Stack Engineer',
@@ -46,11 +40,11 @@ export default function Home() {
                                 ),
                             )}
                         </div>
-                        <TypographyP>
+                        <p>
                             Full-Stack Engineer since 2020, focused on
                             AI-powered applications, automation, and developer
                             tools.
-                        </TypographyP>
+                        </p>
                         <div className="mt-4 flex flex-wrap gap-2 ">
                             {[
                                 'TypeScript',
@@ -116,7 +110,7 @@ export default function Home() {
             {/* Featured Projects */}
             <section className="flex flex-col gap-8 w-full lg:max-w-[1200px] lg:mx-auto">
                 <div className="flex">
-                    <TypographyH2>Featured Projects</TypographyH2>
+                    <h2>Featured Projects</h2>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -171,10 +165,10 @@ export default function Home() {
                                 }
                             >
                                 <CardHeader>
-                                    <TypographyH3>{project.title}</TypographyH3>
+                                    <h3>{project.title}</h3>
                                 </CardHeader>
                                 <CardContent>
-                                    <TypographyP>{project.desc}</TypographyP>
+                                    <p>{project.desc}</p>
                                     <ul className="mt-4 flex list-none flex-wrap gap-2">
                                         {project.tags.map((tag) => (
                                             <Badge key={tag} variant="outline">
@@ -222,7 +216,7 @@ export default function Home() {
             {/* Testimonials */}
             <section className="mb-24 flex flex-col gap-8 w-full lg:max-w-[1200px] lg:mx-auto">
                 <div className="flex">
-                    <TypographyH2>What People Say</TypographyH2>
+                    <h2>What People Say</h2>
                 </div>
                 <div className="grid gap-16 sm:grid-cols-2">
                     {[
@@ -280,9 +274,7 @@ export default function Home() {
                                     </div>
                                 </figcaption>
                             </a>
-                            <TypographyBlockquote>
-                                &quot;{t.quote}&quot;
-                            </TypographyBlockquote>
+                            <blockquote>&quot;{t.quote}&quot;</blockquote>
                         </motion.figure>
                     ))}
                 </div>

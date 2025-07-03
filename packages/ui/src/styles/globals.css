@@ -5,6 +5,9 @@
 @source "../**/*.{ts,tsx}";
 @import 'tw-animate-css';
 
+@import './typography.css';
+@import './markdown.css';
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
