@@ -2,12 +2,14 @@
 
 import { useState, useRef } from 'react';
 import { Copy, Check } from 'lucide-react';
+import { Badge } from '@repo/ui/components/Badge';
 
 interface CodeBlockProps {
     children: React.ReactNode;
+    language?: string;
 }
 
-export function CodeBlock({ children }: CodeBlockProps) {
+export function CodeBlock({ children, language }: CodeBlockProps) {
     const [copied, setCopied] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +31,14 @@ export function CodeBlock({ children }: CodeBlockProps) {
 
     return (
         <div className="relative group" ref={containerRef}>
+            {language && (
+                <Badge
+                    variant="outline"
+                    className="absolute top-3 left-3 z-10 bg-background/80 text-muted-foreground font-mono"
+                >
+                    {language}
+                </Badge>
+            )}
             {children}
             <button
                 onClick={handleCopy}

@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
+import React, { memo, useMemo } from 'react';
 import { marked } from 'marked';
-import { memo, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import { CodeBlock } from './CodeBlock';
 
 function parseMarkdownIntoBlocks(markdown: string): string[] {
-    const tokens = marked.lexer(markdown);
+    const tokens = marked.lexer(markdown) as Array<{ raw: string }>;
     return tokens.map((token) => token.raw);
 }
 
@@ -22,11 +22,34 @@ const MemoizedMarkdownBlock = memo(
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}
                 components={{
-                    pre: ({ children }) => (
-                        <CodeBlock>
-                            <pre>{children}</pre>
-                        </CodeBlock>
-                    ),
+                    pre: ({ children }) => {
+                        const codeElement = React.Children.toArray(
+                            children,
+                        ).find((child) => {
+                            if (!React.isValidElement(child)) return false;
+                            return (
+                                typeof (child.props as { className?: string })
+                                    .className === 'string'
+                            );
+                        }) as
+                            | React.ReactElement<{ className?: string }>
+                            | undefined;
+
+                        const className =
+                            (
+                                codeElement?.props as
+                                    | { className?: string }
+                                    | undefined
+                            )?.className ?? '';
+                        const match = /language-(\w+)/.exec(className);
+                        const lang = match?.[1];
+
+                        return (
+                            <CodeBlock language={lang}>
+                                <pre>{children}</pre>
+                            </CodeBlock>
+                        );
+                    },
                 }}
             >
                 {content}
