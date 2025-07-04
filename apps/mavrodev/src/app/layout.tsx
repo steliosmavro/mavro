@@ -87,7 +87,7 @@ export default function RootLayout({
                         selector="footer"
                         cssVar="--footer-height"
                     />
-                    <Header>
+                    <Header className="bg-background/70 backdrop-blur-xs">
                         <nav className="flex items-center">
                             <LogoButton
                                 className="mr-2"

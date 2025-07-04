@@ -66,10 +66,7 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
             >
                 <Providers>
-                    <Header
-                        innerClassName="max-w-3xl justify-end gap-4"
-                        className="z-50"
-                    >
+                    <Header innerClassName="max-w-3xl justify-end gap-4">
                         <ModelSelector />
                         <ThemeToggle />
                     </Header>
