@@ -144,14 +144,6 @@ body {
 
 main {
     flex: 1;
-    padding-left: 3rem;
-    padding-right: 3rem;
-}
-
-header,
-footer {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    border: 1px solid var(--input);
-    background-color: var(--background);
+    padding-left: 2rem;
+    padding-right: 2rem;
 }

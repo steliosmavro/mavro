@@ -4,6 +4,7 @@ import Link from 'next/link';
 import '@repo/ui/globals.css';
 import { ThemeProvider } from '@repo/ui/components/ThemeProvider';
 import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
+import { Header } from '@repo/ui/components/Header';
 import './globals.css';
 import { Button } from '@repo/ui/components/Button';
 import { ElementHeightObserver } from '@repo/ui/components/ElementalHeightObserver';
@@ -86,38 +87,36 @@ export default function RootLayout({
                         selector="footer"
                         cssVar="--footer-height"
                     />
-                    <header className="sticky top-0 z-30 w-full flex items-center justify-between py-2">
-                        <div className="w-full flex items-center justify-between lg:max-w-[1200px] lg:mx-auto">
-                            <nav className="flex items-center">
-                                <LogoButton
-                                    className="mr-2"
-                                    lightLogoSrc="/light-theme-logo.svg"
-                                    darkLogoSrc="/dark-theme-logo.svg"
-                                />
-                                <Button asChild variant="link">
-                                    <Link href="/projects">Projects</Link>
-                                </Button>
-                                <Button asChild variant="link">
-                                    <Link href="/blog">Blog</Link>
-                                </Button>
-                                <Button asChild variant="link">
-                                    <Link href="/contact">Contact</Link>
-                                </Button>
-                                <Button asChild variant="link">
-                                    <Link
-                                        href="/resume.pdf"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Resume
-                                    </Link>
-                                </Button>
-                            </nav>
-                            <ThemeToggle />
-                        </div>
-                    </header>
+                    <Header>
+                        <nav className="flex items-center">
+                            <LogoButton
+                                className="mr-2"
+                                lightLogoSrc="/light-theme-logo.svg"
+                                darkLogoSrc="/dark-theme-logo.svg"
+                            />
+                            <Button asChild variant="link">
+                                <Link href="/projects">Projects</Link>
+                            </Button>
+                            <Button asChild variant="link">
+                                <Link href="/blog">Blog</Link>
+                            </Button>
+                            <Button asChild variant="link">
+                                <Link href="/contact">Contact</Link>
+                            </Button>
+                            <Button asChild variant="link">
+                                <Link
+                                    href="/resume.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Resume
+                                </Link>
+                            </Button>
+                        </nav>
+                        <ThemeToggle />
+                    </Header>
                     {children}
-                    <footer className="flex flex-col gap-8 text-center text-xs pt-8 pb-4">
+                    <footer className="flex flex-col gap-8 text-center text-xs pt-8 pb-4 px-4 border-t border-input bg-background">
                         <nav className="flex justify-center text-sm">
                             <Button asChild variant="link">
                                 <a href="mailto:stelios@mavro.dev">Email</a>
