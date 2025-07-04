@@ -67,7 +67,7 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
             >
                 <Providers>
-                    <Header className="bg-transparent border-none">
+                    <Header className="bg-background border-b xl:bg-transparent xl:border-none">
                         <div className="flex items-center justify-between w-full">
                             <div className="flex items-center gap-4">
                                 <LogoButton

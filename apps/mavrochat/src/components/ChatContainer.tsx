@@ -53,7 +53,7 @@ export function ChatContainer({ className }: ChatContainerProps) {
 
     return (
         <div
-            className={`flex-1 flex flex-col gap-16 pt-8 pb-24 w-full ${className ?? ''}`}
+            className={`flex-1 flex flex-col gap-16 pb-24 w-full ${className ?? ''}`}
         >
             {displayMessages.map((message) => {
                 const isUser = message.role === 'user';
