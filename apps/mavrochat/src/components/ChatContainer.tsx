@@ -1,8 +1,8 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { MemoizedMarkdown } from './memoized-markdown';
-import { defaultMessages } from '../lib/defaultMessages';
+import { useRef, useEffect } from 'react';
+import { MemoizedMarkdown } from './MemoizedMarkdown';
 import { useHighlightTheme } from '../hooks/useHighlightTheme';
 import { useModel } from '../context/ModelContext';
 import { Card, CardContent } from '@repo/ui/components/Card';
@@ -41,79 +41,104 @@ export function ChatContainer({ className }: ChatContainerProps) {
     };
 
     const { model } = useModel();
+    const lastUserMessageRef = useRef<HTMLDivElement | null>(null);
     const { messages } = useChat({
         id: 'chat',
         maxSteps: 5,
         experimental_throttle: 50,
         headers: { 'x-model': model },
     });
-    const displayMessages =
-        process.env.NEXT_PUBLIC_ENVIRONMENT === 'development'
-            ? defaultMessages
-            : messages;
+    const displayMessages = messages;
+
+    useEffect(() => {
+        if (lastUserMessageRef.current) {
+            lastUserMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [displayMessages]);
 
     return (
         <div
             className={`flex-1 flex flex-col gap-16 pb-24 w-full ${className ?? ''}`}
         >
-            {displayMessages.map((message) => {
+            {displayMessages.map((message, idx) => {
                 const isUser = message.role === 'user';
                 const alignmentClass = isUser ? 'self-end' : 'self-start';
 
                 if (isUser) {
                     return (
-                        <CopyableMessage
+                        <div
                             key={message.id}
-                            className={`ml-24 ${alignmentClass}`}
-                            textToCopy={message.parts
-                                .map((p) =>
-                                    p.type === 'text' && 'text' in p
-                                        ? ((p as { text?: string }).text ?? '')
-                                        : '',
-                                )
-                                .join('')}
+                            ref={
+                                idx === displayMessages.length - 1
+                                    ? lastUserMessageRef
+                                    : undefined
+                            }
+                            className={alignmentClass}
                         >
-                            <Card className="bg-secondary/50 border-muted-foreground/20">
-                                <CardContent>
-                                    {message.parts.map((part, i) => {
-                                        if (part.type === 'text') {
-                                            return (
-                                                <p
-                                                    key={`${message.id}-${i}`}
-                                                    className="whitespace-pre-wrap"
-                                                >
-                                                    {part.text ?? ''}
-                                                </p>
+                            <CopyableMessage
+                                className="ml-24"
+                                textToCopy={message.parts
+                                    .map((p) =>
+                                        p.type === 'text' && 'text' in p
+                                            ? ((p as { text?: string }).text ??
+                                              '')
+                                            : '',
+                                    )
+                                    .join('')}
+                            >
+                                <Card className="bg-secondary/50 border-muted-foreground/20">
+                                    <CardContent>
+                                        {message.parts.map((part, i) => {
+                                            if (part.type === 'text') {
+                                                return (
+                                                    <p
+                                                        key={`${message.id}-${i}`}
+                                                        className="whitespace-pre-wrap"
+                                                    >
+                                                        {part.text ?? ''}
+                                                    </p>
+                                                );
+                                            }
+                                            return renderPart(
+                                                message.id,
+                                                part,
+                                                i,
                                             );
-                                        }
-                                        return renderPart(message.id, part, i);
-                                    })}
-                                </CardContent>
-                            </Card>
-                        </CopyableMessage>
+                                        })}
+                                    </CardContent>
+                                </Card>
+                            </CopyableMessage>
+                        </div>
                     );
                 } else {
                     return (
-                        <CopyableMessage
+                        <div
                             key={message.id}
                             className={alignmentClass}
-                            textToCopy={message.parts
-                                .map((p) =>
-                                    p.type === 'text' && 'text' in p
-                                        ? ((p as { text?: string }).text ?? '')
-                                        : '',
-                                )
-                                .join('')}
+                            ref={undefined}
                         >
-                            <div className="markdown-content">
-                                {message.parts.map((part, i) =>
-                                    renderPart(message.id, part, i),
-                                )}
-                            </div>
-                        </CopyableMessage>
+                            <CopyableMessage
+                                textToCopy={message.parts
+                                    .map((p) =>
+                                        p.type === 'text' && 'text' in p
+                                            ? ((p as { text?: string }).text ??
+                                              '')
+                                            : '',
+                                    )
+                                    .join('')}
+                            >
+                                <div className="markdown-content">
+                                    {message.parts.map((part, i) =>
+                                        renderPart(message.id, part, i),
+                                    )}
+                                </div>
+                            </CopyableMessage>
+                        </div>
                     );
                 }
             })}
+            {/* Spacer to allow scrolling last message to top */}
+            <div className="h-[60vh] w-full shrink-0" />
         </div>
     );
 }
