@@ -1,17 +1,46 @@
 /* 
- * Typography styles specific to elements parsed from markdown content
+ * Styles specific to elements parsed from markdown content
  */
 
 .markdown-content {
     @apply space-y-6;
 
-    /* Checkbox - based on checkbox.tsx for task lists */
+    /*
+     * Markdown checkboxes are parsed as native <input type="checkbox"> elements
+     * and are disabled by default. Unlike shadcn's custom checkbox component, these
+     * must be styled directly while avoiding disabled styles that would gray them out.
+     */
     input[type='checkbox'] {
+        appearance: none;
+        -webkit-appearance: none;
+        background-color: white;
+        position: relative;
+
+        @apply border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px];
+    }
+
+    input[type='checkbox']:checked {
         @apply accent-input border-input dark:bg-input/30 bg-primary text-primary-foreground dark:bg-primary border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px];
     }
 
+    input[type='checkbox']:checked::before {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 1px;
+        width: 5px;
+        height: 10px;
+        border: solid var(--secondary);
+        border-width: 0 1px 1px 0;
+        transform: rotate(45deg);
+    }
+
     input[type='checkbox']:disabled {
-        @apply accent-input border-input dark:bg-input/30 bg-primary text-primary-foreground dark:bg-primary border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px];
+        /* @apply disabled:cursor-not-allowed disabled:opacity-50; */
+    }
+
+    input[type='checkbox']:disabled:checked::before {
+        /* @apply cursor-not-allowed opacity-50; */
     }
 
     li:has(> input[type='checkbox']) {
