@@ -63,12 +63,22 @@ export function ChatContainer({ className }: ChatContainerProps) {
                     return (
                         <Card
                             key={message.id}
-                            className={`bg-secondary ml-24 ${alignmentClass}`}
+                            className={`bg-secondary/50 border-muted-foreground/20 ml-24 ${alignmentClass}`}
                         >
                             <CardContent>
-                                {message.parts.map((part, i) =>
-                                    renderPart(message.id, part, i),
-                                )}
+                                {message.parts.map((part, i) => {
+                                    if (part.type === 'text') {
+                                        return (
+                                            <p
+                                                key={`${message.id}-${i}`}
+                                                className="whitespace-pre-wrap"
+                                            >
+                                                {part.text ?? ''}
+                                            </p>
+                                        );
+                                    }
+                                    return renderPart(message.id, part, i);
+                                })}
                             </CardContent>
                         </Card>
                     );
