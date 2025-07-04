@@ -3,9 +3,14 @@
 import React from 'react';
 import { useChat } from '@ai-sdk/react';
 import { Textarea } from '@repo/ui/components/Textarea';
+import { useModel } from '../context/ModelContext';
 
 export function MessageInput() {
-    const { input, handleSubmit, handleInputChange } = useChat({ id: 'chat' });
+    const { model } = useModel();
+    const { input, handleSubmit, handleInputChange } = useChat({
+        id: 'chat',
+        headers: { 'x-model': model },
+    });
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {

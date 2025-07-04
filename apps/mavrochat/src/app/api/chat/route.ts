@@ -6,10 +6,11 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
     const { messages } = await req.json();
+    const requestedModel = req.headers.get('x-model') ?? 'gpt-4o';
 
     const result = streamText({
         system: 'You are a helpful assistant. Respond to the user in Markdown format.',
-        model: openai('gpt-4o'),
+        model: openai(requestedModel),
         messages,
         tools: {
             weather: tool({

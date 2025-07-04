@@ -4,6 +4,7 @@ import { useChat } from '@ai-sdk/react';
 import { MemoizedMarkdown } from './memoized-markdown';
 import { defaultMessages } from '../lib/defaultMessages';
 import { useHighlightTheme } from '../hooks/useHighlightTheme';
+import { useModel } from '../context/ModelContext';
 import { Card, CardContent } from '@repo/ui/components/Card';
 
 export function ChatContainer() {
@@ -34,10 +35,12 @@ export function ChatContainer() {
         }
     };
 
+    const { model } = useModel();
     const { messages } = useChat({
         id: 'chat',
         maxSteps: 5,
         experimental_throttle: 50,
+        headers: { 'x-model': model },
     });
     const displayMessages =
         process.env.NEXT_PUBLIC_ENVIRONMENT === 'development'

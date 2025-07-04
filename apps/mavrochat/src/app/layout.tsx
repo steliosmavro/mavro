@@ -5,6 +5,7 @@ import './globals.css';
 import { Providers } from '../providers';
 import { Header } from '@repo/ui/components/Header';
 import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
+import { ModelSelector } from '../components/ModelSelector';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -66,9 +67,10 @@ export default function RootLayout({
             >
                 <Providers>
                     <Header
-                        innerClassName="max-w-3xl justify-end"
+                        innerClassName="max-w-3xl justify-end gap-4"
                         className="z-50"
                     >
+                        <ModelSelector />
                         <ThemeToggle />
                     </Header>
                     {children}
