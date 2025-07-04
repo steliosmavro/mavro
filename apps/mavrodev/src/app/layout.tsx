@@ -88,7 +88,7 @@ export default function RootLayout({
                         cssVar="--footer-height"
                     />
                     <Header className="bg-background/60 backdrop-blur-xs">
-                        <div className="flex items-center justify-between w-full max-w-[1200px]">
+                        <div className="flex items-center justify-between w-full max-w-6xl">
                             <nav className="flex items-center">
                                 <LogoButton
                                     className="mr-2"

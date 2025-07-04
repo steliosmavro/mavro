@@ -17,7 +17,7 @@ export default function Home() {
     return (
         <main className="flex flex-col gap-24 2xl:gap-36">
             {/* Hero Section */}
-            <section className="mt-24 w-full lg:max-w-[1200px] lg:mx-auto">
+            <section className="mt-24 w-full max-w-6xl lg:mx-auto">
                 <div className="flex flex-col items-center gap-8 sm:gap-12 lg:flex-row lg:items-start lg:justify-between">
                     <div className="flex flex-1 flex-col gap-8 text-left lg:items-start lg:text-left">
                         <h1>Stelios Mavro</h1>
@@ -108,7 +108,7 @@ export default function Home() {
             </section>
 
             {/* Featured Projects */}
-            <section className="flex flex-col gap-8 w-full lg:max-w-[1200px] lg:mx-auto">
+            <section className="flex flex-col gap-8 w-full max-w-6xl lg:mx-auto">
                 <div className="flex">
                     <h2>Featured Projects</h2>
                 </div>
@@ -214,7 +214,7 @@ export default function Home() {
             </section>
 
             {/* Testimonials */}
-            <section className="mb-24 flex flex-col gap-8 w-full lg:max-w-[1200px] lg:mx-auto">
+            <section className="mb-24 flex flex-col gap-8 w-full max-w-6xl lg:mx-auto">
                 <div className="flex">
                     <h2>What People Say</h2>
                 </div>

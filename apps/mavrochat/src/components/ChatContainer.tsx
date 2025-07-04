@@ -7,7 +7,11 @@ import { useHighlightTheme } from '../hooks/useHighlightTheme';
 import { useModel } from '../context/ModelContext';
 import { Card, CardContent } from '@repo/ui/components/Card';
 
-export function ChatContainer() {
+export interface ChatContainerProps {
+    className?: string;
+}
+
+export function ChatContainer({ className }: ChatContainerProps) {
     useHighlightTheme();
 
     const renderPart = (
@@ -48,7 +52,9 @@ export function ChatContainer() {
             : messages;
 
     return (
-        <div className="flex-1 flex flex-col gap-16 pt-8 pb-24 w-full">
+        <div
+            className={`flex-1 flex flex-col gap-16 pt-8 pb-24 w-full ${className ?? ''}`}
+        >
             {displayMessages.map((message) => {
                 const isUser = message.role === 'user';
                 const alignmentClass = isUser ? 'self-end' : 'self-start';
