@@ -100,13 +100,10 @@ small {
 }
 
 /* Code blocks - replicated by inspecting shadcn website */
-.group.relative > pre {
-    @apply bg-secondary rounded-lg p-4 overflow-x-auto text-lg font-mono;
-
-    font-size: 1rem;
-
-    & > code.hljs {
-        @apply p-0 bg-transparent font-mono; /* block min-w-full whitespace-pre font-mono; */
+pre {
+    code,
+    code.hljs {
+        @apply p-0 font-mono bg-secondary rounded-lg p-4 overflow-x-auto text-lg font-mono; /* block min-w-full whitespace-pre font-mono; */
 
         font-size: 1rem;
         font-family: var(--font-mono);
