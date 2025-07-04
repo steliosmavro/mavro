@@ -30,6 +30,8 @@ greet("World")
 ### JavaScript Example
 
 \`\`\`javascript
+import { Checkbox } from "@/components/ui/checkbox"
+
 function greet(name) {
     console.log(\`Hello, \${name}!\`);
 }

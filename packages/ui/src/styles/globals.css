@@ -131,6 +131,11 @@
 
 /* For apps */
 :root {
+    /* Fonts */
+    --font-geist-sans: 'Geist', system-ui, sans-serif;
+    --font-geist-mono:
+        'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        'Liberation Mono', 'Courier New', monospace;
     --font-sans: var(--font-geist-sans);
     --font-mono: var(--font-geist-mono);
 }

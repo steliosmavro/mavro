@@ -54,9 +54,9 @@ export function ChatContainer() {
                     return (
                         <Card
                             key={message.id}
-                            className={`px-4 py-2 bg-secondary ml-24 ${alignmentClass}`}
+                            className={`bg-secondary ml-24 ${alignmentClass}`}
                         >
-                            <CardContent className="p-0">
+                            <CardContent>
                                 {message.parts.map((part, i) =>
                                     renderPart(message.id, part, i),
                                 )}
