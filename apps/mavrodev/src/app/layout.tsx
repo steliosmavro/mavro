@@ -87,33 +87,35 @@ export default function RootLayout({
                         selector="footer"
                         cssVar="--footer-height"
                     />
-                    <Header className="bg-background/70 backdrop-blur-xs">
-                        <nav className="flex items-center">
-                            <LogoButton
-                                className="mr-2"
-                                lightLogoSrc="/light-theme-logo.svg"
-                                darkLogoSrc="/dark-theme-logo.svg"
-                            />
-                            <Button asChild variant="link">
-                                <Link href="/projects">Projects</Link>
-                            </Button>
-                            <Button asChild variant="link">
-                                <Link href="/blog">Blog</Link>
-                            </Button>
-                            <Button asChild variant="link">
-                                <Link href="/contact">Contact</Link>
-                            </Button>
-                            <Button asChild variant="link">
-                                <Link
-                                    href="/resume.pdf"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Resume
-                                </Link>
-                            </Button>
-                        </nav>
-                        <ThemeToggle />
+                    <Header className="bg-background/60 backdrop-blur-xs">
+                        <div className="flex items-center justify-between w-full max-w-[1200px]">
+                            <nav className="flex items-center">
+                                <LogoButton
+                                    className="mr-2"
+                                    lightLogoSrc="/light-theme-logo.svg"
+                                    darkLogoSrc="/dark-theme-logo.svg"
+                                />
+                                <Button asChild variant="link">
+                                    <Link href="/projects">Projects</Link>
+                                </Button>
+                                <Button asChild variant="link">
+                                    <Link href="/blog">Blog</Link>
+                                </Button>
+                                <Button asChild variant="link">
+                                    <Link href="/contact">Contact</Link>
+                                </Button>
+                                <Button asChild variant="link">
+                                    <Link
+                                        href="/resume.pdf"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Resume
+                                    </Link>
+                                </Button>
+                            </nav>
+                            <ThemeToggle />
+                        </div>
                     </Header>
                     {children}
                     <footer className="flex flex-col gap-8 text-center text-xs pt-8 pb-4 px-4 border-t border-input bg-background">

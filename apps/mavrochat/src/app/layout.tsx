@@ -66,9 +66,11 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
             >
                 <Providers>
-                    <Header innerClassName="max-w-3xl justify-end gap-4">
-                        <ModelSelector />
-                        <ThemeToggle />
+                    <Header>
+                        <div className="px-8 flex items-center justify-between w-full max-w-3xl">
+                            <ModelSelector />
+                            <ThemeToggle />
+                        </div>
                     </Header>
                     {children}
                 </Providers>
