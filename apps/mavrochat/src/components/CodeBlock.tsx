@@ -34,7 +34,7 @@ export function CodeBlock({ children, language }: CodeBlockProps) {
             {language && (
                 <Badge
                     variant="outline"
-                    className="absolute top-3 left-3 z-10 bg-background/80 text-muted-foreground font-mono"
+                    className="absolute top-3 left-3 z-0 bg-background/80 text-muted-foreground font-mono"
                 >
                     {language}
                 </Badge>

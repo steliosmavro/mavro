@@ -6,6 +6,7 @@ import { defaultMessages } from '../lib/defaultMessages';
 import { useHighlightTheme } from '../hooks/useHighlightTheme';
 import { useModel } from '../context/ModelContext';
 import { Card, CardContent } from '@repo/ui/components/Card';
+import { CopyableMessage } from './CopyableMessage';
 
 export interface ChatContainerProps {
     className?: string;
@@ -61,37 +62,55 @@ export function ChatContainer({ className }: ChatContainerProps) {
 
                 if (isUser) {
                     return (
-                        <Card
+                        <CopyableMessage
                             key={message.id}
-                            className={`bg-secondary/50 border-muted-foreground/20 ml-24 ${alignmentClass}`}
+                            className={`ml-24 ${alignmentClass}`}
+                            textToCopy={message.parts
+                                .map((p) =>
+                                    p.type === 'text' && 'text' in p
+                                        ? ((p as { text?: string }).text ?? '')
+                                        : '',
+                                )
+                                .join('')}
                         >
-                            <CardContent>
-                                {message.parts.map((part, i) => {
-                                    if (part.type === 'text') {
-                                        return (
-                                            <p
-                                                key={`${message.id}-${i}`}
-                                                className="whitespace-pre-wrap"
-                                            >
-                                                {part.text ?? ''}
-                                            </p>
-                                        );
-                                    }
-                                    return renderPart(message.id, part, i);
-                                })}
-                            </CardContent>
-                        </Card>
+                            <Card className="bg-secondary/50 border-muted-foreground/20">
+                                <CardContent>
+                                    {message.parts.map((part, i) => {
+                                        if (part.type === 'text') {
+                                            return (
+                                                <p
+                                                    key={`${message.id}-${i}`}
+                                                    className="whitespace-pre-wrap"
+                                                >
+                                                    {part.text ?? ''}
+                                                </p>
+                                            );
+                                        }
+                                        return renderPart(message.id, part, i);
+                                    })}
+                                </CardContent>
+                            </Card>
+                        </CopyableMessage>
                     );
                 } else {
                     return (
-                        <div
+                        <CopyableMessage
                             key={message.id}
-                            className={`markdown-content ${alignmentClass}`}
+                            className={alignmentClass}
+                            textToCopy={message.parts
+                                .map((p) =>
+                                    p.type === 'text' && 'text' in p
+                                        ? ((p as { text?: string }).text ?? '')
+                                        : '',
+                                )
+                                .join('')}
                         >
-                            {message.parts.map((part, i) =>
-                                renderPart(message.id, part, i),
-                            )}
-                        </div>
+                            <div className="markdown-content">
+                                {message.parts.map((part, i) =>
+                                    renderPart(message.id, part, i),
+                                )}
+                            </div>
+                        </CopyableMessage>
                     );
                 }
             })}
