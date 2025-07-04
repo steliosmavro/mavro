@@ -6,6 +6,7 @@ import { Providers } from '../providers';
 import { Header } from '@repo/ui/components/Header';
 import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
 import { ModelSelector } from '../components/ModelSelector';
+import { LogoButton } from '@repo/ui/components/LogoButton';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -68,7 +69,14 @@ export default function RootLayout({
                 <Providers>
                     <Header className="bg-transparent border-none">
                         <div className="flex items-center justify-between w-full">
-                            <ModelSelector />
+                            <div className="flex items-center gap-4">
+                                <LogoButton
+                                    lightLogoSrc="/light-theme-logo.svg"
+                                    darkLogoSrc="/dark-theme-logo.svg"
+                                    href="https://mavro.dev"
+                                />
+                                <ModelSelector />
+                            </div>
                             <ThemeToggle />
                         </div>
                     </Header>

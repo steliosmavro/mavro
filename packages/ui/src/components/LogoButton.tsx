@@ -8,17 +8,26 @@ export function LogoButton({
     className,
     lightLogoSrc,
     darkLogoSrc,
+    href = '/',
 }: {
     className?: string;
     lightLogoSrc: string;
     darkLogoSrc: string;
+    href?: string;
 }) {
     const { theme } = useTheme();
     const logoSrc = theme === 'light' ? lightLogoSrc : darkLogoSrc;
+    const isExternal = href.startsWith('http');
 
     return (
         <Button asChild variant="ghost" size="icon" className={className}>
-            <Link href="/">
+            <Link
+                href={href}
+                {...(isExternal && {
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                })}
+            >
                 <Image
                     src={logoSrc}
                     alt="Mavro Logo"
