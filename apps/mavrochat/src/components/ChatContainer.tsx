@@ -85,7 +85,7 @@ export function ChatContainer({ className }: ChatContainerProps) {
                     messageHeight -
                     GAP_BETWEEN_MESSAGES -
                     16 - // 16px = 1rem top padding beneath the header
-                    150, // Just a guess
+                    192, // Just a guess
                 0,
             );
             setSpacerHeight(desiredSpacer);
@@ -99,7 +99,7 @@ export function ChatContainer({ className }: ChatContainerProps) {
 
     return (
         <div
-            className={`flex-1 flex flex-col gap-16 pb-24 w-full ${className ?? ''}`}
+            className={`flex-1 flex flex-col gap-16 pb-48 w-full ${className ?? ''}`}
         >
             {displayMessages.map((message, idx) => {
                 const isUser = message.role === 'user';
