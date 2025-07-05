@@ -51,6 +51,16 @@ export function ChatContainer({ className }: ChatContainerProps) {
     });
     const displayMessages = messages;
 
+    // Determine indices for spacer placement
+    const lastUserIndex = [...displayMessages]
+        .reverse()
+        .findIndex((m) => m.role === 'user');
+    const adjustedLastUserIndex =
+        lastUserIndex === -1 ? -1 : displayMessages.length - 1 - lastUserIndex;
+    const firstAssistantAfterUserIndex = displayMessages.findIndex(
+        (m, i) => i > adjustedLastUserIndex && m.role !== 'user',
+    );
+
     useEffect(() => {
         if (lastUserMessageRef.current) {
             const el = lastUserMessageRef.current;
@@ -65,8 +75,17 @@ export function ChatContainer({ className }: ChatContainerProps) {
                 : 0;
 
             // Calculate spacer so there is enough space to scroll the message to the top
+            // Tailwind `gap-16` on the flex container introduces an extra 4 rem (=64 px)
+            // between the last user message and the first assistant message. Subtract
+            // that gap so the blank space we reserve matches what the user actually sees.
+            const GAP_BETWEEN_MESSAGES = 64; // px (gap-16 = 4rem)
             const desiredSpacer = Math.max(
-                viewportHeight - headerHeight - messageHeight - 16, // 16px = 1rem padding
+                viewportHeight -
+                    headerHeight -
+                    messageHeight -
+                    GAP_BETWEEN_MESSAGES -
+                    16 - // 16px = 1rem top padding beneath the header
+                    150, // Just a guess
                 0,
             );
             setSpacerHeight(desiredSpacer);
@@ -133,11 +152,19 @@ export function ChatContainer({ className }: ChatContainerProps) {
                         </div>
                     );
                 } else {
+                    const shouldAttachSpacer =
+                        idx === firstAssistantAfterUserIndex &&
+                        spacerHeight > 0;
                     return (
                         <div
                             key={message.id}
                             className={alignmentClass}
                             ref={undefined}
+                            style={
+                                shouldAttachSpacer
+                                    ? { minHeight: spacerHeight }
+                                    : undefined
+                            }
                         >
                             <CopyableMessage
                                 textToCopy={message.parts
@@ -159,8 +186,13 @@ export function ChatContainer({ className }: ChatContainerProps) {
                     );
                 }
             })}
-            {/* Dynamic spacer */}
-            <div style={{ height: spacerHeight }} className="w-full shrink-0" />
+            {firstAssistantAfterUserIndex === -1 && (
+                /* Fallback spacer when there is no assistant message yet */
+                <div
+                    style={{ height: spacerHeight }}
+                    className="w-full shrink-0"
+                />
+            )}
         </div>
     );
 }
