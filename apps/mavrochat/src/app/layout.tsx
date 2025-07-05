@@ -5,8 +5,9 @@ import './globals.css';
 import { Providers } from '../providers';
 import { Header } from '@repo/ui/components/Header';
 import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
-import { ModelSelector } from '../components/ModelSelector';
+import { ConditionalModelSelector } from '../components/ConditionalModelSelector';
 import { LogoButton } from '@repo/ui/components/LogoButton';
+import { getOriginFor } from '@repo/ui/lib/utils';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -18,17 +19,19 @@ const geistMono = Geist_Mono({
     subsets: ['latin'],
 });
 
+const origin = getOriginFor('mavrochat');
+
 export const metadata: Metadata = {
     title: 'Mavro Chat | AI Chat for Developers',
     description:
         'Mavro Chat is an AI-powered chat platform designed for developers. Get instant answers, code help, and AI-powered productivity tools.',
-    metadataBase: new URL('https://mavro.chat'),
+    metadataBase: new URL(origin),
     openGraph: {
         title: 'Mavro Chat | AI Chat for Developers',
         description:
             'Mavro Chat is an AI-powered chat platform designed for developers. Get instant answers, code help, and AI-powered productivity tools.',
-        url: 'https://mavro.chat',
-        siteName: 'mavro.chat',
+        url: origin,
+        siteName: new URL(origin).hostname,
         type: 'website',
         images: [
             {
@@ -73,9 +76,9 @@ export default function RootLayout({
                                 <LogoButton
                                     lightLogoSrc="/light-theme-logo.svg"
                                     darkLogoSrc="/dark-theme-logo.svg"
-                                    href="https://mavro.dev"
+                                    href={getOriginFor('mavrodev')}
                                 />
-                                <ModelSelector />
+                                <ConditionalModelSelector />
                             </div>
                             <ThemeToggle />
                         </div>

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
 import { Badge } from '@repo/ui/components/Badge';
 import { Button } from '@repo/ui/components/Button';
+import { getOriginFor } from '@repo/ui/lib/utils';
 
 import {
     Card,
@@ -115,6 +116,22 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {[
+                        (() => {
+                            const mavroChatOrigin = getOriginFor('mavrochat');
+                            return {
+                                title: 'MavroChat - AI Chat for Developers',
+                                desc: 'Developer-first AI chat workspace with streaming Markdown, model selector, and built-in tool invocation — your always-on pair programmer.',
+                                tags: [
+                                    'AI',
+                                    'Chat',
+                                    'Developer Tool',
+                                    'TypeScript',
+                                ],
+                                repo: 'https://github.com/steliosmavro/mavro',
+                                redirectTo: `${mavroChatOrigin}/landing`,
+                                visit: `${mavroChatOrigin}/landing`,
+                            };
+                        })(),
                         {
                             title: 'EzPump - Telegram Trading Bot (Acquired)',
                             desc: 'Built a Telegram-based trading bot for Solana meme coins, enabling volume simulation, auto-commenting, analytics, and pricing packages. Reached 1.2K users and was acquired by MicroPump.',
@@ -169,13 +186,13 @@ export default function Home() {
                                 </CardHeader>
                                 <CardContent>
                                     <p>{project.desc}</p>
-                                    <ul className="mt-4 flex list-none flex-wrap gap-2">
+                                    <div className="mt-4 ml-0 flex list-none flex-wrap gap-2">
                                         {project.tags.map((tag) => (
                                             <Badge key={tag} variant="outline">
                                                 {tag}
                                             </Badge>
                                         ))}
-                                    </ul>
+                                    </div>
                                 </CardContent>
                                 <CardFooter className="flex gap-4">
                                     {project.visit && (

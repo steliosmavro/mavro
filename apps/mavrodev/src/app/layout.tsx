@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { getOriginFor } from '@repo/ui/lib/utils';
 import Link from 'next/link';
 import '@repo/ui/globals.css';
 import { ThemeProvider } from '@repo/ui/components/ThemeProvider';
@@ -20,41 +21,20 @@ const geistMono = Geist_Mono({
     subsets: ['latin'],
 });
 
+const origin = getOriginFor('mavrodev');
+
 export const metadata: Metadata = {
     title: 'Stelios Mavro | Full-Stack Engineer',
     description:
-        'Personal site, portfolio, and developer blog for Stelios Mavro — a full-stack focused on AI-powered applications, automation, and developer tools.',
-    metadataBase: new URL('https://mavro.dev'),
+        'Personal website of Stelios Mavro — Full-Stack Engineer focused on AI integrations and developer tooling.',
+    metadataBase: new URL(origin),
     openGraph: {
         title: 'Stelios Mavro | Full-Stack Engineer',
         description:
-            'Personal site, portfolio, and developer blog for Stelios Mavro — a full-stack focused on AI-powered applications, automation, and developer tools.',
-        url: 'https://mavro.dev',
-        siteName: 'mavro.dev',
+            'Personal website of Stelios Mavro — Full-Stack Engineer focused on AI integrations and developer tooling.',
+        url: origin,
+        siteName: new URL(origin).hostname,
         type: 'website',
-        images: [
-            {
-                url: '/dark-theme-logo.svg',
-                width: 512,
-                height: 512,
-                alt: 'Mavro Logo',
-            },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'Stelios Mavro | Full-Stack Engineer',
-        description:
-            'Personal site, portfolio, and developer blog for Stelios Mavro — a full-stack focused on AI-powered applications, automation, and developer tools.',
-        site: '@steliosmavro',
-        images: ['/dark-theme-logo.svg'],
-    },
-    icons: {
-        icon: '/tab-icon.svg',
-    },
-    robots: {
-        index: true,
-        follow: true,
     },
 };
 
