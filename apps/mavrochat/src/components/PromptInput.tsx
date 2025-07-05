@@ -13,7 +13,7 @@ export default function PromptInput() {
      * This avoids switching between `absolute` ↔ `sticky` which is not animatable.
      */
 
-    const containerClasses = `fixed inset-x-0 bottom-6 w-full px-4 flex flex-col items-center gap-6 bg-background backdrop-blur-xs transition-transform duration-500 ease-in-out ${hasMessages ? 'translate-y-0' : '-translate-y-[50vh]'}`;
+    const containerClasses = `fixed inset-x-0 bottom-6 w-full px-4 flex flex-col items-center gap-6 bg-background backdrop-blur-xs transition-transform duration-500 ease-in-out z-20 ${hasMessages ? 'translate-y-0' : '-translate-y-[50vh]'}`;
 
     return (
         <div className={containerClasses}>

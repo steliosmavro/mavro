@@ -29,12 +29,13 @@ export function CopyableMessage({
     return (
         <div
             ref={containerRef}
-            className={`relative group/message ${className}`.trim()}
+            className={`group/message flex flex-col ${className}`.trim()}
         >
             {children}
+            {/* Copy button appears underneath the message, revealed on hover */}
             <button
                 onClick={handleCopy}
-                className="absolute top-3 right-3 p-2 rounded-md bg-background/80 hover:bg-background border border-border opacity-0 group-hover/message:opacity-100 transition-opacity duration-200 z-10"
+                className="self-end mt-2 p-2 rounded-md bg-background/80 hover:bg-background border border-border opacity-0 group-hover/message:opacity-100 transition-opacity duration-200"
                 aria-label={copied ? 'Copied' : 'Copy message'}
                 title={copied ? 'Copied' : 'Copy'}
             >
