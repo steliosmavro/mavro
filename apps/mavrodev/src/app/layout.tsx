@@ -35,6 +35,29 @@ export const metadata: Metadata = {
         url: origin,
         siteName: new URL(origin).hostname,
         type: 'website',
+        images: [
+            {
+                url: '/dark-theme-logo.svg',
+                width: 512,
+                height: 512,
+                alt: 'Mavro Dev Logo',
+            },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Stelios Mavro | Full-Stack Engineer',
+        description:
+            'Personal website of Stelios Mavro — Full-Stack Engineer focused on AI integrations and developer tooling.',
+        site: '@steliosmavro',
+        images: ['/dark-theme-logo.svg'],
+    },
+    icons: {
+        icon: '/tab-icon.svg',
+    },
+    robots: {
+        index: true,
+        follow: true,
     },
 };
 
