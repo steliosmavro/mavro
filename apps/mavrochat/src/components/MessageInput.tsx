@@ -7,10 +7,28 @@ import { useModel } from '../context/ModelContext';
 
 export function MessageInput() {
     const { model } = useModel();
-    const { input, handleSubmit, handleInputChange } = useChat({
+    // Destructure additional helpers from `useChat` to control the stream state.
+    // `status` tells us if a generation is in progress, while `stop` aborts it.
+    const {
+        input,
+        handleSubmit: baseHandleSubmit,
+        handleInputChange,
+        status,
+        stop,
+    } = useChat({
         id: 'chat',
         headers: { 'x-model': model },
     });
+
+    // Wrapper that aborts any ongoing generation before dispatching the new prompt.
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        // If a response is currently being generated, abort it immediately.
+        if (status === 'submitted' || status === 'streaming') {
+            stop();
+        }
+
+        baseHandleSubmit(e);
+    };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
