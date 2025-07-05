@@ -1,7 +1,7 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { MemoizedMarkdown } from './MemoizedMarkdown';
 import { useHighlightTheme } from '../hooks/useHighlightTheme';
 import { useModel } from '../context/ModelContext';
@@ -42,6 +42,7 @@ export function ChatContainer({ className }: ChatContainerProps) {
 
     const { model } = useModel();
     const lastUserMessageRef = useRef<HTMLDivElement | null>(null);
+    const [spacerHeight, setSpacerHeight] = useState<number>(0);
     const { messages } = useChat({
         id: 'chat',
         maxSteps: 5,
@@ -52,7 +53,28 @@ export function ChatContainer({ className }: ChatContainerProps) {
 
     useEffect(() => {
         if (lastUserMessageRef.current) {
-            lastUserMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+            const el = lastUserMessageRef.current;
+            // Calculate space needed so that this message aligns to top with 1rem padding
+            const messageHeight = el.getBoundingClientRect().height;
+            const viewportHeight = window.innerHeight;
+            const header = document.querySelector(
+                'header',
+            ) as HTMLElement | null;
+            const headerHeight = header
+                ? header.getBoundingClientRect().height
+                : 0;
+
+            // Calculate spacer so there is enough space to scroll the message to the top
+            const desiredSpacer = Math.max(
+                viewportHeight - headerHeight - messageHeight - 16, // 16px = 1rem padding
+                0,
+            );
+            setSpacerHeight(desiredSpacer);
+
+            // Ensure the element leaves room for the sticky header + padding when scrolled into view
+            el.style.scrollMarginTop = `${headerHeight + 16}px`;
+
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }, [displayMessages]);
 
@@ -137,8 +159,8 @@ export function ChatContainer({ className }: ChatContainerProps) {
                     );
                 }
             })}
-            {/* Spacer to allow scrolling last message to top */}
-            <div className="h-[60vh] w-full shrink-0" />
+            {/* Dynamic spacer */}
+            <div style={{ height: spacerHeight }} className="w-full shrink-0" />
         </div>
     );
 }
