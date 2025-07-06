@@ -33,39 +33,34 @@ const contactMethods: ContactMethod[] = [
         label: 'Email',
         value: 'stelios@mavro.dev',
         href: 'mailto:stelios@mavro.dev',
-        color: 'from-blue-500 to-cyan-500',
+        color: 'from-blue-400 to-blue-600',
     },
     {
         icon: Github,
         label: 'GitHub',
         value: '@steliosmavro',
         href: 'https://github.com/steliosmavro',
-        color: 'from-gray-700 to-gray-900',
+        color: 'from-slate-600 to-slate-800',
     },
     {
         icon: Linkedin,
         label: 'LinkedIn',
         value: 'Stelios Mavrokoukoulakis',
         href: 'https://www.linkedin.com/in/steliosmavro',
-        color: 'from-blue-600 to-blue-800',
+        color: 'from-blue-500 to-blue-700',
     },
     {
         icon: Globe,
         label: 'Website',
         value: 'mavro.dev',
         href: 'https://mavro.dev',
-        color: 'from-purple-500 to-pink-500',
+        color: 'from-purple-400 to-pink-600',
     },
 ];
 
 const timeZoneInfo = {
     location: 'Athens, Greece',
     timezone: 'EET (UTC+2) / EEST (UTC+3)',
-    currentTime: new Date().toLocaleTimeString('en-US', {
-        timeZone: 'Europe/Athens',
-        hour: '2-digit',
-        minute: '2-digit',
-    }),
 };
 
 export default function ContactPage() {
@@ -76,6 +71,30 @@ export default function ContactPage() {
     });
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [submitted, setSubmitted] = React.useState(false);
+    const [currentTime, setCurrentTime] = React.useState<string>('');
+
+    // Update time every second
+    React.useEffect(() => {
+        const updateTime = () => {
+            const time = new Date().toLocaleTimeString('en-US', {
+                timeZone: 'Europe/Athens',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            });
+            setCurrentTime(time);
+        };
+
+        // Update immediately
+        updateTime();
+
+        // Update every second
+        const interval = setInterval(updateTime, 1000);
+
+        // Cleanup
+        return () => clearInterval(interval);
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -317,21 +336,29 @@ export default function ContactPage() {
                                             whileTap={{ scale: 0.95 }}
                                             className="group"
                                         >
-                                            <Card className="p-4 h-full relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/30">
+                                            <Card className="p-6 h-full relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/50 group-hover:-translate-y-1">
                                                 <div
-                                                    className={`absolute inset-0 bg-gradient-to-br ${method.color} opacity-0 group-hover:opacity-5 transition-opacity`}
+                                                    className={`absolute inset-0 bg-gradient-to-br ${method.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                                                 />
-                                                <div className="flex items-center gap-4 relative">
-                                                    <div
-                                                        className={`p-2 rounded-lg bg-gradient-to-br ${method.color} text-white`}
+                                                <div className="flex flex-col items-center text-center gap-4 relative">
+                                                    <motion.div
+                                                        whileHover={{
+                                                            scale: 1.1,
+                                                            rotate: 5,
+                                                        }}
+                                                        transition={{
+                                                            type: 'spring',
+                                                            stiffness: 400,
+                                                        }}
+                                                        className={`p-4 rounded-2xl bg-gradient-to-br ${method.color} text-white shadow-lg`}
                                                     >
-                                                        <Icon className="h-5 w-5" />
-                                                    </div>
+                                                        <Icon className="h-8 w-8" />
+                                                    </motion.div>
                                                     <div>
-                                                        <p className="text-sm text-muted-foreground">
+                                                        <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
                                                             {method.label}
                                                         </p>
-                                                        <p className="font-medium group-hover:text-primary transition-colors">
+                                                        <p className="font-semibold text-base group-hover:text-primary transition-colors break-all">
                                                             {method.value}
                                                         </p>
                                                     </div>
@@ -373,8 +400,8 @@ export default function ContactPage() {
                                 <div className="mt-4 pt-4 border-t border-border">
                                     <p className="text-sm text-muted-foreground">
                                         Current time in Athens:{' '}
-                                        <span className="font-mono font-medium">
-                                            {timeZoneInfo.currentTime}
+                                        <span className="font-mono font-medium text-primary">
+                                            {currentTime || '--:--:--'}
                                         </span>
                                     </p>
                                 </div>
