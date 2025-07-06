@@ -1,0 +1,251 @@
+---
+title: "React Performance Optimization: Beyond React.memo"
+date: "2024-10-05"
+summary: "Explore advanced React performance optimization techniques that go beyond basic memoization. Learn about virtualization, code splitting, and optimizing re-renders in complex applications."
+tags: ["React", "Performance", "TypeScript", "Next.js"]
+---
+
+Performance optimization in React has evolved significantly. While `React.memo` and `useMemo` are great starting points, real-world applications demand more sophisticated approaches. Let's dive into advanced techniques I've learned from building production React applications.
+
+## The Performance Mindset
+
+Before optimizing, measure. React DevTools Profiler is your best friend:
+
+```typescript
+// Enable profiling in production builds
+const isProfiling = process.env.REACT_APP_PROFILE === 'true';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <React.Profiler id="App" onRender={onRenderCallback}>
+      <App />
+    </React.Profiler>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+```
+
+## 1. Virtual Scrolling for Large Lists
+
+When rendering thousands of items, virtualization is essential:
+
+```typescript
+import { VariableSizeList } from 'react-window';
+
+const VirtualizedList = ({ items }: { items: Item[] }) => {
+  const getItemSize = (index: number) => {
+    // Dynamic height based on content
+    return items[index].expanded ? 200 : 80;
+  };
+
+  return (
+    <VariableSizeList
+      height={600}
+      itemCount={items.length}
+      itemSize={getItemSize}
+      width="100%"
+    >
+      {({ index, style }) => (
+        <div style={style}>
+          <ItemComponent item={items[index]} />
+        </div>
+      )}
+    </VariableSizeList>
+  );
+};
+```
+
+## 2. Code Splitting at the Route Level
+
+Next.js handles this automatically, but for custom implementations:
+
+```typescript
+const LazyDashboard = lazy(() => 
+  import(/* webpackChunkName: "dashboard" */ './Dashboard')
+);
+
+function App() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        <Route path="/dashboard" element={<LazyDashboard />} />
+      </Routes>
+    </Suspense>
+  );
+}
+```
+
+## 3. Optimizing Context Usage
+
+Context updates trigger re-renders in all consumers. Split contexts by update frequency:
+
+```typescript
+// Separate contexts for different update patterns
+const UserContext = createContext<User | null>(null);
+const ThemeContext = createContext<Theme>('light');
+const FeatureFlagsContext = createContext<FeatureFlags>({});
+
+// Or use a state management library for complex cases
+const useStore = create((set) => ({
+  user: null,
+  theme: 'light',
+  setUser: (user) => set({ user }),
+  setTheme: (theme) => set({ theme }),
+}));
+```
+
+## 4. Debouncing Expensive Operations
+
+For search inputs and API calls:
+
+```typescript
+const useDebounce = <T,>(value: T, delay: number): T => {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
+// Usage
+const SearchComponent = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearch = useDebounce(searchTerm, 300);
+
+  useEffect(() => {
+    if (debouncedSearch) {
+      performSearch(debouncedSearch);
+    }
+  }, [debouncedSearch]);
+};
+```
+
+## 5. Image Optimization
+
+Lazy loading and responsive images:
+
+```typescript
+const OptimizedImage = ({ src, alt, sizes }: ImageProps) => {
+  return (
+    <picture>
+      <source
+        srcSet={`${src}?w=400 400w, ${src}?w=800 800w`}
+        sizes={sizes}
+        type="image/webp"
+      />
+      <img
+        src={`${src}?w=400`}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+  );
+};
+```
+
+## 6. Web Workers for Heavy Computations
+
+Move expensive calculations off the main thread:
+
+```typescript
+// worker.ts
+self.addEventListener('message', (event) => {
+  const result = expensiveCalculation(event.data);
+  self.postMessage(result);
+});
+
+// Component
+const useWebWorker = (workerFunction: Function) => {
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+  const workerRef = useRef<Worker>();
+
+  useEffect(() => {
+    workerRef.current = new Worker(
+      new URL('./worker.ts', import.meta.url)
+    );
+    
+    workerRef.current.onmessage = (e) => setResult(e.data);
+    workerRef.current.onerror = setError;
+
+    return () => workerRef.current?.terminate();
+  }, []);
+
+  const run = useCallback((data: any) => {
+    workerRef.current?.postMessage(data);
+  }, []);
+
+  return { result, error, run };
+};
+```
+
+## 7. Memoizing Expensive Renders
+
+Beyond `React.memo`, use granular memoization:
+
+```typescript
+const ExpensiveComponent = ({ data, filters }: Props) => {
+  // Memoize filtered results
+  const filteredData = useMemo(() => 
+    data.filter(item => 
+      filters.every(filter => filter.test(item))
+    ),
+    [data, filters]
+  );
+
+  // Memoize expensive calculations
+  const statistics = useMemo(() => 
+    calculateStatistics(filteredData),
+    [filteredData]
+  );
+
+  // Memoize callbacks
+  const handleItemClick = useCallback((id: string) => {
+    // Handle click without causing re-renders
+  }, []);
+
+  return <DataGrid data={filteredData} onItemClick={handleItemClick} />;
+};
+```
+
+## Performance Monitoring in Production
+
+Set up Real User Monitoring (RUM):
+
+```typescript
+// Track Core Web Vitals
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+
+const sendToAnalytics = (metric: Metric) => {
+  // Send to your analytics service
+  analytics.track('web-vitals', {
+    name: metric.name,
+    value: metric.value,
+    id: metric.id,
+  });
+};
+
+getCLS(sendToAnalytics);
+getFID(sendToAnalytics);
+getFCP(sendToAnalytics);
+getLCP(sendToAnalytics);
+getTTFB(sendToAnalytics);
+```
+
+## Key Takeaways
+
+1. **Measure First**: Use React DevTools Profiler and Chrome DevTools
+2. **Virtualize Large Lists**: Don't render what users can't see
+3. **Split Code Intelligently**: Load what's needed when it's needed
+4. **Optimize Images**: Use modern formats and lazy loading
+5. **Move Work Off Main Thread**: Web Workers for heavy computations
+6. **Monitor Production Performance**: RUM gives real user insights
+
+Remember: premature optimization is the root of all evil. Profile first, optimize what matters, and always consider the trade-offs between performance and code complexity.

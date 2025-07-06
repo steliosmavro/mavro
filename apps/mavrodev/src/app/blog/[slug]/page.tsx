@@ -1,51 +1,54 @@
-// import { getPostMeta } from '../../..//lib/getBlogPosts';
-// import type { Metadata } from 'next';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getBlogPost, getBlogPosts } from '../../../../lib/getBlogPosts';
+import BlogPost from './BlogPost';
 
-import { Card, CardContent } from '@repo/ui/components/Card';
+interface BlogPostPageProps {
+    params: Promise<{
+        slug: string;
+    }>;
+}
 
-// export async function generateMetadata({
-//     params,
-// }: {
-//     params: Promise<{ slug: string }>;
-// }): Promise<Metadata> {
-//     const { slug } = await params;
-//     const meta = getPostMeta(slug);
-//     if (!meta) return {};
-//     return {
-//         title: meta.title,
-//         description: meta.summary,
-//         openGraph: {
-//             title: meta.title,
-//             description: meta.summary,
-//             type: 'article',
-//             url: `https://mavro.dev/blog/${slug}`,
-//         },
-//         twitter: {
-//             card: 'summary_large_image',
-//             title: meta.title,
-//             description: meta.summary,
-//         },
-//         alternates: {
-//             canonical: `https://mavro.dev/blog/${slug}`,
-//         },
-//     };
-// }
+export async function generateStaticParams() {
+    const posts = await getBlogPosts();
+    return posts.map((post) => ({
+        slug: post.slug,
+    }));
+}
 
-export default function BlogPostPage() {
-    return (
-        <main className="flex min-h-[60vh] items-center justify-center">
-            <Card className="flex flex-col items-center gap-4 px-10 py-16">
-                <CardContent className="flex flex-col items-center gap-4">
-                    <span className="text-5xl">🚧</span>
-                    <h1 className="mb-2 text-2xl font-bold text-brand">
-                        Coming Soon
-                    </h1>
-                    <p className="max-w-xs text-center text-slate-600">
-                        Blog posts will be available soon. Check back for
-                        updates!
-                    </p>
-                </CardContent>
-            </Card>
-        </main>
-    );
+export async function generateMetadata({
+    params,
+}: BlogPostPageProps): Promise<Metadata> {
+    const { slug } = await params;
+    const post = await getBlogPost(slug);
+
+    if (!post) {
+        return {
+            title: 'Post Not Found',
+        };
+    }
+
+    return {
+        title: `${post.title} | Stelios Mavro`,
+        description: post.summary,
+        openGraph: {
+            title: post.title,
+            description: post.summary,
+            type: 'article',
+            publishedTime: post.date,
+            authors: ['Stelios Mavro'],
+            tags: post.tags,
+        },
+    };
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+    const { slug } = await params;
+    const post = await getBlogPost(slug);
+
+    if (!post) {
+        notFound();
+    }
+
+    return <BlogPost post={post} />;
 }

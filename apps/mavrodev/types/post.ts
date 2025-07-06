@@ -3,4 +3,5 @@ export interface PostMeta {
     date: string;
     summary?: string;
     tags?: string[];
+    readingTime?: string;
 }
