@@ -176,7 +176,7 @@ export default function BlogPost({ post }: BlogPostProps) {
                     >
                         <div className="flex items-center gap-6">
                             <motion.img
-                                src="/business-transparent-bg-cropped.png"
+                                src="/casual.jpg"
                                 alt="Stelios Mavro"
                                 className="w-20 h-20 rounded-full object-cover"
                                 whileHover={{ scale: 1.1, rotate: 5 }}
