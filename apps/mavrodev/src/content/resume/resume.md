@@ -13,7 +13,7 @@ Full-stack Engineer - AI Integrations - Developer Tooling
 
 ### **Summary**
 
-Full-stack engineer specializing in AI integrations and developer tooling. Built and sold crypto trading tools (1.2K+ users), contributed to open-source projects (Nango), and delivered enterprise SaaS at scale. Passionate about clean, testable code and turning complex ideas into elegant solutions.
+Full-stack engineer since 2020, specializing in AI integrations and developer tooling. Built and sold crypto trading tools (1.2K+ users), contributed to open-source projects (Nango), and delivered enterprise SaaS at scale. Passionate about clean, testable code and turning complex ideas into elegant solutions.
 
 Available for full-time, part-time, and freelance collaborations.
 
@@ -27,15 +27,16 @@ Available for full-time, part-time, and freelance collaborations.
 
 Built a variety of full-stack applications for personal use and freelance clients, spanning automation tools, crypto utilities, developer tools, and SaaS platforms. Highlights include:
 
-- **MavroChat (2024 - Present)** — Open-Source AI-Powered Chat Platform for Developers:
+- **MavroChat (2025)** — Open-Source AI-Powered Chat Platform for Developers:
     - Built and open-sourced a ChatGPT-like platform specifically designed for developers with code-aware features.
     - Implemented real-time streaming responses, syntax highlighting, and code execution capabilities.
     - Designed modular architecture supporting multiple AI providers (OpenAI, Claude, etc.).
     - Created intuitive UI with dark mode, conversation history, and export functionality.
     - Built with Next.js 15, TypeScript, Tailwind CSS, and Framer Motion.
     - Focused on developer experience with keyboard shortcuts, markdown support, and API integration tools.
+    - Live at [mavro.chat](https://mavro.chat) - try it out!
 
-- **MavroDev (2024 - Present)** — Personal Portfolio & Blog Platform:
+- **MavroDev (2025)** — Personal Portfolio & Blog Platform:
     - Built a modern portfolio website showcasing projects, blog, and professional experience.
     - Implemented MDX-based blog system with syntax highlighting, reading time, and category filtering.
     - Created responsive design with dark/light theme support and smooth Framer Motion animations.
@@ -138,10 +139,10 @@ Projects:
 
 ---
 
-### **InstaShop (Remote – UAE/Greece)**
+### **InstaShop (Remote – UAE)**
 
 **Software Engineer**  
-**2023 - Present**
+**2023 - 2025**
 
 Contributed to InstaShop, the leading grocery delivery app in MENA, acquired by Delivery Hero ($360M). Operated in a fast-paced team of 60+ developers, across multiple micro-projects.
 
