@@ -1,28 +1,111 @@
 # MavroChat
 
-AI-powered chat application.
+AI-powered chat application for developers with syntax highlighting, markdown support, and model selection.
 
-## 🚀 Development
+## Features
 
-```sh
+- 🤖 Multiple AI model support (currently GPT-4o)
+- 📝 Markdown rendering with syntax-highlighted code blocks
+- 🎨 Dark/light theme support
+- 💾 Chat history persistence
+- 🚀 Real-time streaming responses
+- 📋 One-click code copying
+
+## Development
+
+```bash
+# Install dependencies
 npm install
+
+# Run development server
 npm run dev --workspace=mavrochat
+
+# Run only this app
+cd apps/mavrochat && npm run dev
+
+# Build for production
+npm run build --workspace=mavrochat
 ```
 
-## 🧩 Uses
+## Environment Variables
 
-- `@repo/ui` for shared UI components
-- `@repo/eslint-config`, `@repo/typescript-config` for linting and TS config
+Create `.env.development` in the app root:
 
-## 📁 Structure
+```env
+# Required
+OPENAI_API_KEY=your_openai_api_key
 
-Recommended structure:
+# Optional
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-- `src/app/` – Application routes, layouts, and pages (App Router)
-- `src/components/` – UI and shared components
-- `src/lib/` – Application logic, utilities, and data fetching
-- `src/content/` – Content files (e.g., markdown, MDX)
-- `public/` – Static assets (images, fonts, etc.)
-- `types/` – TypeScript type definitions
+## Project Structure
 
-> **Note:** This project follows the [Next.js project structure guide](https://nextjs.org/docs/app/getting-started/project-structure) for organizing files and routes.
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   │   └── chat/         # Chat endpoint
+│   ├── landing/          # Landing page
+│   └── layout.tsx        # Root layout
+├── components/            # React components
+│   ├── ChatContainer.tsx # Main chat UI
+│   ├── MessageInput.tsx  # Message input
+│   └── CodeBlock.tsx     # Code rendering
+├── context/              # React contexts
+│   └── ModelContext.tsx  # AI model selection
+├── hooks/                # Custom React hooks
+└── lib/                  # Utilities & helpers
+```
+
+## API Routes
+
+### POST /api/chat
+Handles chat completions with streaming support.
+
+**Request:**
+```json
+{
+  "messages": [
+    { "role": "user", "content": "Hello" }
+  ],
+  "model": "gpt-4o"
+}
+```
+
+**Response:** Server-sent events stream
+
+## Key Dependencies
+
+- **Next.js 15** - React framework
+- **OpenAI SDK** - AI integration
+- **Vercel AI SDK** - Streaming utilities
+- **@repo/ui** - Shared component library
+- **Tailwind CSS** - Styling
+
+## Development Tips
+
+1. **Adding UI Components**: Use the shadcn CLI from this directory
+   ```bash
+   npx shadcn@latest add button card
+   ```
+
+2. **Testing API**: Use the built-in API route tester
+   ```bash
+   curl -X POST http://localhost:3000/api/chat \
+     -H "Content-Type: application/json" \
+     -d '{"messages": [{"role": "user", "content": "Hello"}]}'
+   ```
+
+3. **Type Safety**: All API inputs are validated with Zod schemas
+
+## Deployment
+
+The app is configured for Vercel deployment:
+
+```bash
+# Deploy to Vercel
+vercel --cwd apps/mavrochat
+```
+
+See `next.config.ts` for production configuration.

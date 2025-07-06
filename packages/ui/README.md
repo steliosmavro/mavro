@@ -1,34 +1,68 @@
 # @repo/ui
 
-Shared React component library using `shadcn/ui`.
+Shared React component library using shadcn/ui components.
 
-## 🚀 Usage
+## Usage
 
-Install in your app:
-
-```sh
-npm i @repo/ui
+```bash
+# Install in your app/package
+npm install @repo/ui
 ```
-
-Use in code:
 
 ```tsx
-import { Button } from '@repo/ui';
+import { Button, Card, Input } from '@repo/ui';
+
+export function MyComponent() {
+  return (
+    <Card>
+      <Input placeholder="Enter text..." />
+      <Button>Click me</Button>
+    </Card>
+  );
+}
 ```
 
-## ✨ Adding Components with `shadcn/ui`
+## Adding New Components
 
-1. `cd apps/mavrochat` (or any app)
-2. Run:
-```sh
-npx shadcn@latest add card input switch
+To add shadcn/ui components to this library:
+
+```bash
+# Navigate to the app that will use the component
+cd apps/mavrochat  # or apps/mavrodev
+
+# Add components (they'll be auto-placed in packages/ui)
+npx shadcn@latest add dialog toast alert
 ```
-3. Components will be placed in `packages/ui/src/components/`.
 
-> Tip: Use `@repo/ui` for any reusable UI elements.
+**Important**: Always run the shadcn CLI from an app directory, not from packages/ui.
 
-## 🧠 Development Notes
+## Available Components
 
-- Components must live in `src/components/`
-- Styles go in `src/styles/globals.css`
-- Follow `shadcn/ui` naming conventions
+Check `src/components/` for all available components. Common ones include:
+- `Button` - Primary interactive element
+- `Card` - Container with padding and border
+- `Input` - Form input field
+- `Label` - Form label
+- `Select` - Dropdown selector
+- `Badge` - Status indicators
+
+## Development Guidelines
+
+- **Location**: Components go in `src/components/`
+- **Styles**: Global styles in `src/styles/globals.css`
+- **Exports**: All components must be exported from `src/index.ts`
+- **Naming**: Follow shadcn/ui conventions (PascalCase)
+- **Props**: Extend HTML element props when appropriate
+
+## Customization
+
+Components use CSS variables for theming. Override in your app's CSS:
+
+```css
+:root {
+  --primary: 222.2 47.4% 11.2%;
+  --radius: 0.5rem;
+}
+```
+
+See `src/styles/globals.css` for all available CSS variables.
