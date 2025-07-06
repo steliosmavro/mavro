@@ -19,6 +19,7 @@ Monorepo containing:
 - Use lodash when available
 - Prefer functional programming (immutability, pure functions)
 - Max function size: ~20 lines, max nesting: 3 levels
+- **Comments**: Avoid unless necessary. Use only for complex logic or to separate sections in large files. Code should be self-explanatory
 
 ## Must Follow
 1. **Testing**: All new code needs tests. Min 80% coverage.
@@ -83,4 +84,4 @@ npm run sync:check   # Check dep sync
 6. Ask if uncertain about patterns
 
 ---
-Last Updated: 2025-01-06
+Last Updated: 2025-01-07
