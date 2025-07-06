@@ -4,7 +4,20 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@repo/ui/components/Button';
 import { Card, CardHeader, CardContent } from '@repo/ui/components/Card';
-import { ChevronsDown } from 'lucide-react';
+import {
+    ChevronsDown,
+    Sparkles,
+    Code2,
+    Wrench,
+    GitBranch,
+    Bug,
+    FileCode,
+    BookOpen,
+    Lightbulb,
+    ArrowRight,
+    Github,
+    Star,
+} from 'lucide-react';
 import { useRef } from 'react';
 
 export default function LandingPage() {
@@ -12,22 +25,26 @@ export default function LandingPage() {
         {
             title: 'Model Selector',
             description:
-                'Swap between AI models on the fly so you’re ready for every new release.',
+                "Swap between AI models on the fly so you're ready for every new release.",
+            icon: Sparkles,
         },
         {
             title: 'Markdown & Code',
             description:
                 'Streaming responses with syntax-highlighted code blocks you can copy in one click.',
+            icon: Code2,
         },
         {
             title: 'Built-in Tools',
             description:
                 'Instant function calling for weather, unit conversion, and any custom logic you add.',
+            icon: Wrench,
         },
         {
             title: 'Open Source',
             description:
                 'Self-host or embed the chat engine directly in your own apps.',
+            icon: GitBranch,
         },
     ];
 
@@ -36,21 +53,25 @@ export default function LandingPage() {
             title: 'Debug in real-time',
             description:
                 'Paste stack traces or error messages and get step-by-step fixes instantly.',
+            icon: Bug,
         },
         {
             title: 'Generate boilerplate',
             description:
                 'Spin up tests, docs, or CRUD snippets without leaving the chat.',
+            icon: FileCode,
         },
         {
             title: 'Learn new APIs',
             description:
                 'Ask for examples in your favourite stack and get annotated responses you can copy-paste.',
+            icon: BookOpen,
         },
         {
             title: 'Brainstorm features',
             description:
                 'Whiteboard ideas with an AI sounding board that speaks code.',
+            icon: Lightbulb,
         },
     ];
 
@@ -63,11 +84,11 @@ export default function LandingPage() {
     const ctaTranslate = useTransform(scrollYProgress, [0.2, 0.4], [100, 0]);
 
     return (
-        <main className="flex flex-col items-center gap-24 py-24 px-4">
+        <main className="flex flex-col items-center gap-32 py-24 px-4">
             {/* Hero */}
             <section
                 ref={heroRef}
-                className="relative flex flex-col items-center gap-8 text-center max-w-3xl"
+                className="relative flex flex-col items-center gap-8 text-center max-w-4xl"
             >
                 {/* Decorative gradient blobs */}
                 <motion.div
@@ -87,7 +108,7 @@ export default function LandingPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: 'easeOut' }}
-                    className="text-5xl font-bold bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+                    className="text-6xl md:text-7xl font-bold bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight"
                 >
                     MavroChat
                 </motion.h1>
@@ -95,7 +116,7 @@ export default function LandingPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-                    className="text-xl text-muted-foreground"
+                    className="text-xl md:text-2xl text-muted-foreground max-w-2xl"
                 >
                     Developer-first AI chat workspace — your always-on pair
                     programmer.
@@ -104,17 +125,49 @@ export default function LandingPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
+                    className="flex flex-col sm:flex-row gap-4 items-center"
                 >
-                    <Button asChild size="lg">
-                        <Link href="/">Get started</Link>
+                    <Button asChild size="lg" className="min-w-[160px]">
+                        <Link href="/">
+                            Get started <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
                     </Button>
+                    <Button
+                        asChild
+                        size="lg"
+                        variant="outline"
+                        className="min-w-[160px]"
+                    >
+                        <Link
+                            href="https://github.com/mavroai/mavrochat"
+                            target="_blank"
+                        >
+                            <Github className="mr-2 h-4 w-4" />
+                            View on GitHub
+                        </Link>
+                    </Button>
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6, ease: 'easeOut', delay: 0.3 }}
+                    className="flex items-center gap-4 text-sm text-muted-foreground"
+                >
+                    <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
+                        <span>Open Source</span>
+                    </div>
+                    <div className="w-1 h-1 bg-muted-foreground rounded-full" />
+                    <span>Self-Hostable</span>
+                    <div className="w-1 h-1 bg-muted-foreground rounded-full" />
+                    <span>Developer First</span>
                 </motion.div>
                 {/* Scroll indicator */}
                 <motion.div
                     style={{ opacity: indicatorOpacity }}
                     className="scroll-indicator mt-8"
                 >
-                    <ChevronsDown className="h-8 w-8 text-muted-foreground" />
+                    <ChevronsDown className="h-8 w-8 text-muted-foreground animate-bounce" />
                 </motion.div>
             </section>
 
@@ -127,15 +180,24 @@ export default function LandingPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.4, delay: idx * 0.05 }}
-                        whileHover={{ scale: 1.04 }}
-                        className="gradient-border"
+                        whileHover={{ scale: 1.02 }}
+                        className=""
                     >
-                        <Card className="h-full transition-transform bg-background/60 backdrop-blur-md border-none">
-                            <CardHeader>
-                                <h3>{feature.title}</h3>
+                        <Card className="h-full transition-all bg-background/60 backdrop-blur-md border-muted hover:border-muted-foreground/20 hover:shadow-lg">
+                            <CardHeader className="pb-3">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 rounded-lg bg-primary/10">
+                                        <feature.icon className="h-5 w-5 text-primary" />
+                                    </div>
+                                    <h3 className="font-semibold text-lg">
+                                        {feature.title}
+                                    </h3>
+                                </div>
                             </CardHeader>
                             <CardContent>
-                                <p>{feature.description}</p>
+                                <p className="text-muted-foreground">
+                                    {feature.description}
+                                </p>
                             </CardContent>
                         </Card>
                     </motion.div>
@@ -144,7 +206,7 @@ export default function LandingPage() {
 
             {/* Use Cases */}
             <section className="flex flex-col gap-8 items-center max-w-4xl w-full">
-                <h2 className="text-3xl font-semibold">Use Cases</h2>
+                <h2 className="text-4xl font-bold">Use Cases</h2>
                 <div className="grid gap-6 sm:grid-cols-2 w-full">
                     {useCases.map((uc, idx) => (
                         <motion.div
@@ -153,15 +215,24 @@ export default function LandingPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.4, delay: idx * 0.05 }}
-                            whileHover={{ scale: 1.03 }}
-                            className="gradient-border"
+                            whileHover={{ scale: 1.02 }}
+                            className=""
                         >
-                            <Card className="bg-background/60 backdrop-blur-md border-none">
-                                <CardHeader>
-                                    <h3>{uc.title}</h3>
+                            <Card className="h-full transition-all bg-background/60 backdrop-blur-md border-muted hover:border-muted-foreground/20 hover:shadow-lg">
+                                <CardHeader className="pb-3">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 rounded-lg bg-secondary/10">
+                                            <uc.icon className="h-5 w-5 text-secondary-foreground" />
+                                        </div>
+                                        <h3 className="font-semibold text-lg">
+                                            {uc.title}
+                                        </h3>
+                                    </div>
                                 </CardHeader>
                                 <CardContent>
-                                    <p>{uc.description}</p>
+                                    <p className="text-muted-foreground">
+                                        {uc.description}
+                                    </p>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -179,11 +250,14 @@ export default function LandingPage() {
                     transition={{ duration: 0.8, ease: 'easeOut' }}
                     className="absolute -top-32 left-1/2 -translate-x-1/2 w-[450px] h-[450px] bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-500 rounded-full blur-3xl -z-10"
                 />
-                <h2 className="text-3xl font-semibold text-center">
+                <h2 className="text-4xl font-bold text-center">
                     Ready to super-charge your workflow?
                 </h2>
-                <Button asChild size="lg">
-                    <Link href="/">Start chatting now</Link>
+                <Button asChild size="lg" className="min-w-[180px]">
+                    <Link href="/">
+                        Start chatting now{' '}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                 </Button>
             </section>
 
@@ -197,7 +271,7 @@ export default function LandingPage() {
                     transition={{ duration: 0.8, ease: 'easeOut' }}
                     className="absolute top-0 right-1/2 translate-x-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-sky-500 via-cyan-500 to-teal-400 rounded-full blur-3xl -z-10"
                 />
-                <h2 className="text-3xl font-semibold">FAQ</h2>
+                <h2 className="text-4xl font-bold">FAQ</h2>
                 <div className="flex flex-col gap-4 w-full">
                     {[
                         {
@@ -215,9 +289,9 @@ export default function LandingPage() {
                     ].map(({ q, a }) => (
                         <details
                             key={q}
-                            className="gradient-border rounded-lg overflow-hidden"
+                            className="rounded-lg overflow-hidden border border-muted hover:border-muted-foreground/20 transition-colors"
                         >
-                            <summary className="cursor-pointer select-none px-6 py-4 font-medium bg-background/60 backdrop-blur-md">
+                            <summary className="cursor-pointer select-none px-6 py-4 font-medium bg-background/60 backdrop-blur-md hover:bg-muted/50 transition-colors">
                                 {q}
                             </summary>
                             <div className="px-6 pb-4 pt-2 text-muted-foreground text-sm leading-relaxed bg-background/40 backdrop-blur-md">
