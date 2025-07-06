@@ -114,7 +114,6 @@ export default function BlogList({ posts }: BlogListProps) {
                     >
                         <div className="relative max-w-xl mx-auto w-full">
                             <div className="relative group">
-                                {/* z index 1 */}
                                 <Search className="absolute z-1 left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/70 group-focus-within:text-primary transition-colors" />
                                 <Input
                                     type="search"
