@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    /* Enhanced typography */
+    h1 {
+        @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight;
+    }
+    
+    h2 {
+        @apply text-3xl md:text-4xl font-bold tracking-tight;
+    }
+    
+    h3 {
+        @apply text-xl md:text-2xl font-semibold;
+    }
+}
+
+@layer utilities {
+    /* Gradient text effect */
+    .gradient-text {
+        @apply bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent;
+    }
+    
+    /* Animated gradient background */
+    .gradient-bg-animated {
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient-shift 15s ease infinite;
+    }
+    
+    @keyframes gradient-shift {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    /* Card glow effect */
+    .card-glow {
+        @apply relative overflow-hidden;
+    }
+    
+    .card-glow::before {
+        content: '';
+        @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+        background: radial-gradient(
+            800px circle at var(--mouse-x) var(--mouse-y),
+            rgba(139, 92, 246, 0.06),
+            transparent 40%
+        );
+    }
+    
+    .card-glow:hover::before {
+        @apply opacity-100;
+    }
+    
+    /* Floating animation */
+    .float-animation {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+    
+    /* Subtle pulse */
+    .pulse-subtle {
+        animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse-subtle {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.7;
+        }
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+}
