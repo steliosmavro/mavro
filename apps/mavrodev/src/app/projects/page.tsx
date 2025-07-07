@@ -93,7 +93,8 @@ export default function ProjectsPage() {
                 grouped.featured.push(project);
             }
             if (project.category in grouped) {
-                const category = grouped[project.category as keyof typeof grouped];
+                const category =
+                    grouped[project.category as keyof typeof grouped];
                 if (category) {
                     category.push(project);
                 }
