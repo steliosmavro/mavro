@@ -16,14 +16,14 @@ import {
     Code2,
     Sparkles,
 } from 'lucide-react';
-import { Badge } from '@repo/ui/components/Badge';
-import { Button } from '@repo/ui/components/Button';
 import {
+    Badge,
+    Button,
     Card,
     CardHeader,
     CardContent,
     CardFooter,
-} from '@repo/ui/components/Card';
+} from '@repo/ui/components';
 import React from 'react';
 import { resumeData } from '@/data/resume';
 import { getProjects } from '@/lib/resumeHelpers';

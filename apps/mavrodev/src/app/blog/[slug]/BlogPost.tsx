@@ -13,9 +13,7 @@ import {
     BookOpen,
     ExternalLink,
 } from 'lucide-react';
-import { Badge } from '@repo/ui/components/Badge';
-import { Button } from '@repo/ui/components/Button';
-import { Card } from '@repo/ui/components/Card';
+import { Badge, Button, Card } from '@repo/ui/components';
 import Link from 'next/link';
 import React from 'react';
 import type { BlogPost } from '../../../../lib/getBlogPosts';

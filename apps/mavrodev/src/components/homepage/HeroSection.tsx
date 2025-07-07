@@ -5,8 +5,7 @@ import { motion } from 'framer-motion';
 import { resumeData } from '@/data/resume';
 import { getPrimarySkills } from '@/lib/resumeHelpers';
 import { Mail, FileText, Code2, Sparkles, Rocket } from 'lucide-react';
-import { Badge } from '@repo/ui/components/Badge';
-import { Button } from '@repo/ui/components/Button';
+import { Badge, Button } from '@repo/ui/components';
 import React from 'react';
 
 export function HeroSection() {
@@ -218,7 +217,7 @@ function HeroImage() {
             />
             <motion.img
                 src="/business-transparent-bg-cropped.png"
-                alt="Stelios"
+                alt="Stylianos Mavrokoukoulakis - Full-Stack Engineer"
                 className="max-w-xs relative z-10 h-auto w-full object-contain float-animation"
                 loading="lazy"
                 whileHover={{

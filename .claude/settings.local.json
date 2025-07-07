@@ -11,7 +11,15 @@
       "Bash(npm install:*)",
       "Bash(grep:*)",
       "Bash(git checkout:*)",
-      "Bash(npm ls:*)"
+      "Bash(npm ls:*)",
+      "Bash(mv:*)",
+      "Bash(rg:*)",
+      "Bash(npm outdated)",
+      "Bash(npm update)",
+      "Bash(turbo run build:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(ls:*)",
+      "Bash(env)"
     ],
     "deny": []
   }

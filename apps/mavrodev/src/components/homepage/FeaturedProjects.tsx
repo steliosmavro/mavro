@@ -3,16 +3,16 @@
 import { motion, useMotionValue, MotionValue } from 'framer-motion';
 import { getFeaturedProjects } from '@/lib/resumeHelpers';
 import { Github, ExternalLink, Award, Star } from 'lucide-react';
-import { Badge } from '@repo/ui/components/Badge';
-import { Button } from '@repo/ui/components/Button';
-import { getOriginFor } from '@repo/ui/lib/utils';
-import React from 'react';
 import {
+    Badge,
+    Button,
     Card,
     CardHeader,
     CardContent,
     CardFooter,
-} from '@repo/ui/components/Card';
+} from '@repo/ui/components';
+import { getOriginFor } from '@repo/ui/lib/utils';
+import React from 'react';
 import type { Project } from '@/types/resume';
 
 export function FeaturedProjects() {
@@ -86,6 +86,13 @@ function ProjectCard({ project, index, mouseX, mouseY }: ProjectCardProps) {
         if (redirectTo) window.open(redirectTo, '_blank');
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCardClick();
+        }
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -106,6 +113,10 @@ function ProjectCard({ project, index, mouseX, mouseY }: ProjectCardProps) {
                             : 'hover:shadow-xl hover:border-primary/20'
                     }`}
                 onClick={handleCardClick}
+                onKeyDown={handleKeyDown}
+                tabIndex={0}
+                role="link"
+                aria-label={`View ${project.name} project`}
                 style={
                     {
                         '--mouse-x': `${mouseX.get()}px`,

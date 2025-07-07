@@ -3,12 +3,11 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import '@repo/ui/globals.css';
 import './globals.css';
 import { Providers } from '../providers';
-import { Header } from '@repo/ui/components/Header';
-import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
+import { Header, ThemeToggle, LogoButton } from '@repo/ui/components';
 import { ConditionalModelSelector } from '../components/ConditionalModelSelector';
-import { LogoButton } from '@repo/ui/components/LogoButton';
 import { getOriginFor } from '@repo/ui/lib/utils';
 import { sharedConfig } from '@repo/shared-config';
+import { Analytics } from '@vercel/analytics/react';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -90,6 +89,7 @@ export default function RootLayout({
                         </div>
                     </Header>
                     {children}
+                    <Analytics />
                 </Providers>
             </body>
         </html>

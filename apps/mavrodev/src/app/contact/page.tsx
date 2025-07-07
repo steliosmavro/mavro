@@ -15,10 +15,7 @@ import {
     MessageSquare,
     Sparkles,
 } from 'lucide-react';
-import { Button } from '@repo/ui/components/Button';
-import { Card } from '@repo/ui/components/Card';
-import { Input } from '@repo/ui/components/Input';
-import { Textarea } from '@repo/ui/components/Textarea';
+import { Button, Card, Input, Textarea } from '@repo/ui/components';
 import React from 'react';
 
 const iconMap = {

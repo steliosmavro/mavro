@@ -8,9 +8,15 @@ Components are automatically available to apps within the monorepo. No additiona
 
 ## Usage
 
+All components are now organized by category but can still be imported from the main components export:
+
 ```typescript
-import { Button } from '@repo/ui/components/Button';
-import { Card } from '@repo/ui/components/Card';
+// Import from main export (recommended)
+import { Button, Card, Input } from '@repo/ui/components';
+
+// Or import from specific categories
+import { Button, Input } from '@repo/ui/components/form';
+import { Card, Badge } from '@repo/ui/components/display';
 ```
 
 ## Components

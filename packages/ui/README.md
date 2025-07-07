@@ -2,15 +2,29 @@
 
 Shared React component library using shadcn/ui components.
 
-## Usage
+## Structure
 
-```bash
-# Install in your app/package
-npm install @repo/ui
+Components are organized by category for better maintainability:
+
+```
+src/components/
+├── form/           # Input, Textarea, Select, Switch, Button
+├── display/        # Avatar, Badge, Card
+├── layout/         # Header
+├── navigation/     # LogoButton
+├── theme/          # ThemeProvider, ThemeToggle
+├── utils/          # ElementalHeightObserver
+└── index.ts        # Main export file
 ```
 
+## Usage
+
 ```tsx
-import { Button, Card, Input } from '@repo/ui';
+// Import from main export (recommended)
+import { Button, Card, Input } from '@repo/ui/components';
+
+// Import utilities
+import { cn } from '@repo/ui/lib/utils';
 
 export function MyComponent() {
     return (

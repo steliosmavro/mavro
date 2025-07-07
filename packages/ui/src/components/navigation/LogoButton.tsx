@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
-import { Button } from './Button';
+import { Button } from '../form/Button';
 
 export function LogoButton({
     className,

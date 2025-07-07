@@ -6,7 +6,8 @@
         "./globals.css": "./src/styles/globals.css",
         "./postcss.config": "./postcss.config.mjs",
         "./lib/*": "./src/lib/*.ts",
-        "./components/*": "./src/components/*.tsx",
+        "./components": "./src/components/index.ts",
+        "./components/*": "./src/components/*",
         "./hooks/*": "./src/hooks/*.ts"
     },
     "scripts": {

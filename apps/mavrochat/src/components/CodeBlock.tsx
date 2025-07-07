@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { Copy, Check } from 'lucide-react';
-import { Badge } from '@repo/ui/components/Badge';
+import { Badge } from '@repo/ui/components';
 
 interface CodeBlockProps {
     children: React.ReactNode;

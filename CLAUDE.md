@@ -10,7 +10,7 @@ Monorepo containing:
 ## Key Architecture Rules
 
 - Apps in `apps/`, shared code in `packages/`
-- Use `"@repo/ui": "workspace:*"` for internal deps
+- Use `"@repo/ui": "0.0.0"` for internal deps
 - **Smart Components**: Handle state, orchestrate (Pages)
 - **Pure Components**: Stateless, props only (UI)
 - Install deps in the specific app/package that uses them

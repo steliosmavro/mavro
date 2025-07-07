@@ -2,15 +2,18 @@ import type { Metadata } from 'next';
 import { getOriginFor } from '@repo/ui/lib/utils';
 import Link from 'next/link';
 import '@repo/ui/globals.css';
-import { ThemeProvider } from '@repo/ui/components/ThemeProvider';
-import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
-import { Header } from '@repo/ui/components/Header';
+import {
+    ThemeProvider,
+    ThemeToggle,
+    Header,
+    Button,
+    LogoButton,
+    ElementHeightObserver,
+} from '@repo/ui/components';
 import './globals.css';
-import { Button } from '@repo/ui/components/Button';
 import { resumeData } from '@/data/resume';
 import { sharedConfig } from '@repo/shared-config';
-import { ElementHeightObserver } from '@repo/ui/components/ElementalHeightObserver';
-import { LogoButton } from '@repo/ui/components/LogoButton';
+import { Analytics } from '@vercel/analytics/react';
 
 const origin = getOriginFor('mavrodev');
 
@@ -138,6 +141,7 @@ export default function RootLayout({
                             {resumeData.personal.name}. All rights reserved.
                         </div>
                     </footer>
+                    <Analytics />
                 </ThemeProvider>
             </body>
         </html>

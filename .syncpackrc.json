@@ -1,0 +1,38 @@
+{
+  "versionGroups": [],
+  "semverGroups": [
+    {
+      "label": "Ensure React version consistency",
+      "dependencies": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "dependencyTypes": ["prod", "dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Ensure Next.js version consistency",
+      "dependencies": ["next", "eslint-config-next"],
+      "dependencyTypes": ["prod", "dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Ensure TypeScript version consistency",
+      "dependencies": ["typescript"],
+      "dependencyTypes": ["dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Ensure ESLint version consistency",
+      "dependencies": ["eslint", "@eslint/**", "typescript-eslint"],
+      "dependencyTypes": ["dev"],
+      "policy": "sameRange"
+    },
+    {
+      "label": "Ensure Tailwind CSS version consistency",
+      "dependencies": ["tailwindcss", "@tailwindcss/**"],
+      "dependencyTypes": ["dev"],
+      "policy": "sameRange"
+    }
+  ],
+  "sortFirst": ["name", "version", "private", "type", "scripts"],
+  "sortAz": ["dependencies", "devDependencies", "peerDependencies"],
+  "source": ["apps/*/package.json", "packages/*/package.json", "package.json"]
+}

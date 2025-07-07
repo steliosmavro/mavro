@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Button } from '@repo/ui/components/Button';
-import { Card, CardHeader, CardContent } from '@repo/ui/components/Card';
+import { Button, Card, CardHeader, CardContent } from '@repo/ui/components';
 import {
     ChevronsDown,
     Sparkles,

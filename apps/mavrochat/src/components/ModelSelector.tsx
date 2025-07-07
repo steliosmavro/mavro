@@ -6,7 +6,7 @@ import {
     SelectValue,
     SelectContent,
     SelectItem,
-} from '@repo/ui/components/select';
+} from '@repo/ui/components';
 import { useModel } from '../context/ModelContext';
 
 export function ModelSelector() {
@@ -14,7 +14,7 @@ export function ModelSelector() {
 
     return (
         <Select value={model} onValueChange={setModel}>
-            <SelectTrigger className="w-32">
+            <SelectTrigger className="w-32" aria-label="Select AI model">
                 <SelectValue placeholder="Model" />
             </SelectTrigger>
             <SelectContent>

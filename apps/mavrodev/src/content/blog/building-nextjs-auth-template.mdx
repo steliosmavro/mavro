@@ -1,9 +1,9 @@
 ---
-title: "Building a Production-Ready Next.js 13 Authentication Template"
-date: "2023-11-20"
-summary: "Learn how I built and sold a Next.js 13 template with complete authentication, focusing on developer experience and production-ready features that save teams weeks of development time."
-tags: ["Next.js", "TypeScript", "Authentication", "Open Source"]
-relatedProject: "nextjs13-template"
+title: 'Building a Production-Ready Next.js 13 Authentication Template'
+date: '2023-11-20'
+summary: 'Learn how I built and opened-sourced a Next.js 13 template with complete authentication, focusing on developer experience and production-ready features that save teams weeks of development time.'
+tags: ['Next.js', 'TypeScript', 'Authentication', 'Open Source']
+relatedProject: 'nextjs13-template'
 ---
 
 When Next.js 13 launched with the new App Router, I saw an opportunity. Teams were struggling to set up authentication properly with the new paradigm. Having built authentication systems multiple times, I knew I could create something valuable.
@@ -11,6 +11,7 @@ When Next.js 13 launched with the new App Router, I saw an opportunity. Teams we
 ## The Problem
 
 Every new project starts the same way:
+
 - Set up authentication
 - Configure email providers
 - Build forgot password flows
@@ -24,6 +25,7 @@ This "groundwork" takes weeks but adds no unique value to your product.
 I created a comprehensive Next.js 13 template that included:
 
 ### Core Features
+
 - **Complete Auth System**: Registration, login, password reset, email verification
 - **Social Authentication**: Google, GitHub, and Twitter OAuth
 - **Database Integration**: Prisma with PostgreSQL support
@@ -31,6 +33,7 @@ I created a comprehensive Next.js 13 template that included:
 - **Type Safety**: Full TypeScript coverage with strict mode
 
 ### Developer Experience
+
 - Pre-configured ESLint and Prettier
 - GitHub Actions for CI/CD
 - Docker support for easy deployment
@@ -40,24 +43,26 @@ I created a comprehensive Next.js 13 template that included:
 ## Technical Decisions
 
 ### Why Server Components?
+
 The new App Router's server components were perfect for authentication. Secret keys stay on the server, and we get better performance with less JavaScript shipped to the client.
 
 ```typescript
 // Secure server-side session validation
 async function getSession() {
-  const token = cookies().get('session')?.value;
-  if (!token) return null;
-  
-  try {
-    const payload = await verifyJWT(token);
-    return payload;
-  } catch {
-    return null;
-  }
+    const token = cookies().get('session')?.value;
+    if (!token) return null;
+
+    try {
+        const payload = await verifyJWT(token);
+        return payload;
+    } catch {
+        return null;
+    }
 }
 ```
 
 ### Email Templates with React
+
 Instead of string templates, I used React Email for type-safe, testable email templates:
 
 ```typescript
@@ -83,21 +88,26 @@ export function WelcomeEmail({ name }: { name: string }) {
 ## Lessons Learned
 
 ### 1. Documentation is Product
+
 The template was only as good as its documentation. I spent equal time on docs as on code, creating:
+
 - Step-by-step setup guides
 - Architecture explanations
 - Common customization patterns
 - Troubleshooting guides
 
 ### 2. Flexibility Over Features
+
 Instead of building every possible feature, I focused on making the template easily extendable. Clear patterns and well-structured code meant developers could add what they needed.
 
 ### 3. Real-World Testing
+
 Before selling it, I used the template in my own projects. This revealed edge cases and UX issues that wouldn't have been obvious otherwise.
 
 ## The Business Side
 
 I launched on GitHub with a simple pricing model:
+
 - Free for personal use
 - $99 for commercial license
 - Included 3 months of updates
@@ -117,4 +127,4 @@ After Next.js 14 launched with significant changes, I decided to open-source the
 
 Building this template taught me the value of creating tools for developers. It's a lesson I've carried forward into projects like MavroChat and MavroDev.
 
-*Have you built developer tools? I'd love to hear about your experience. [Get in touch](/contact).*
+_Have you built developer tools? I'd love to hear about your experience. [Get in touch](/contact)._

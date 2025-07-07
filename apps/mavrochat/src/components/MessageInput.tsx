@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useChat } from '@ai-sdk/react';
-import { Textarea } from '@repo/ui/components/Textarea';
+import { Textarea } from '@repo/ui/components';
 import { useModel } from '../context/ModelContext';
 
 export function MessageInput() {
@@ -45,6 +45,7 @@ export function MessageInput() {
         <form onSubmit={handleSubmit} className="w-full">
             <Textarea
                 placeholder="Ask anything"
+                aria-label="Message input"
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}

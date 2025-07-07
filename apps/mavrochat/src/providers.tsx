@@ -1,5 +1,5 @@
 'use client';
-import { ThemeProvider } from '@repo/ui/components/ThemeProvider';
+import { ThemeProvider } from '@repo/ui/components';
 import { ModelProvider } from './context/ModelContext';
 import { sharedConfig } from '@repo/shared-config';
 

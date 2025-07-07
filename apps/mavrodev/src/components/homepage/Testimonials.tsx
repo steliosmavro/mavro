@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { getTestimonials } from '@/lib/resumeHelpers';
 import { Quote } from 'lucide-react';
-import { Card } from '@repo/ui/components/Card';
+import { Card } from '@repo/ui/components';
 import type { Testimonial } from '@/types/resume';
 
 export function Testimonials() {

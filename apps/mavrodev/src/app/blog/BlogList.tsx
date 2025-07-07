@@ -12,10 +12,7 @@ import {
     Zap,
     Filter,
 } from 'lucide-react';
-import { Card } from '@repo/ui/components/Card';
-import { Badge } from '@repo/ui/components/Badge';
-import { Button } from '@repo/ui/components/Button';
-import { Input } from '@repo/ui/components/Input';
+import { Card, Badge, Button, Input } from '@repo/ui/components';
 import Link from 'next/link';
 import React from 'react';
 import type { BlogPost } from '../../../lib/getBlogPosts';

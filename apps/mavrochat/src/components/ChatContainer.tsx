@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from 'react';
 import { MemoizedMarkdown } from './MemoizedMarkdown';
 import { useHighlightTheme } from '../hooks/useHighlightTheme';
 import { useModel } from '../context/ModelContext';
-import { Card, CardContent } from '@repo/ui/components/Card';
+import { Card, CardContent } from '@repo/ui/components';
 import { CopyableMessage } from './CopyableMessage';
 
 export interface ChatContainerProps {
@@ -133,7 +133,7 @@ export function ChatContainer({ className }: ChatContainerProps) {
         >
             {displayMessages.map((message, idx) => {
                 const isUser = message.role === 'user';
-                const alignmentClass = isUser ? 'self-end' : 'self-start';
+                const alignmentClass = isUser ? 'self-end' : 'w-full';
 
                 if (isUser) {
                     return (
