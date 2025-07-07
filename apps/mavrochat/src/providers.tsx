@@ -1,13 +1,14 @@
 'use client';
 import { ThemeProvider } from '@repo/ui/components/ThemeProvider';
 import { ModelProvider } from './context/ModelContext';
+import { sharedConfig } from '@repo/shared-config';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <ModelProvider>
             <ThemeProvider
                 attribute="class"
-                defaultTheme="dark"
+                defaultTheme={sharedConfig.theme.defaultTheme}
                 disableTransitionOnChange
             >
                 {children}

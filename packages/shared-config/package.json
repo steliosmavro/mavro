@@ -8,10 +8,21 @@
     ".": {
       "types": "./index.ts",
       "default": "./index.ts"
+    },
+    "./security": {
+      "types": "./security.ts",
+      "default": "./security.ts"
     }
   },
   "scripts": {
     "lint": "echo 'No linting needed'",
-    "type-check": "echo 'No type checking needed'"
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "15.3.4"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.0",
+    "typescript": "^5.8.2"
   }
 }

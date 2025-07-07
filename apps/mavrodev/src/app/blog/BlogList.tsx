@@ -96,7 +96,7 @@ export default function BlogList({ posts }: BlogListProps) {
                             <BookOpen className="h-8 w-8 text-primary" />
                         </motion.div>
 
-                        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                        <h1 className="text-5xl md:text-[3.75rem] font-bold mb-6 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                             Thoughts & Insights
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">

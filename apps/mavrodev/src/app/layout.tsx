@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import { getOriginFor } from '@repo/ui/lib/utils';
 import Link from 'next/link';
 import '@repo/ui/globals.css';
@@ -12,16 +11,6 @@ import { resumeData } from '@/data/resume';
 import { sharedConfig } from '@repo/shared-config';
 import { ElementHeightObserver } from '@repo/ui/components/ElementalHeightObserver';
 import { LogoButton } from '@repo/ui/components/LogoButton';
-
-const geistSans = Geist({
-    variable: '--font-geist-sans',
-    subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-    variable: '--font-geist-mono',
-    subsets: ['latin'],
-});
 
 const origin = getOriginFor('mavrodev');
 
@@ -63,7 +52,7 @@ export const metadata: Metadata = {
 export const viewport = {
     width: 'device-width',
     initialScale: 1,
-    themeColor: '#000000',
+    themeColor: sharedConfig.theme.themeColor,
 };
 
 export default function RootLayout({
@@ -73,12 +62,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
+            <body className={sharedConfig.fonts.className}>
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="dark"
+                    defaultTheme={sharedConfig.theme.defaultTheme}
                     disableTransitionOnChange
                 >
                     <ElementHeightObserver

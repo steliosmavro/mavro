@@ -93,7 +93,7 @@ export default function BlogPost({ post }: BlogPostProps) {
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                        <h1 className="text-4xl md:text-5xl lg:text-[3.75rem] font-bold mb-6 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                             {post.title}
                         </h1>
 

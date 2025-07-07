@@ -156,7 +156,7 @@ export default function ContactPage() {
                             <MessageSquare className="h-8 w-8 text-primary" />
                         </motion.div>
 
-                        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                        <h1 className="text-5xl md:text-[3.75rem] font-bold mb-6 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
                             Let&apos;s Connect
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

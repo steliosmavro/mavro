@@ -7,6 +7,7 @@ import { useModel } from '../context/ModelContext';
 
 export function MessageInput() {
     const { model } = useModel();
+
     // Destructure additional helpers from `useChat` to control the stream state.
     // `status` tells us if a generation is in progress, while `stop` aborts it.
     const {

@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(xxd:*)"
+      "Bash(xxd:*)",
+      "Bash(find:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run lint)",
+      "Bash(npx prettier:*)",
+      "Bash(npm run:*)",
+      "Bash(npm install:*)",
+      "Bash(grep:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm ls:*)"
     ],
     "deny": []
   }

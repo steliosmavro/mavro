@@ -18,6 +18,13 @@ A modern monorepo for full-stack applications and shared packages, powered by [T
     - Using **Husky** pre-commit hooks and **GitHub Actions** for CI/CD
     - Checks include: **Conventional Commits**, **ESLint**, **Syncpack**, **Prettier**, **TypeScript type-checking**, and **Build**
 
+## 📚 Documentation
+
+- [Architecture Overview](./docs/ARCHITECTURE.md) - System design and structure
+- [API Documentation](./docs/API.md) - API endpoints and usage
+- [Component Library](./packages/ui/COMPONENTS.md) - UI component documentation
+- [Contributing Guide](./CONTRIBUTING.md) - Development workflows and guidelines
+
 ## 🚀 Quickstart
 
 ```sh

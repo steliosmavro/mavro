@@ -43,13 +43,43 @@ export function ChatContainer({ className }: ChatContainerProps) {
     const { model } = useModel();
     const lastUserMessageRef = useRef<HTMLDivElement | null>(null);
     const [spacerHeight, setSpacerHeight] = useState<number>(0);
-    const { messages } = useChat({
+    const { messages, setMessages, error } = useChat({
         id: 'chat',
         maxSteps: 5,
         experimental_throttle: 50,
         headers: { 'x-model': model },
     });
     const displayMessages = messages;
+
+    // Handle errors by adding them as assistant messages
+    useEffect(() => {
+        if (error) {
+            let errorMessage = 'An error occurred. Please try again.';
+
+            // Parse the error message
+            if (error instanceof Error) {
+                try {
+                    const errorData = JSON.parse(error.message);
+                    if (errorData.error?.message) {
+                        errorMessage = errorData.error.message;
+                    }
+                } catch {
+                    // Not JSON, use generic error
+                }
+            }
+
+            // Add error message as an assistant message
+            setMessages((currentMessages) => [
+                ...currentMessages,
+                {
+                    id: `error-${Date.now()}`,
+                    role: 'assistant',
+                    content: errorMessage,
+                    createdAt: new Date(),
+                },
+            ]);
+        }
+    }, [error, setMessages]);
 
     // Determine indices for spacer placement
     const lastUserIndex = [...displayMessages]
@@ -118,34 +148,48 @@ export function ChatContainer({ className }: ChatContainerProps) {
                         >
                             <CopyableMessage
                                 className="ml-24"
-                                textToCopy={message.parts
-                                    .map((p) =>
-                                        p.type === 'text' && 'text' in p
-                                            ? ((p as { text?: string }).text ??
-                                              '')
-                                            : '',
-                                    )
-                                    .join('')}
+                                textToCopy={
+                                    typeof message.content === 'string'
+                                        ? message.content
+                                        : (message.parts
+                                              ?.map((p) =>
+                                                  p.type === 'text' &&
+                                                  'text' in p
+                                                      ? ((
+                                                            p as {
+                                                                text?: string;
+                                                            }
+                                                        ).text ?? '')
+                                                      : '',
+                                              )
+                                              .join('') ?? '')
+                                }
                             >
                                 <Card className="bg-secondary/50 border-muted-foreground/20">
                                     <CardContent>
-                                        {message.parts.map((part, i) => {
-                                            if (part.type === 'text') {
-                                                return (
-                                                    <p
-                                                        key={`${message.id}-${i}`}
-                                                        className="whitespace-pre-wrap"
-                                                    >
-                                                        {part.text ?? ''}
-                                                    </p>
+                                        {typeof message.content === 'string' ? (
+                                            <p className="whitespace-pre-wrap">
+                                                {message.content}
+                                            </p>
+                                        ) : (
+                                            message.parts?.map((part, i) => {
+                                                if (part.type === 'text') {
+                                                    return (
+                                                        <p
+                                                            key={`${message.id}-${i}`}
+                                                            className="whitespace-pre-wrap"
+                                                        >
+                                                            {part.text ?? ''}
+                                                        </p>
+                                                    );
+                                                }
+                                                return renderPart(
+                                                    message.id,
+                                                    part,
+                                                    i,
                                                 );
-                                            }
-                                            return renderPart(
-                                                message.id,
-                                                part,
-                                                i,
-                                            );
-                                        })}
+                                            })
+                                        )}
                                     </CardContent>
                                 </Card>
                             </CopyableMessage>
@@ -167,18 +211,33 @@ export function ChatContainer({ className }: ChatContainerProps) {
                             }
                         >
                             <CopyableMessage
-                                textToCopy={message.parts
-                                    .map((p) =>
-                                        p.type === 'text' && 'text' in p
-                                            ? ((p as { text?: string }).text ??
-                                              '')
-                                            : '',
-                                    )
-                                    .join('')}
+                                textToCopy={
+                                    typeof message.content === 'string'
+                                        ? message.content
+                                        : (message.parts
+                                              ?.map((p) =>
+                                                  p.type === 'text' &&
+                                                  'text' in p
+                                                      ? ((
+                                                            p as {
+                                                                text?: string;
+                                                            }
+                                                        ).text ?? '')
+                                                      : '',
+                                              )
+                                              .join('') ?? '')
+                                }
                             >
                                 <div className="markdown-content">
-                                    {message.parts.map((part, i) =>
-                                        renderPart(message.id, part, i),
+                                    {typeof message.content === 'string' ? (
+                                        <MemoizedMarkdown
+                                            id={message.id}
+                                            content={message.content}
+                                        />
+                                    ) : (
+                                        message.parts?.map((part, i) =>
+                                            renderPart(message.id, part, i),
+                                        )
                                     )}
                                 </div>
                             </CopyableMessage>

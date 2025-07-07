@@ -5,7 +5,7 @@
 @layer base {
     /* Enhanced typography */
     h1 {
-        @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight;
+        @apply text-5xl md:text-[3.75rem] lg:text-[4.5rem] font-bold tracking-tight;
     }
     
     h2 {

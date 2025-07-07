@@ -121,7 +121,7 @@ export default function ProjectsPage() {
                         transition={{ duration: 0.6 }}
                         className="text-center mb-12"
                     >
-                        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                        <h1 className="text-5xl md:text-[3.75rem] font-bold mb-6 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
                             Projects & Work
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">

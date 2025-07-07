@@ -23,14 +23,13 @@ const geistMono = Geist_Mono({
 const origin = getOriginFor('mavrochat');
 
 export const metadata: Metadata = {
-    title: 'Mavro Chat | AI Chat for Developers',
-    description:
-        'Mavro Chat is an AI-powered chat platform designed for developers. Get instant answers, code help, and AI-powered productivity tools.',
+    title: `${sharedConfig.apps.mavrochat.name} | ${sharedConfig.apps.mavrochat.shortDescription}`,
+    description: sharedConfig.apps.mavrochat.description,
+    keywords: [...sharedConfig.seo.keywords],
     metadataBase: new URL(origin),
     openGraph: {
-        title: 'Mavro Chat | AI Chat for Developers',
-        description:
-            'Mavro Chat is an AI-powered chat platform designed for developers. Get instant answers, code help, and AI-powered productivity tools.',
+        title: `${sharedConfig.apps.mavrochat.name} | ${sharedConfig.apps.mavrochat.shortDescription}`,
+        description: sharedConfig.apps.mavrochat.description,
         url: origin,
         siteName: new URL(origin).hostname,
         type: 'website',
@@ -39,16 +38,16 @@ export const metadata: Metadata = {
                 url: '/dark-theme-logo.svg',
                 width: 512,
                 height: 512,
-                alt: 'Mavro Chat Logo',
+                alt: `${sharedConfig.apps.mavrochat.name} Logo`,
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Mavro Chat | AI Chat for Developers',
-        description:
-            'Mavro Chat is an AI-powered chat platform designed for developers. Get instant answers, code help, and AI-powered productivity tools.',
+        title: `${sharedConfig.apps.mavrochat.name} | ${sharedConfig.apps.mavrochat.shortDescription}`,
+        description: sharedConfig.apps.mavrochat.description,
         site: sharedConfig.social.twitter,
+        creator: sharedConfig.seo.twitterCreator,
         images: ['/dark-theme-logo.svg'],
     },
     icons: {
@@ -58,6 +57,12 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
     },
+};
+
+export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    themeColor: sharedConfig.theme.themeColor,
 };
 
 export default function RootLayout({

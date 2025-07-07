@@ -62,7 +62,7 @@ export const resumeData: Resume = {
         {
             name: 'MavroDev',
             slug: 'mavrodev',
-            period: '2025',
+            period: '2024',
             type: 'personal',
             category: 'developer-tools',
             description: 'Personal Portfolio & Blog Platform',
