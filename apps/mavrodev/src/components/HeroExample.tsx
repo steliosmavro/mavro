@@ -1,7 +1,11 @@
 // EXAMPLE: How to update your homepage hero section
 
 import { resumeData } from '@/data/resume';
-import { getHeroContent, getExperienceDuration } from '@/lib/resumeHelpers';
+import {
+    getHeroContent,
+    getExperienceDuration,
+    getFullBio,
+} from '@/lib/resumeHelpers';
 
 // ❌ BEFORE (Inconsistent):
 export function HeroBefore() {
@@ -29,9 +33,13 @@ export function HeroAfter() {
             <p>{hero.tagline}</p>
             {/* Output: "Full-stack engineer with 5+ years of experience" */}
 
-            {/* Option 2: Use the short bio directly */}
-            <p>{summary.shortBio}</p>
-            {/* Output: "Full-stack engineer since 2020. Built and sold crypto trading tools..." */}
+            {/* Option 2: Use the bio directly */}
+            <p>{summary.bio}</p>
+            {/* Output: "Full-stack engineer since 2020, specializing in AI integrations..." */}
+
+            {/* Option 2.1: Use the full expanded bio */}
+            <p>{getFullBio()}</p>
+            {/* Output: "Full-stack engineer since 2020... Built MavroChat (ChatGPT clone for developers)..." */}
 
             {/* Option 3: Custom but accurate */}
             <p>

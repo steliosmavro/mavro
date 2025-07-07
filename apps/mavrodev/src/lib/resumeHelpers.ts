@@ -28,7 +28,7 @@ export function getHeroContent() {
         title: personal.title,
         // Accurate representation: Full-stack since 2020, recently specializing in AI
         tagline: `Full-stack engineer with ${yearsOfExperience}+ years of experience`,
-        description: summary.shortBio,
+        description: summary.bio,
         // Alternative taglines that are accurate:
         alternativeTaglines: [
             `Building exceptional software since ${summary.startYear}`,
@@ -167,6 +167,14 @@ export function getAuthorBio() {
 }
 
 /**
+ * Get the full expanded bio
+ */
+export function getFullBio(): string {
+    const { bio, bioExtension } = resumeData.summary;
+    return `${bio} ${bioExtension}`;
+}
+
+/**
  * Calculate years of experience from start year
  */
 export function getYearsOfExperience(): number {
@@ -194,8 +202,14 @@ export function getYearsOfExperience(): number {
  * // In Blog Posts:
  * const author = getAuthorBio();
  *
+ * // For Bio Usage:
+ * const { bio, bioExtension } = resumeData.summary;
+ * <p>{bio}</p> // Just the base bio
+ * <p>{getFullBio()}</p> // Bio + extension combined
+ * <p>{bio} {bioExtension}</p> // Manual combination
+ *
  * // For consistency across the site:
  * - Always use resumeData.personal.name instead of hardcoding "Stelios Mavro"
  * - Always use summary.startYear instead of hardcoding "2020"
- * - Always reference the accurate timeline from summary.shortBio
+ * - Always reference the accurate timeline from summary.bio
  */

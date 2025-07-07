@@ -15,8 +15,8 @@ export interface PersonalInfo {
 
 export interface Summary {
     headline: string;
-    shortBio: string;
-    longBio: string;
+    bio: string;
+    bioExtension: string;
     availability: string;
     startYear: number;
 }

@@ -68,7 +68,7 @@ try {
 npm run dev          # Start all apps
 npm run build        # Build all
 npm run lint         # Lint check
-npm run typecheck    # Type check
+npm run check-types  # Type check
 npm run test         # Run tests
 npm run sync:check   # Check dep sync
 ```

@@ -18,10 +18,9 @@ export const resumeData: Resume = {
     summary: {
         headline:
             'Full-Stack Engineer building AI-powered applications and developer tools',
-        shortBio:
-            'Full-stack engineer since 2020, specializing in AI integrations and developer tooling. Passionate about open-source, clean code, and creating seamless experiences that empower developers.',
-        longBio:
-            'Full-stack software engineer since 2020 with expertise in delivering high-quality web applications, automation tools, and scalable backend systems. Recently specialized in AI integrations and developer tooling, connecting modern AI capabilities to real-world business needs. Passionate about open-source contributions, clean testable code, and building tools that make developers more productive.',
+        bio: 'Full-stack engineer since 2020, specializing in AI integrations and developer tooling. Passionate about open-source, clean code, and creating seamless experiences that empower developers.',
+        bioExtension:
+            'Built MavroChat (ChatGPT clone for developers), created and sold crypto trading tools serving 1.2K+ users, contributed to open-source projects like Nango, and delivered enterprise SaaS at scale. Turning complex ideas into elegant solutions.',
         availability:
             'Available for full-time, part-time, and freelance collaborations.',
         startYear: 2020,
