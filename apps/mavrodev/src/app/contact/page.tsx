@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { resumeData } from '@/data/resume';
+import { getFAQs, getContactMethods } from '@/lib/resumeHelpers';
 import {
     Mail,
     Github,
@@ -19,48 +21,17 @@ import { Input } from '@repo/ui/components/Input';
 import { Textarea } from '@repo/ui/components/Textarea';
 import React from 'react';
 
-interface ContactMethod {
-    icon: React.ElementType;
-    label: string;
-    value: string;
-    href: string;
-    color: string;
-}
-
-const contactMethods: ContactMethod[] = [
-    {
-        icon: Mail,
-        label: 'Email',
-        value: 'stelios@mavro.dev',
-        href: 'mailto:stelios@mavro.dev',
-        color: 'from-blue-400 to-blue-600',
-    },
-    {
-        icon: Github,
-        label: 'GitHub',
-        value: '@steliosmavro',
-        href: 'https://github.com/steliosmavro',
-        color: 'from-slate-600 to-slate-800',
-    },
-    {
-        icon: Linkedin,
-        label: 'LinkedIn',
-        value: 'Stelios Mavrokoukoulakis',
-        href: 'https://www.linkedin.com/in/steliosmavro',
-        color: 'from-blue-500 to-blue-700',
-    },
-    {
-        icon: Globe,
-        label: 'Website',
-        value: 'mavro.dev',
-        href: 'https://mavro.dev',
-        color: 'from-purple-400 to-pink-600',
-    },
-];
+const iconMap = {
+    email: Mail,
+    github: Github,
+    linkedin: Linkedin,
+    twitter: Globe,
+    website: Globe,
+};
 
 const timeZoneInfo = {
-    location: 'Athens, Greece',
-    timezone: 'EET (UTC+2) / EEST (UTC+3)',
+    location: resumeData.personal.location,
+    timezone: resumeData.personal.timezone,
 };
 
 export default function ContactPage() {
@@ -318,8 +289,11 @@ export default function ContactPage() {
                                 Quick Links
                             </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {contactMethods.map((method, index) => {
-                                    const Icon = method.icon;
+                                {getContactMethods().map((method, index) => {
+                                    const Icon =
+                                        iconMap[
+                                            method.type as keyof typeof iconMap
+                                        ] || Globe;
                                     return (
                                         <motion.a
                                             key={method.label}
@@ -448,24 +422,7 @@ export default function ContactPage() {
                         Frequently Asked Questions
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {[
-                            {
-                                q: 'What types of projects do you work on?',
-                                a: 'I work on full-stack web applications, AI integrations, developer tools, and technical consulting projects.',
-                            },
-                            {
-                                q: 'Are you available for freelance work?',
-                                a: "Yes! I'm open to freelance projects. Let's discuss your needs and see how I can help.",
-                            },
-                            {
-                                q: "What's your preferred tech stack?",
-                                a: "TypeScript, React/Next.js, Node.js, and Python for AI/ML. But I'm always open to using the right tool for the job.",
-                            },
-                            {
-                                q: 'Do you work with startups?',
-                                a: 'Absolutely! I love working with startups and helping them build MVPs and scale their technical infrastructure.',
-                            },
-                        ].map((faq, index) => (
+                        {getFAQs().map((faq, index) => (
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 20 }}
@@ -475,10 +432,10 @@ export default function ContactPage() {
                             >
                                 <Card className="p-6 h-full hover:shadow-lg transition-shadow">
                                     <h3 className="font-semibold mb-2">
-                                        {faq.q}
+                                        {faq.question}
                                     </h3>
                                     <p className="text-sm text-muted-foreground">
-                                        {faq.a}
+                                        {faq.answer}
                                     </p>
                                 </Card>
                             </motion.div>

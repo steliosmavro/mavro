@@ -13,12 +13,12 @@ npm install @repo/ui
 import { Button, Card, Input } from '@repo/ui';
 
 export function MyComponent() {
-  return (
-    <Card>
-      <Input placeholder="Enter text..." />
-      <Button>Click me</Button>
-    </Card>
-  );
+    return (
+        <Card>
+            <Input placeholder="Enter text..." />
+            <Button>Click me</Button>
+        </Card>
+    );
 }
 ```
 
@@ -39,6 +39,7 @@ npx shadcn@latest add dialog toast alert
 ## Available Components
 
 Check `src/components/` for all available components. Common ones include:
+
 - `Button` - Primary interactive element
 - `Card` - Container with padding and border
 - `Input` - Form input field
@@ -60,8 +61,8 @@ Components use CSS variables for theming. Override in your app's CSS:
 
 ```css
 :root {
-  --primary: 222.2 47.4% 11.2%;
-  --radius: 0.5rem;
+    --primary: 222.2 47.4% 11.2%;
+    --radius: 0.5rem;
 }
 ```
 

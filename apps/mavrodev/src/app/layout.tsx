@@ -8,6 +8,8 @@ import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
 import { Header } from '@repo/ui/components/Header';
 import './globals.css';
 import { Button } from '@repo/ui/components/Button';
+import { resumeData } from '@/data/resume';
+import { sharedConfig } from '@repo/shared-config';
 import { ElementHeightObserver } from '@repo/ui/components/ElementalHeightObserver';
 import { LogoButton } from '@repo/ui/components/LogoButton';
 
@@ -24,14 +26,12 @@ const geistMono = Geist_Mono({
 const origin = getOriginFor('mavrodev');
 
 export const metadata: Metadata = {
-    title: 'Stelios Mavro | Full-Stack Engineer',
-    description:
-        'Personal website of Stelios Mavro — Full-Stack Engineer focused on AI integrations and developer tooling.',
+    title: `${resumeData.personal.name} | ${resumeData.personal.title}`,
+    description: resumeData.summary.headline,
     metadataBase: new URL(origin),
     openGraph: {
-        title: 'Stelios Mavro | Full-Stack Engineer',
-        description:
-            'Personal website of Stelios Mavro — Full-Stack Engineer focused on AI integrations and developer tooling.',
+        title: `${resumeData.personal.name} | ${resumeData.personal.title}`,
+        description: resumeData.summary.headline,
         url: origin,
         siteName: new URL(origin).hostname,
         type: 'website',
@@ -46,10 +46,9 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Stelios Mavro | Full-Stack Engineer',
-        description:
-            'Personal website of Stelios Mavro — Full-Stack Engineer focused on AI integrations and developer tooling.',
-        site: '@steliosmavro',
+        title: `${resumeData.personal.name} | ${resumeData.personal.title}`,
+        description: resumeData.summary.headline,
+        site: sharedConfig.social.twitter,
         images: ['/dark-theme-logo.svg'],
     },
     icons: {
@@ -124,11 +123,13 @@ export default function RootLayout({
                     <footer className="flex flex-col gap-8 text-center text-xs pt-8 pb-4 px-4 border-t border-input bg-background">
                         <nav className="flex justify-center text-sm">
                             <Button asChild variant="link">
-                                <a href="mailto:stelios@mavro.dev">Email</a>
+                                <a href={`mailto:${resumeData.personal.email}`}>
+                                    Email
+                                </a>
                             </Button>
                             <Button asChild variant="link">
                                 <a
-                                    href="https://www.linkedin.com/in/steliosmavro"
+                                    href={resumeData.personal.linkedin}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -137,7 +138,7 @@ export default function RootLayout({
                             </Button>
                             <Button asChild variant="link">
                                 <a
-                                    href="https://x.com/mavrodev"
+                                    href={`https://twitter.com/${sharedConfig.social.twitter.replace('@', '')}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -146,8 +147,8 @@ export default function RootLayout({
                             </Button>
                         </nav>
                         <div>
-                            &copy; {new Date().getFullYear()} Stelios Mavro. All
-                            rights reserved.
+                            &copy; {new Date().getFullYear()}{' '}
+                            {resumeData.personal.name}. All rights reserved.
                         </div>
                     </footer>
                 </ThemeProvider>

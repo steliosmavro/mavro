@@ -8,6 +8,7 @@ import { ThemeToggle } from '@repo/ui/components/ThemeToggle';
 import { ConditionalModelSelector } from '../components/ConditionalModelSelector';
 import { LogoButton } from '@repo/ui/components/LogoButton';
 import { getOriginFor } from '@repo/ui/lib/utils';
+import { sharedConfig } from '@repo/shared-config';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
         title: 'Mavro Chat | AI Chat for Developers',
         description:
             'Mavro Chat is an AI-powered chat platform designed for developers. Get instant answers, code help, and AI-powered productivity tools.',
-        site: '@steliosmavro',
+        site: sharedConfig.social.twitter,
         images: ['/dark-theme-logo.svg'],
     },
     icons: {

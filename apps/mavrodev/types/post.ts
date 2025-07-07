@@ -4,4 +4,5 @@ export interface PostMeta {
     summary?: string;
     tags?: string[];
     readingTime?: string;
+    relatedProject?: string; // Project slug from resume.ts
 }

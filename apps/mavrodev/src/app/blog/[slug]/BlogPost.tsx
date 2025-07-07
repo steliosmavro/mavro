@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { resumeData } from '@/data/resume';
+import { getProjectBySlug } from '@/lib/resumeHelpers';
 import {
     Calendar,
     Clock,
@@ -9,9 +11,11 @@ import {
     Twitter,
     Link as LinkIcon,
     BookOpen,
+    ExternalLink,
 } from 'lucide-react';
 import { Badge } from '@repo/ui/components/Badge';
 import { Button } from '@repo/ui/components/Button';
+import { Card } from '@repo/ui/components/Card';
 import Link from 'next/link';
 import React from 'react';
 import type { BlogPost } from '../../../../lib/getBlogPosts';
@@ -167,6 +171,62 @@ export default function BlogPost({ post }: BlogPostProps) {
                         </div>
                     </div>
 
+                    {/* Related Project */}
+                    {post.relatedProject &&
+                        (() => {
+                            const project = getProjectBySlug(
+                                post.relatedProject,
+                            );
+                            if (!project) return null;
+
+                            return (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.3 }}
+                                    className="mt-12"
+                                >
+                                    <h3 className="text-xl font-bold mb-4">
+                                        Related Project
+                                    </h3>
+                                    <Card className="p-6 hover:shadow-lg transition-shadow">
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <h4 className="text-lg font-semibold mb-2">
+                                                    {project.name}
+                                                </h4>
+                                                <p className="text-muted-foreground mb-3">
+                                                    {project.description}
+                                                </p>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {project.technologies
+                                                        .slice(0, 4)
+                                                        .map((tech) => (
+                                                            <Badge
+                                                                key={tech}
+                                                                variant="secondary"
+                                                                className="text-xs"
+                                                            >
+                                                                {tech}
+                                                            </Badge>
+                                                        ))}
+                                                </div>
+                                            </div>
+                                            <Button asChild size="sm">
+                                                <Link
+                                                    href="/projects"
+                                                    className="flex items-center gap-1"
+                                                >
+                                                    View Project
+                                                    <ExternalLink className="h-3 w-3" />
+                                                </Link>
+                                            </Button>
+                                        </div>
+                                    </Card>
+                                </motion.div>
+                            );
+                        })()}
+
                     {/* Author section */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -176,19 +236,18 @@ export default function BlogPost({ post }: BlogPostProps) {
                     >
                         <div className="flex items-center gap-6">
                             <motion.img
-                                src="/casual.jpg"
-                                alt="Stelios Mavro"
+                                src={resumeData.personal.casualAvatar}
+                                alt={resumeData.personal.name}
                                 className="w-20 h-20 rounded-full object-cover"
                                 whileHover={{ scale: 1.1, rotate: 5 }}
                                 transition={{ type: 'spring', stiffness: 300 }}
                             />
                             <div>
                                 <h3 className="text-xl font-semibold mb-1">
-                                    Stelios Mavro
+                                    {resumeData.personal.name}
                                 </h3>
                                 <p className="text-muted-foreground mb-3">
-                                    Full-Stack Engineer building AI-powered
-                                    applications and developer tools.
+                                    {resumeData.summary.headline}
                                 </p>
                                 <div className="flex gap-3">
                                     <Link href="/contact">

@@ -6,14 +6,15 @@ import {
     ExternalLink,
     Star,
     Award,
-    Brain,
-    Cpu,
-    GitBranch,
-    TrendingUp,
+    MessageSquare,
+    Palette,
+    GitPullRequest,
     Bot,
-    BarChart3,
-    Zap,
+    Building2,
+    FileText,
+    Brain,
     Code2,
+    Sparkles,
 } from 'lucide-react';
 import { Badge } from '@repo/ui/components/Badge';
 import { Button } from '@repo/ui/components/Button';
@@ -23,150 +24,23 @@ import {
     CardContent,
     CardFooter,
 } from '@repo/ui/components/Card';
-import { getOriginFor } from '@repo/ui/lib/utils';
 import React from 'react';
+import { resumeData } from '@/data/resume';
+import { getProjects } from '@/lib/resumeHelpers';
+import type { Project } from '@/types/resume';
 
-type ProjectCategory = 'featured' | 'ai-ml' | 'web3' | 'systems' | 'oss';
-
-interface Project {
-    title: string;
-    subtitle: string;
-    description: string;
-    longDescription?: string;
-    tech: string[];
-    repo?: string;
-    demo?: string;
-    category: ProjectCategory;
-    icon: React.ElementType;
-    highlight?: boolean;
-    badge?: string;
-    impact?: string;
-    year?: string;
-}
-
-const projects: Project[] = [
-    {
-        title: 'MavroChat',
-        subtitle: 'AI Chat Platform for Developers',
-        description:
-            'Developer-first AI workspace with streaming Markdown, model switching, and tool invocation.',
-        longDescription:
-            'Built a comprehensive AI chat platform tailored for developers, featuring real-time streaming responses, multiple AI model support, and integrated developer tools.',
-        tech: ['TypeScript', 'React', 'Next.js', 'AI/LLM', 'Tailwind'],
-        repo: 'https://github.com/steliosmavro/mavro',
-        demo: `${getOriginFor('mavrochat')}/landing`,
-        category: 'featured',
-        icon: Brain,
-        highlight: true,
-        impact: 'Active product in development',
-    },
-    {
-        title: 'EzPump Bot',
-        subtitle: 'Telegram Trading Bot (Acquired)',
-        description:
-            'Automated trading bot for Solana meme coins with 1.2K active users. Successfully acquired by MicroPump.',
-        longDescription:
-            'Developed a sophisticated Telegram bot for automated cryptocurrency trading on Solana blockchain. Achieved significant user adoption and successful exit.',
-        tech: ['TypeScript', 'Telegram API', 'Solana', 'Web3.js', 'Node.js'],
-        repo: 'https://github.com/steliosmavro/pump-fun-telegram-bot',
-        demo: 'https://www.micropump.fun',
-        category: 'web3',
-        icon: TrendingUp,
-        badge: 'Acquired',
-        impact: '1.2K active users',
-    },
-    {
-        title: 'Earthquake Prediction System',
-        subtitle: 'M.Sc. Thesis - ML/DL Research',
-        description:
-            'Advanced ML/DL system for predicting earthquakes ≥6.5 magnitude in Greece using historical seismic data.',
-        longDescription:
-            'Developed a comprehensive machine learning pipeline combining traditional ML algorithms with deep learning models for earthquake prediction. Achieved significant accuracy improvements over baseline methods.',
-        tech: [
-            'Python',
-            'TensorFlow',
-            'Scikit-learn',
-            'Time Series',
-            'Research',
-        ],
-        repo: 'https://github.com/steliosmavro/earthquake-prediction',
-        category: 'ai-ml',
-        icon: BarChart3,
-        impact: 'Academic research publication',
-        year: '2023',
-    },
-    {
-        title: 'Pump Fun Comment Bot',
-        subtitle: 'Advanced Automation System',
-        description:
-            'Sophisticated automation bot with anti-detection, proxy management, and account rotation capabilities.',
-        longDescription:
-            'Built a highly scalable automation system featuring advanced anti-detection mechanisms, distributed proxy management, and intelligent account rotation strategies.',
-        tech: [
-            'TypeScript',
-            'NestJS',
-            'Proxy Management',
-            'Automation',
-            'Node.js',
-        ],
-        repo: 'https://github.com/steliosmavro/pump-fun-comment-bot',
-        category: 'systems',
-        icon: Bot,
-        impact: 'High-volume automation',
-    },
-    {
-        title: 'Parallel K-NN Classifier',
-        subtitle: 'High-Performance Computing',
-        description:
-            'Parallel implementation of K-Nearest Neighbors using Pthreads for efficient multi-core processing.',
-        longDescription:
-            'Implemented a highly optimized parallel version of the K-NN algorithm, achieving significant speedup on multi-core systems through efficient thread management and data partitioning.',
-        tech: [
-            'C',
-            'Pthreads',
-            'Parallel Computing',
-            'Machine Learning',
-            'Algorithms',
-        ],
-        repo: 'https://github.com/steliosmavro/parallel-knn',
-        category: 'systems',
-        icon: Cpu,
-        impact: '8x speedup on 8-core systems',
-    },
-    {
-        title: 'Nango Integrations',
-        subtitle: 'Open Source Contributions',
-        description:
-            "Multiple contributions to Nango's unified API platform, including new integrations and core improvements.",
-        longDescription:
-            'Contributed several integrations and improvements to Nango, a popular open-source platform for building native integrations. Focus on API design and developer experience.',
-        tech: ['TypeScript', 'APIs', 'OAuth', 'Developer Tools', 'OSS'],
-        repo: 'https://github.com/pulls?q=is%3Apr+author%3Asteliosmavro+org%3ANangoHQ',
-        demo: 'https://www.nango.dev',
-        category: 'oss',
-        icon: GitBranch,
-        impact: 'Used by 1000+ developers',
-    },
-    {
-        title: 'Stock Market Predictor',
-        subtitle: 'Financial ML Pipeline',
-        description:
-            'Custom ML pipeline for intraday S&P 500 predictions with real-time data processing.',
-        longDescription:
-            'Developed an end-to-end machine learning pipeline for stock market prediction, featuring real-time data ingestion, feature engineering, and ensemble models.',
-        tech: [
-            'Python',
-            'Machine Learning',
-            'Financial APIs',
-            'Pandas',
-            'Real-time',
-        ],
-        repo: 'https://github.com/steliosmavro/stock-prediction',
-        category: 'ai-ml',
-        icon: Zap,
-        year: '2022',
-    },
-];
+// Icon mapping for projects
+const iconMap: Record<string, React.ElementType> = {
+    MessageSquare,
+    Palette,
+    GitPullRequest,
+    Bot,
+    Building2,
+    FileText,
+    Brain,
+    Code2,
+    Sparkles,
+};
 
 const categoryConfig = {
     featured: { label: 'Featured', color: 'from-blue-500 to-purple-500' },
@@ -180,36 +54,54 @@ const categoryConfig = {
         color: 'from-orange-500 to-red-500',
     },
     oss: { label: 'Open Source', color: 'from-cyan-500 to-blue-500' },
+    'developer-tools': {
+        label: 'Developer Tools',
+        color: 'from-yellow-500 to-orange-500',
+    },
 };
 
+type CategoryType = keyof typeof categoryConfig | 'all';
+
 export default function ProjectsPage() {
-    const [selectedCategory, setSelectedCategory] = React.useState<
-        ProjectCategory | 'all'
-    >('all');
+    const [selectedCategory, setSelectedCategory] =
+        React.useState<CategoryType>('all');
     const [hoveredProject, setHoveredProject] = React.useState<string | null>(
         null,
     );
 
+    const allProjects = getProjects();
+
     const filteredProjects =
         selectedCategory === 'all'
-            ? projects
-            : projects.filter((p) => p.category === selectedCategory);
+            ? allProjects
+            : selectedCategory === 'featured'
+              ? allProjects.filter((p) => p.featured)
+              : allProjects.filter((p) => p.category === selectedCategory);
 
     const projectsByCategory = React.useMemo(() => {
-        const grouped: Record<ProjectCategory, Project[]> = {
+        const grouped: Record<string, Project[]> = {
             featured: [],
             'ai-ml': [],
             web3: [],
             systems: [],
             oss: [],
+            'developer-tools': [],
         };
 
-        projects.forEach((project) => {
-            grouped[project.category].push(project);
+        allProjects.forEach((project) => {
+            if (project.featured && grouped.featured) {
+                grouped.featured.push(project);
+            }
+            if (project.category in grouped) {
+                const category = grouped[project.category as keyof typeof grouped];
+                if (category) {
+                    category.push(project);
+                }
+            }
         });
 
         return grouped;
-    }, []);
+    }, [allProjects]);
 
     return (
         <main className="min-h-screen">
@@ -232,9 +124,7 @@ export default function ProjectsPage() {
                             Projects & Work
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                            A collection of my technical projects spanning
-                            AI/ML, blockchain, systems programming, and open
-                            source contributions.
+                            {resumeData.summary.headline}
                         </p>
                     </motion.div>
 
@@ -257,16 +147,13 @@ export default function ProjectsPage() {
                             <Code2 className="h-4 w-4 mr-2" />
                             All Projects
                             <Badge variant="secondary" className="ml-2">
-                                {projects.length}
+                                {allProjects.length}
                             </Badge>
                         </Button>
                         {Object.entries(categoryConfig).map(([key, config]) => {
-                            const count =
-                                projectsByCategory[key as ProjectCategory]
-                                    .length;
-                            const Icon =
-                                projects.find((p) => p.category === key)
-                                    ?.icon || Code2;
+                            const count = projectsByCategory[key]?.length || 0;
+                            if (count === 0) return null;
+
                             return (
                                 <Button
                                     key={key}
@@ -276,22 +163,14 @@ export default function ProjectsPage() {
                                             : 'outline'
                                     }
                                     onClick={() =>
-                                        setSelectedCategory(
-                                            key as ProjectCategory,
-                                        )
+                                        setSelectedCategory(key as CategoryType)
                                     }
                                     className="group"
                                 >
-                                    <Icon className="h-4 w-4 mr-2" />
                                     {config.label}
-                                    {count > 0 && (
-                                        <Badge
-                                            variant="secondary"
-                                            className="ml-2"
-                                        >
-                                            {count}
-                                        </Badge>
-                                    )}
+                                    <Badge variant="secondary" className="ml-2">
+                                        {count}
+                                    </Badge>
                                 </Button>
                             );
                         })}
@@ -307,12 +186,18 @@ export default function ProjectsPage() {
                         layout
                     >
                         {filteredProjects.map((project, index) => {
-                            const Icon = project.icon;
-                            const isHovered = hoveredProject === project.title;
+                            const Icon = project.icon
+                                ? iconMap[project.icon] || Code2
+                                : Code2;
+                            const isHovered = hoveredProject === project.name;
+                            const categoryColor =
+                                categoryConfig[
+                                    project.category as keyof typeof categoryConfig
+                                ]?.color || 'from-gray-500 to-gray-600';
 
                             return (
                                 <motion.div
-                                    key={project.title}
+                                    key={project.slug}
                                     layout
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -321,21 +206,21 @@ export default function ProjectsPage() {
                                         delay: index * 0.1,
                                     }}
                                     onHoverStart={() =>
-                                        setHoveredProject(project.title)
+                                        setHoveredProject(project.name)
                                     }
                                     onHoverEnd={() => setHoveredProject(null)}
-                                    className={`group ${project.highlight ? 'md:col-span-2' : ''}`}
+                                    className={`group ${project.featured ? 'md:col-span-2' : ''}`}
                                 >
                                     <Card className="h-full relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary/30">
                                         {/* Gradient border effect on hover */}
                                         <div
-                                            className={`absolute inset-0 bg-gradient-to-r ${categoryConfig[project.category].color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                                            className={`absolute inset-0 bg-gradient-to-r ${categoryColor} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                                         />
 
                                         <CardHeader className="relative">
                                             <div className="flex items-start justify-between mb-4">
                                                 <motion.div
-                                                    className={`p-3 rounded-lg bg-gradient-to-br ${categoryConfig[project.category].color} text-white`}
+                                                    className={`p-3 rounded-lg bg-gradient-to-br ${categoryColor} text-white`}
                                                     animate={{
                                                         rotate: isHovered
                                                             ? 360
@@ -348,26 +233,26 @@ export default function ProjectsPage() {
                                                     <Icon className="h-6 w-6" />
                                                 </motion.div>
                                                 <div className="flex items-center gap-2">
-                                                    {project.badge && (
+                                                    {project.acquired && (
                                                         <Badge
                                                             variant="secondary"
                                                             className="bg-green-500/10 text-green-600"
                                                         >
                                                             <Award className="h-3 w-3 mr-1" />
-                                                            {project.badge}
+                                                            Acquired
                                                         </Badge>
                                                     )}
-                                                    {project.highlight && (
+                                                    {project.featured && (
                                                         <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
                                                     )}
                                                 </div>
                                             </div>
 
                                             <h3 className="text-2xl font-bold mb-1">
-                                                {project.title}
+                                                {project.name}
                                             </h3>
                                             <p className="text-sm text-muted-foreground mb-2">
-                                                {project.subtitle}
+                                                {project.period}
                                             </p>
                                             {project.impact && (
                                                 <p className="text-sm font-medium text-primary">
@@ -385,27 +270,41 @@ export default function ProjectsPage() {
                                             </p>
 
                                             <div className="flex flex-wrap gap-2">
-                                                {project.tech.map((tech) => (
+                                                {project.technologies
+                                                    .slice(0, 5)
+                                                    .map((tech) => (
+                                                        <Badge
+                                                            key={tech}
+                                                            variant="outline"
+                                                            className="text-xs"
+                                                        >
+                                                            {tech}
+                                                        </Badge>
+                                                    ))}
+                                                {project.technologies.length >
+                                                    5 && (
                                                     <Badge
-                                                        key={tech}
                                                         variant="outline"
                                                         className="text-xs"
                                                     >
-                                                        {tech}
+                                                        +
+                                                        {project.technologies
+                                                            .length - 5}{' '}
+                                                        more
                                                     </Badge>
-                                                ))}
+                                                )}
                                             </div>
                                         </CardContent>
 
                                         <CardFooter className="flex gap-3">
-                                            {project.demo && (
+                                            {project.live && (
                                                 <Button
                                                     asChild
                                                     size="sm"
                                                     className="flex-1"
                                                 >
                                                     <a
-                                                        href={project.demo}
+                                                        href={project.live}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="flex items-center justify-center gap-1.5"
@@ -415,7 +314,7 @@ export default function ProjectsPage() {
                                                     </a>
                                                 </Button>
                                             )}
-                                            {project.repo && (
+                                            {project.github && (
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
@@ -423,7 +322,7 @@ export default function ProjectsPage() {
                                                     className="flex-1"
                                                 >
                                                     <a
-                                                        href={project.repo}
+                                                        href={project.github}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="flex items-center justify-center gap-1.5"
@@ -466,8 +365,7 @@ export default function ProjectsPage() {
                         Let&apos;s Build Something Together
                     </h2>
                     <p className="text-lg text-muted-foreground mb-8">
-                        I&apos;m always interested in working on innovative
-                        projects and contributing to open source.
+                        {resumeData.summary.availability}
                     </p>
                     <div className="flex flex-wrap gap-4 justify-center">
                         <Button asChild size="lg">
@@ -475,7 +373,7 @@ export default function ProjectsPage() {
                         </Button>
                         <Button variant="outline" size="lg" asChild>
                             <a
-                                href="https://github.com/steliosmavro"
+                                href={resumeData.personal.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2"

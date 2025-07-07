@@ -61,15 +61,15 @@ src/
 ## API Routes
 
 ### POST /api/chat
+
 Handles chat completions with streaming support.
 
 **Request:**
+
 ```json
 {
-  "messages": [
-    { "role": "user", "content": "Hello" }
-  ],
-  "model": "gpt-4o"
+    "messages": [{ "role": "user", "content": "Hello" }],
+    "model": "gpt-4o"
 }
 ```
 
@@ -86,16 +86,18 @@ Handles chat completions with streaming support.
 ## Development Tips
 
 1. **Adding UI Components**: Use the shadcn CLI from this directory
-   ```bash
-   npx shadcn@latest add button card
-   ```
+
+    ```bash
+    npx shadcn@latest add button card
+    ```
 
 2. **Testing API**: Use the built-in API route tester
-   ```bash
-   curl -X POST http://localhost:3000/api/chat \
-     -H "Content-Type: application/json" \
-     -d '{"messages": [{"role": "user", "content": "Hello"}]}'
-   ```
+
+    ```bash
+    curl -X POST http://localhost:3000/api/chat \
+      -H "Content-Type: application/json" \
+      -d '{"messages": [{"role": "user", "content": "Hello"}]}'
+    ```
 
 3. **Type Safety**: All API inputs are validated with Zod schemas
 

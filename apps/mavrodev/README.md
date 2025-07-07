@@ -54,10 +54,10 @@ Create MDX files in `src/content/blog/`:
 
 ```mdx
 ---
-title: "My First Post"
-date: "2024-01-01"
-description: "Introduction to my blog"
-tags: ["react", "nextjs"]
+title: 'My First Post'
+date: '2024-01-01'
+description: 'Introduction to my blog'
+tags: ['react', 'nextjs']
 ---
 
 # Hello World
@@ -83,6 +83,7 @@ Projects are managed in `src/app/projects/page.tsx`. To add a new project:
 ### Updating Personal Info
 
 Edit the following files:
+
 - `src/app/layout.tsx` - Site metadata
 - `src/app/page.tsx` - Homepage content
 - `public/resume.pdf` - Your resume
@@ -94,7 +95,7 @@ The site uses Tailwind CSS and components from `@repo/ui`. To customize:
 ```css
 /* In your component or globals.css */
 .custom-class {
-  @apply text-primary bg-secondary;
+    @apply text-primary bg-secondary;
 }
 ```
 

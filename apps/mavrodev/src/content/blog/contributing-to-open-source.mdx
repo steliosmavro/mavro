@@ -1,0 +1,213 @@
+---
+title: "Contributing to Open Source: My Journey with Nango"
+date: "2024-12-01"
+summary: "How I went from using Nango to becoming a contributor. Learn about navigating large codebases, making meaningful contributions, and the impact of open source on your career."
+tags: ["Open Source", "Developer Tools", "TypeScript", "APIs"]
+relatedProject: "nango-contributions"
+---
+
+Contributing to open source can feel daunting. The codebases are large, the standards are high, and imposter syndrome is real. Here's how I went from Nango user to contributor, and what I learned along the way.
+
+## Discovering Nango
+
+I first encountered Nango while building integrations for a client project. The promise was compelling: a unified API for building native integrations. Instead of learning each API's quirks, Nango normalized everything.
+
+But I found gaps. The ClickSend integration I needed didn't exist. Instead of switching tools, I saw an opportunity.
+
+## The First Contribution
+
+My first PR was tiny - fixing a typo in documentation. But it taught me the process:
+- Fork and clone
+- Find the contribution guidelines
+- Follow the code style
+- Write clear commit messages
+- Be patient with reviews
+
+That small PR gave me confidence to tackle bigger challenges.
+
+## Building the ClickSend Integration
+
+Nango's architecture is elegant. Each integration follows a pattern:
+
+```typescript
+// nango-integrations/clicksend/syncs/messages.ts
+export default async function fetchMessages({ 
+  nango, 
+  lastSyncDate 
+}: NangoSync) {
+  const config = await nango.getConfig();
+  
+  // Paginated fetching with error handling
+  for await (const page of nango.paginate({
+    endpoint: '/messages',
+    params: { 
+      date_from: lastSyncDate 
+    }
+  })) {
+    const messages = mapToNangoFormat(page);
+    await nango.batchSave(messages, 'Message');
+  }
+}
+```
+
+The framework handles:
+- Authentication
+- Rate limiting  
+- Error retries
+- Data persistence
+
+I just needed to map the API to Nango's models.
+
+## Diving Deeper
+
+After the integration was merged, I stayed involved:
+
+### Code Contributions
+- Fixed edge cases in OAuth flows
+- Improved error messages
+- Added missing TypeScript types
+- Optimized webhook processing
+
+### Documentation
+- Wrote integration guides
+- Added code examples
+- Clarified setup steps
+- Created troubleshooting sections
+
+### Community
+- Answered questions in Discord
+- Reviewed other PRs
+- Shared integration patterns
+- Reported bugs I found
+
+## Technical Lessons
+
+### 1. Reading Before Writing
+I spent days reading Nango's code before writing. Understanding the architecture, conventions, and patterns made my contributions better.
+
+### 2. Tests Are Documentation
+Nango's test suite taught me how things should work:
+
+```typescript
+it('should handle rate limit retries', async () => {
+  const mock = nock('https://api.example.com')
+    .get('/users')
+    .reply(429, {}, { 'Retry-After': '2' })
+    .get('/users')
+    .reply(200, { users: [] });
+    
+  await sync.run();
+  
+  expect(mock.isDone()).toBe(true);
+});
+```
+
+### 3. Small PRs Win
+My successful PRs were focused:
+- One feature or fix
+- Clear description
+- Tests included
+- Documentation updated
+
+Large PRs sat in review longer and often needed major changes.
+
+### 4. Communication Matters
+Clear PR descriptions saved everyone time:
+
+```markdown
+## What
+Add ClickSend SMS integration
+
+## Why  
+Users requested ClickSend support for sending transactional SMS
+
+## How
+- Implemented sync for messages
+- Added action for sending SMS  
+- Included rate limit handling
+- Added comprehensive tests
+
+## Testing
+- Unit tests pass
+- Manually tested with real ClickSend account
+- Verified rate limiting works
+```
+
+## The Nango Toolkit
+
+Working with Nango taught me professional development practices:
+
+### npx nango dryrun
+Testing integrations locally before deployment:
+```bash
+npx nango dryrun clicksend:messages --lastSyncDate 2024-01-01
+```
+
+### Zod Schemas
+Type-safe API response validation:
+```typescript
+const MessageSchema = z.object({
+  id: z.string(),
+  to: z.string(),
+  from: z.string().optional(),
+  body: z.string(),
+  status: z.enum(['sent', 'delivered', 'failed']),
+  created_at: z.string().datetime()
+});
+```
+
+### Vitest
+Fast, TypeScript-first testing that actually makes sense.
+
+## Career Impact
+
+Contributing to Nango opened doors:
+- **Credibility**: "Nango contributor" carries weight
+- **Network**: Connected with talented developers
+- **Skills**: Learned enterprise-grade patterns
+- **Confidence**: If I can contribute there, I can contribute anywhere
+
+## Advice for New Contributors
+
+### Start Where You Are
+- Use the project first
+- Find pain points
+- Fix what bothers you
+- Share your solutions
+
+### Read Everything
+- Contribution guidelines
+- Code of conduct
+- Architecture docs
+- Existing PRs
+
+### Be Professional
+- Clear communication
+- Responsive to feedback
+- Patient with reviews
+- Grateful for time
+
+### Think Long Term
+Open source is a marathon:
+- Build reputation slowly
+- Quality over quantity
+- Relationships matter
+- Give back to community
+
+## The Open Source Mindset
+
+Contributing to Nango changed how I code:
+- I write more documentation
+- I think about API design
+- I consider edge cases
+- I value clear code
+
+Every project benefits from these practices.
+
+## What's Next?
+
+I continue contributing to Nango and other projects. Each contribution teaches something new. The open source community gave me so much - it's only right to give back.
+
+If you're hesitating to contribute, start today. Find a project you use, fix something small, and submit that PR. The community is more welcoming than you think.
+
+*Want to discuss open source or need help getting started? [Let's connect](/contact).*

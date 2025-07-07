@@ -2,6 +2,12 @@
 
 import Link from 'next/link';
 import { motion, useMotionValue } from 'framer-motion';
+import { resumeData } from '@/data/resume';
+import {
+    getPrimarySkills,
+    getTestimonials,
+    getFeaturedProjects,
+} from '@/lib/resumeHelpers';
 import {
     Github,
     ExternalLink,
@@ -73,7 +79,7 @@ export default function Home() {
                                 👋&nbsp;&nbsp;Welcome, I&apos;m
                             </span>
                             <h1 className="gradient-text mb-4">
-                                Stelios Mavro
+                                {resumeData.personal.name}
                             </h1>
                         </motion.div>
 
@@ -112,10 +118,7 @@ export default function Home() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.3 }}
                         >
-                            Building AI-powered applications and developer tools
-                            since 2020. Passionate about creating seamless
-                            experiences that empower developers and drive
-                            innovation.
+                            {resumeData.summary.shortBio}
                         </motion.p>
 
                         <motion.div
@@ -124,13 +127,7 @@ export default function Home() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
                         >
-                            {[
-                                'TypeScript',
-                                'React/Next.js',
-                                'AI/ML Integration',
-                                'System Design',
-                                'Open Source',
-                            ].map((skill, idx) => (
+                            {getPrimarySkills().map((skill, idx) => (
                                 <motion.div
                                     key={skill}
                                     initial={{ opacity: 0, scale: 0.8 }}
@@ -258,167 +255,142 @@ export default function Home() {
                     className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
                     onMouseMove={handleMouseMove}
                 >
-                    {(
-                        [
-                            (() => {
-                                const mavroChatOrigin =
-                                    getOriginFor('mavrochat');
-                                return {
-                                    title: 'MavroChat',
-                                    subtitle: 'AI Chat for Developers',
-                                    desc: 'Developer-first AI chat workspace with streaming Markdown, model selector, and built-in tool invocation.',
-                                    tags: [
-                                        'AI',
-                                        'Chat',
-                                        'TypeScript',
-                                        'Next.js',
-                                    ],
-                                    repo: 'https://github.com/steliosmavro/mavro',
-                                    redirectTo: `${mavroChatOrigin}/landing`,
-                                    visit: `${mavroChatOrigin}/landing`,
-                                    highlight: true,
-                                    badge: undefined,
-                                };
-                            })(),
-                            {
-                                title: 'EzPump',
-                                subtitle: 'Telegram Trading Bot (Acquired)',
-                                desc: 'Built a trading bot for Solana meme coins with 1.2K users. Successfully acquired by MicroPump.',
-                                tags: [
-                                    'Solana',
-                                    'Telegram',
-                                    'Blockchain',
-                                    'TypeScript',
-                                ],
-                                repo: 'https://github.com/steliosmavro/pump-fun-telegram-bot',
-                                redirectTo:
-                                    'https://t.me/micropump_bot?start=6416185160',
-                                visit: 'https://www.micropump.fun',
-                                badge: 'Acquired',
-                                highlight: false,
-                            },
-                            {
-                                title: 'Nango',
-                                subtitle: 'Open Source Contributions',
-                                desc: 'Contributed integrations, features, and improvements across Nango&apos;s ecosystem.',
-                                tags: ['Open Source', 'APIs', 'DevTools'],
-                                repo: 'https://github.com/pulls?q=is%3Apr+author%3Asteliosmavro+org%3ANangoHQ',
-                                redirectTo: 'https://www.nango.dev',
-                                visit: 'https://www.nango.dev',
-                                highlight: false,
-                                badge: undefined,
-                            },
-                        ] as const
-                    ).map((project, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: i * 0.1 }}
-                            whileHover={{ y: -8 }}
-                            className="group"
-                        >
-                            <Card
-                                className={`h-full cursor-pointer transition-all duration-300 card-glow
+                    {getFeaturedProjects()
+                        .slice(0, 3)
+                        .map((project, i) => {
+                            const mavroChatOrigin =
+                                project.slug === 'mavrochat'
+                                    ? getOriginFor('mavrochat')
+                                    : null;
+                            return (
+                                <motion.div
+                                    key={project.slug}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                        duration: 0.5,
+                                        delay: i * 0.1,
+                                    }}
+                                    whileHover={{ y: -8 }}
+                                    className="group"
+                                >
+                                    <Card
+                                        className={`h-full cursor-pointer transition-all duration-300 card-glow
                                     ${
-                                        project.highlight
+                                        project.featured
                                             ? 'ring-2 ring-primary/20 shadow-lg shadow-primary/5'
                                             : 'hover:shadow-xl hover:border-primary/20'
                                     }`}
-                                onClick={() =>
-                                    project.redirectTo &&
-                                    window.open(project.redirectTo, '_blank')
-                                }
-                                style={
-                                    {
-                                        '--mouse-x': `${mouseX.get()}px`,
-                                        '--mouse-y': `${mouseY.get()}px`,
-                                    } as React.CSSProperties
-                                }
-                            >
-                                <CardHeader className="pb-4">
-                                    <div className="flex items-start justify-between mb-2">
-                                        <div>
-                                            <h3 className="text-2xl font-bold mb-1">
-                                                {project.title}
-                                            </h3>
-                                            <p className="text-sm text-muted-foreground">
-                                                {project.subtitle}
-                                            </p>
-                                        </div>
-                                        {project.badge && (
-                                            <Badge
-                                                variant="secondary"
-                                                className="bg-green-500/10 text-green-600"
-                                            >
-                                                <Award className="h-3 w-3 mr-1" />
-                                                {project.badge}
-                                            </Badge>
-                                        )}
-                                        {project.highlight && (
-                                            <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
-                                        )}
-                                    </div>
-                                </CardHeader>
-                                <CardContent className="flex-grow">
-                                    <p className="text-muted-foreground mb-4">
-                                        {project.desc}
-                                    </p>
-                                    <div className="flex flex-wrap gap-1.5">
-                                        {project.tags.map((tag) => (
-                                            <Badge
-                                                key={tag}
-                                                variant="outline"
-                                                className="text-xs"
-                                            >
-                                                {tag}
-                                            </Badge>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex gap-3 pt-4">
-                                    {project.visit && (
-                                        <Button
-                                            asChild
-                                            size="sm"
-                                            className="flex-1"
-                                        >
-                                            <a
-                                                href={project.visit}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center justify-center gap-1.5"
-                                                onClick={(e) =>
-                                                    e.stopPropagation()
-                                                }
-                                            >
-                                                <ExternalLink className="h-3.5 w-3.5" />
-                                                Visit
-                                            </a>
-                                        </Button>
-                                    )}
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        asChild
-                                        className="flex-1"
+                                        onClick={() => {
+                                            const redirectTo =
+                                                mavroChatOrigin &&
+                                                project.slug === 'mavrochat'
+                                                    ? `${mavroChatOrigin}/landing`
+                                                    : project.live ||
+                                                      project.github;
+                                            if (redirectTo)
+                                                window.open(
+                                                    redirectTo,
+                                                    '_blank',
+                                                );
+                                        }}
+                                        style={
+                                            {
+                                                '--mouse-x': `${mouseX.get()}px`,
+                                                '--mouse-y': `${mouseY.get()}px`,
+                                            } as React.CSSProperties
+                                        }
                                     >
-                                        <a
-                                            href={project.repo}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center justify-center gap-1.5"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            <Github className="h-3.5 w-3.5" />
-                                            Code
-                                        </a>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                        </motion.div>
-                    ))}
+                                        <CardHeader className="pb-4">
+                                            <div className="flex items-start justify-between mb-2">
+                                                <div>
+                                                    <h3 className="text-2xl font-bold mb-1">
+                                                        {project.name}
+                                                    </h3>
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {project.period}
+                                                    </p>
+                                                </div>
+                                                {project.acquired && (
+                                                    <Badge
+                                                        variant="secondary"
+                                                        className="bg-green-500/10 text-green-600"
+                                                    >
+                                                        <Award className="h-3 w-3 mr-1" />
+                                                        Acquired
+                                                    </Badge>
+                                                )}
+                                                {project.featured && (
+                                                    <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
+                                                )}
+                                            </div>
+                                        </CardHeader>
+                                        <CardContent className="flex-grow">
+                                            <p className="text-muted-foreground mb-4">
+                                                {project.description}
+                                            </p>
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {project.technologies
+                                                    .slice(0, 4)
+                                                    .map((tech) => (
+                                                        <Badge
+                                                            key={tech}
+                                                            variant="outline"
+                                                            className="text-xs"
+                                                        >
+                                                            {tech}
+                                                        </Badge>
+                                                    ))}
+                                            </div>
+                                        </CardContent>
+                                        <CardFooter className="flex gap-3 pt-4">
+                                            {project.live && (
+                                                <Button
+                                                    asChild
+                                                    size="sm"
+                                                    className="flex-1"
+                                                >
+                                                    <a
+                                                        href={project.live}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center justify-center gap-1.5"
+                                                        onClick={(e) =>
+                                                            e.stopPropagation()
+                                                        }
+                                                    >
+                                                        <ExternalLink className="h-3.5 w-3.5" />
+                                                        Visit
+                                                    </a>
+                                                </Button>
+                                            )}
+                                            {project.github && (
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    asChild
+                                                    className="flex-1"
+                                                >
+                                                    <a
+                                                        href={project.github}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center justify-center gap-1.5"
+                                                        onClick={(e) =>
+                                                            e.stopPropagation()
+                                                        }
+                                                    >
+                                                        <Github className="h-3.5 w-3.5" />
+                                                        Code
+                                                    </a>
+                                                </Button>
+                                            )}
+                                        </CardFooter>
+                                    </Card>
+                                </motion.div>
+                            );
+                        })}
                 </div>
             </section>
 
@@ -437,33 +409,7 @@ export default function Home() {
                 </motion.div>
 
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    {[
-                        {
-                            quote: 'We appreciated how you stepped in with ownership and initiative. You adapted quickly, understood the product, and brought practical solutions.',
-                            name: 'David Kamien',
-                            title: 'CEO, Mind-Alliance Systems',
-                            avatar: '/david-kamien.jpeg',
-                            linkedIn: 'https://www.linkedin.com/in/davidkamien',
-                            color: 'from-blue-500 to-purple-500',
-                        },
-                        {
-                            quote: 'Thanks a lot for all the help, Stelios! We really noticed your contributions and your proactive attitude. It meant a lot to the team.',
-                            name: 'Bastien Beurier',
-                            title: 'Co-Founder, Nango · ex-Uber',
-                            avatar: '/bastien-beurier.jpg',
-                            linkedIn:
-                                'https://www.linkedin.com/in/bastienbeurier',
-                            color: 'from-purple-500 to-pink-500',
-                        },
-                        {
-                            quote: 'Stelios has that rare mix of professionalism, consistency, and quiet confidence. A pleasure to work with.',
-                            name: 'George Tzinos',
-                            title: 'Senior Director of Engineering, InstaShop',
-                            avatar: '/george-tzinos.jpg',
-                            linkedIn: 'https://www.linkedin.com/in/geotzinos',
-                            color: 'from-pink-500 to-orange-500',
-                        },
-                    ].map((t, i) => (
+                    {getTestimonials().map((t, i) => (
                         <motion.div
                             key={i}
                             initial={{ opacity: 0, y: 30 }}
@@ -486,7 +432,7 @@ export default function Home() {
                                 >
                                     <div className="relative">
                                         <div
-                                            className={`absolute inset-0 bg-gradient-to-r ${t.color} rounded-full blur-md opacity-0 group-hover/link:opacity-50 transition-opacity`}
+                                            className={`absolute inset-0 bg-gradient-to-r ${t.gradientColor} rounded-full blur-md opacity-0 group-hover/link:opacity-50 transition-opacity`}
                                         />
                                         <motion.img
                                             src={t.avatar}
