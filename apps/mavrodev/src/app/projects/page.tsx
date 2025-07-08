@@ -27,7 +27,12 @@ import {
 import React from 'react';
 import { resumeData } from '@/data/resume';
 import { getProjects } from '@/lib/resumeHelpers';
-import type { Project } from '@/types/resume';
+import type { Project, ProjectCategory } from '@/types/resume';
+import {
+    getCategoryLabel,
+    getCategoryColor,
+    getPrimaryCategory,
+} from '@/lib/categories';
 
 // Icon mapping for projects
 const iconMap: Record<string, React.ElementType> = {
@@ -42,77 +47,56 @@ const iconMap: Record<string, React.ElementType> = {
     Sparkles,
 };
 
-const categoryConfig = {
-    featured: { label: 'Featured', color: 'from-blue-500 to-purple-500' },
-    'ai-ml': {
-        label: 'AI & Machine Learning',
-        color: 'from-purple-500 to-pink-500',
-    },
-    web3: { label: 'Web3 & Blockchain', color: 'from-emerald-500 to-teal-500' },
-    systems: {
-        label: 'Systems & Performance',
-        color: 'from-orange-500 to-red-500',
-    },
-    oss: { label: 'Open Source', color: 'from-cyan-500 to-blue-500' },
-    'developer-tools': {
-        label: 'Developer Tools',
-        color: 'from-yellow-500 to-orange-500',
-    },
-};
-
-type CategoryType = keyof typeof categoryConfig | 'all';
-type FilterType = 'category' | 'tag';
+type FilterType = ProjectCategory | 'all' | 'featured';
 
 export default function ProjectsPage() {
-    const [selectedCategory, setSelectedCategory] =
-        React.useState<CategoryType>('all');
-    const [selectedTag, setSelectedTag] = React.useState<string | null>(null);
-    const [filterType, setFilterType] = React.useState<FilterType>('category');
+    const [selectedFilter, setSelectedFilter] =
+        React.useState<FilterType>('all');
     const [hoveredProject, setHoveredProject] = React.useState<string | null>(
         null,
     );
 
     const allProjects = getProjects();
 
-    // Get all unique tags
-    const allTags = React.useMemo(() => {
-        const tags = new Set<string>();
+    // Get all unique categories
+    const allCategories = React.useMemo(() => {
+        const categories = new Set<ProjectCategory>();
         allProjects.forEach((project) => {
-            project.tags?.forEach((tag) => tags.add(tag));
+            project.categories.forEach((cat) => categories.add(cat));
         });
-        return Array.from(tags).sort();
+        return Array.from(categories).sort();
     }, [allProjects]);
 
     const filteredProjects =
-        filterType === 'tag' && selectedTag
-            ? allProjects.filter((p) => p.tags?.includes(selectedTag))
-            : selectedCategory === 'all'
-              ? allProjects
-              : selectedCategory === 'featured'
-                ? allProjects.filter((p) => p.featured)
-                : allProjects.filter((p) => p.category === selectedCategory);
+        selectedFilter === 'all'
+            ? allProjects
+            : selectedFilter === 'featured'
+              ? allProjects.filter((p) => p.featured)
+              : allProjects.filter((p) =>
+                    p.categories.includes(selectedFilter as ProjectCategory),
+                );
 
     const projectsByCategory = React.useMemo(() => {
-        const grouped: Record<string, Project[]> = {
+        const grouped: Record<ProjectCategory | 'featured', Project[]> = {
             featured: [],
             'ai-ml': [],
             web3: [],
-            systems: [],
-            oss: [],
             'developer-tools': [],
+            'open-source': [],
+            automation: [],
+            website: [],
+            contributions: [],
         };
 
         allProjects.forEach((project) => {
-            if (project.featured && grouped.featured) {
+            if (project.featured) {
                 grouped.featured.push(project);
             }
-            if (project.category in grouped) {
-                const category =
-                    grouped[project.category as keyof typeof grouped];
-                if (category) {
-                    category.push(project);
+            project.categories.forEach((cat) => {
+                if (cat in grouped) {
+                    grouped[cat].push(project);
                 }
-            }
+            });
         });
 
         return grouped;
@@ -136,46 +120,11 @@ export default function ProjectsPage() {
                         className="text-center mb-12"
                     >
                         <h1 className="text-5xl md:text-[3.75rem] font-bold mb-6 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                            Projects & Work
+                            Projects
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                             {resumeData.summary.headline}
                         </p>
-                    </motion.div>
-
-                    {/* Filter Type Toggle */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                        className="flex justify-center gap-2 mb-6"
-                    >
-                        <Button
-                            variant={
-                                filterType === 'category'
-                                    ? 'default'
-                                    : 'outline'
-                            }
-                            size="sm"
-                            onClick={() => {
-                                setFilterType('category');
-                                setSelectedTag(null);
-                            }}
-                        >
-                            Categories
-                        </Button>
-                        <Button
-                            variant={
-                                filterType === 'tag' ? 'default' : 'outline'
-                            }
-                            size="sm"
-                            onClick={() => {
-                                setFilterType('tag');
-                                setSelectedCategory('all');
-                            }}
-                        >
-                            Tags
-                        </Button>
                     </motion.div>
 
                     {/* Filters */}
@@ -185,100 +134,57 @@ export default function ProjectsPage() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="flex flex-wrap justify-center gap-3 mb-12"
                     >
-                        {filterType === 'category' ? (
-                            <>
+                        <Button
+                            variant={
+                                selectedFilter === 'all' ? 'default' : 'outline'
+                            }
+                            onClick={() => setSelectedFilter('all')}
+                            className="group"
+                        >
+                            <Code2 className="h-4 w-4 mr-2" />
+                            All Projects
+                            <Badge variant="secondary" className="ml-2">
+                                {allProjects.length}
+                            </Badge>
+                        </Button>
+                        <Button
+                            variant={
+                                selectedFilter === 'featured'
+                                    ? 'default'
+                                    : 'outline'
+                            }
+                            onClick={() => setSelectedFilter('featured')}
+                            className="group"
+                        >
+                            <Star className="h-4 w-4 mr-2" />
+                            Featured
+                            <Badge variant="secondary" className="ml-2">
+                                {projectsByCategory.featured.length}
+                            </Badge>
+                        </Button>
+                        {allCategories.map((category) => {
+                            const count =
+                                projectsByCategory[category]?.length || 0;
+                            if (count === 0) return null;
+
+                            return (
                                 <Button
+                                    key={category}
                                     variant={
-                                        selectedCategory === 'all'
+                                        selectedFilter === category
                                             ? 'default'
                                             : 'outline'
                                     }
-                                    onClick={() => setSelectedCategory('all')}
+                                    onClick={() => setSelectedFilter(category)}
                                     className="group"
                                 >
-                                    <Code2 className="h-4 w-4 mr-2" />
-                                    All Projects
+                                    {getCategoryLabel(category)}
                                     <Badge variant="secondary" className="ml-2">
-                                        {allProjects.length}
+                                        {count}
                                     </Badge>
                                 </Button>
-                                {Object.entries(categoryConfig).map(
-                                    ([key, config]) => {
-                                        const count =
-                                            projectsByCategory[key]?.length ||
-                                            0;
-                                        if (count === 0) return null;
-
-                                        return (
-                                            <Button
-                                                key={key}
-                                                variant={
-                                                    selectedCategory === key
-                                                        ? 'default'
-                                                        : 'outline'
-                                                }
-                                                onClick={() =>
-                                                    setSelectedCategory(
-                                                        key as CategoryType,
-                                                    )
-                                                }
-                                                className="group"
-                                            >
-                                                {config.label}
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="ml-2"
-                                                >
-                                                    {count}
-                                                </Badge>
-                                            </Button>
-                                        );
-                                    },
-                                )}
-                            </>
-                        ) : (
-                            <>
-                                <Button
-                                    variant={
-                                        !selectedTag ? 'default' : 'outline'
-                                    }
-                                    onClick={() => setSelectedTag(null)}
-                                    className="group"
-                                >
-                                    <Code2 className="h-4 w-4 mr-2" />
-                                    All Projects
-                                    <Badge variant="secondary" className="ml-2">
-                                        {allProjects.length}
-                                    </Badge>
-                                </Button>
-                                {allTags.map((tag) => {
-                                    const count = allProjects.filter((p) =>
-                                        p.tags?.includes(tag),
-                                    ).length;
-
-                                    return (
-                                        <Button
-                                            key={tag}
-                                            variant={
-                                                selectedTag === tag
-                                                    ? 'default'
-                                                    : 'outline'
-                                            }
-                                            onClick={() => setSelectedTag(tag)}
-                                            className="group"
-                                        >
-                                            {tag}
-                                            <Badge
-                                                variant="secondary"
-                                                className="ml-2"
-                                            >
-                                                {count}
-                                            </Badge>
-                                        </Button>
-                                    );
-                                })}
-                            </>
-                        )}
+                            );
+                        })}
                     </motion.div>
                 </div>
             </section>
@@ -295,10 +201,12 @@ export default function ProjectsPage() {
                                 ? iconMap[project.icon] || Code2
                                 : Code2;
                             const isHovered = hoveredProject === project.name;
-                            const categoryColor =
-                                categoryConfig[
-                                    project.category as keyof typeof categoryConfig
-                                ]?.color || 'from-gray-500 to-gray-600';
+                            const primaryCategory = getPrimaryCategory(
+                                project.categories,
+                            );
+                            const categoryColor = primaryCategory
+                                ? getCategoryColor(primaryCategory)
+                                : 'from-gray-500 to-gray-600';
 
                             return (
                                 <motion.div
@@ -383,31 +291,33 @@ export default function ProjectsPage() {
                                                     : project.description}
                                             </p>
 
-                                            {/* Technologies - One line summary */}
+                                            {/* Technologies - Combined primary and secondary */}
                                             <div className="text-sm text-muted-foreground mb-3">
                                                 <span className="font-medium">
                                                     Built with:
                                                 </span>{' '}
-                                                {project.primaryTech.join(', ')}
+                                                {[
+                                                    ...project.primaryTech,
+                                                    ...project.secondaryTech,
+                                                ].join(', ')}
                                             </div>
 
-                                            {/* Tags */}
-                                            {project.tags &&
-                                                project.tags.length > 0 && (
-                                                    <div className="flex flex-wrap gap-1.5">
-                                                        {project.tags.map(
-                                                            (tag) => (
-                                                                <Badge
-                                                                    key={tag}
-                                                                    variant="secondary"
-                                                                    className="text-xs px-2 py-0.5"
-                                                                >
-                                                                    {tag}
-                                                                </Badge>
-                                                            ),
-                                                        )}
-                                                    </div>
+                                            {/* Categories with outline style */}
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {project.categories.map(
+                                                    (category) => (
+                                                        <Badge
+                                                            key={category}
+                                                            variant="outline"
+                                                            className="text-xs px-2 py-0.5"
+                                                        >
+                                                            {getCategoryLabel(
+                                                                category,
+                                                            )}
+                                                        </Badge>
+                                                    ),
                                                 )}
+                                            </div>
                                         </CardContent>
 
                                         <CardFooter className="flex gap-3">

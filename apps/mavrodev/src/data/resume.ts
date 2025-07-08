@@ -31,7 +31,7 @@ export const resumeData: Resume = {
             slug: 'mavrochat',
             period: 'January 2025',
             type: 'open-source',
-            category: 'ai-ml',
+            categories: ['ai-ml', 'developer-tools', 'open-source'],
             description: 'Open-Source AI-Powered Chat Platform for Developers',
             icon: 'MessageSquare',
             longDescription:
@@ -51,18 +51,17 @@ export const resumeData: Resume = {
                 'OpenAI API',
                 'Claude API',
             ],
-            tags: ['AI', 'Developer Tools', 'Open Source', 'Real-time', 'Chat'],
             featured: true,
             live: 'https://mavro.chat',
             github: 'https://github.com/steliosmavro/mavro',
-            impact: 'Active open-source project',
+            // impact: 'Growing community', // No metrics yet - it's new!
         },
         {
             name: 'MavroDev',
             slug: 'mavrodev',
             period: 'October 2024',
             type: 'personal',
-            category: 'developer-tools',
+            categories: ['website'],
             description: 'Personal Portfolio & Blog Platform',
             icon: 'Palette',
             longDescription:
@@ -76,18 +75,17 @@ export const resumeData: Resume = {
             ],
             primaryTech: ['Next.js', 'MDX', 'Monorepo'],
             secondaryTech: ['Tailwind CSS', 'Turborepo', 'Framer Motion'],
-            tags: ['Developer Tools', 'Portfolio', 'Blog', 'Monorepo'],
             featured: false,
             live: 'https://mavro.dev',
             github: 'https://github.com/steliosmavro/mavro',
-            impact: 'Live portfolio site',
+            // impact: undefined, // Portfolio sites typically don't have user metrics
         },
         {
             name: 'Nango Contributions',
             slug: 'nango-contributions',
             period: 'November 2024 - January 2025',
             type: 'open-source',
-            category: 'oss',
+            categories: ['contributions', 'open-source', 'developer-tools'],
             description: 'Open Source Developer Tool Contributions',
             icon: 'GitPullRequest',
             highlights: [
@@ -99,7 +97,6 @@ export const resumeData: Resume = {
             ],
             primaryTech: ['Express', 'Next.js', 'PostgreSQL', 'OAuth'],
             secondaryTech: ['Zod', 'Vitest'],
-            tags: ['Open Source', 'Developer Tools', 'API Integrations'],
             featured: true,
             github: 'https://github.com/NangoHQ',
         },
@@ -108,7 +105,7 @@ export const resumeData: Resume = {
             slug: 'crypto-trading-bots',
             period: 'March 2024 - December 2024',
             type: 'acquired',
-            category: 'web3',
+            categories: ['web3', 'automation'],
             description:
                 'Suite of Solana trading tools that gained 1.2K+ users',
             icon: 'Bot',
@@ -124,12 +121,6 @@ export const resumeData: Resume = {
             ],
             primaryTech: ['TypeScript', 'Solana Web3.js', 'MongoDB'],
             secondaryTech: ['Telegraf'],
-            tags: [
-                'Web3 & Blockchain',
-                'Automation',
-                'Trading',
-                'Telegram Bot',
-            ],
             featured: true,
             acquired: {
                 by: 'MicroPump',
@@ -146,8 +137,9 @@ export const resumeData: Resume = {
             slug: 'nextjs13-template',
             period: 'November 2023',
             type: 'open-source',
-            category: 'oss',
-            description: 'Open-Source Google OAuth Starter Template',
+            categories: ['open-source', 'developer-tools'],
+            description:
+                'Open-Source Google OAuth Starter Template For Developers',
             icon: 'Shield',
             highlights: [
                 'Built and open-sourced a reusable starter template for full-stack apps using Next.js 13 (App Router)',
@@ -157,7 +149,6 @@ export const resumeData: Resume = {
             ],
             primaryTech: ['Next.js', 'NextAuth.js'],
             secondaryTech: ['Tailwind CSS', 'OAuth'],
-            tags: ['Open Source', 'Developer Tools', 'Authentication'],
             featured: false,
             github: 'https://github.com/steliosmavro/nextjs13-template-auth',
         },

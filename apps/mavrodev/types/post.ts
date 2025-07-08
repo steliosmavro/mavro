@@ -1,8 +1,10 @@
+import type { ProjectCategory } from '@/types/resume';
+
 export interface PostMeta {
     title: string;
     date: string;
     summary?: string;
-    tags?: string[];
+    categories?: ProjectCategory[]; // Use same categories as projects
     readingTime?: string;
     relatedProject?: string; // Project slug from resume.ts
 }

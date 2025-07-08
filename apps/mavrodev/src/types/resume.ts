@@ -21,24 +21,26 @@ export interface Summary {
     startYear: number;
 }
 
+export type ProjectCategory =
+    | 'ai-ml'
+    | 'web3'
+    | 'developer-tools'
+    | 'open-source'
+    | 'automation'
+    | 'website'
+    | 'contributions';
+
 export interface Project {
     name: string;
     slug: string;
     period: string;
     type: 'open-source' | 'client' | 'personal' | 'acquired';
-    category:
-        | 'featured'
-        | 'ai-ml'
-        | 'web3'
-        | 'systems'
-        | 'oss'
-        | 'developer-tools';
+    categories: ProjectCategory[]; // Multiple categories per project
     description: string;
     longDescription?: string;
     highlights: string[];
     primaryTech: string[]; // Main technologies to showcase
     secondaryTech: string[]; // Additional technologies
-    tags?: string[]; // For unified filtering across projects and blogs
     featured: boolean;
     live?: string;
     github?: string;

@@ -18,6 +18,7 @@ import Link from 'next/link';
 import React from 'react';
 import { useHighlightTheme } from '@/hooks/useHighlightTheme';
 import type { BlogPost } from '../../../lib/getBlogPosts';
+import { getCategoryLabel } from '@/lib/categories';
 
 interface BlogPostClientProps {
     post: BlogPost;
@@ -131,17 +132,17 @@ export default function BlogPostClient({
                             {post.summary}
                         </p>
 
-                        {/* Tags and Share */}
+                        {/* Categories and Share */}
                         <div className="flex flex-wrap items-center justify-between gap-4">
                             <div className="flex flex-wrap gap-2">
-                                {post.tags?.map((tag) => (
+                                {post.categories?.map((category) => (
                                     <Badge
-                                        key={tag}
+                                        key={category}
                                         variant="outline"
                                         className="text-sm"
                                     >
                                         <Tag className="h-3 w-3 mr-1" />
-                                        {tag}
+                                        {getCategoryLabel(category)}
                                     </Badge>
                                 ))}
                             </div>

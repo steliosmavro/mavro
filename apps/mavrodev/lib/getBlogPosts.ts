@@ -35,7 +35,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
                     title: data.title || 'Untitled',
                     date: data.date || new Date().toISOString(),
                     summary: data.summary || '',
-                    tags: data.tags || [],
+                    categories: data.categories || [],
                     readingTime: readingTimeResult.text,
                 } as BlogPost;
             }),
@@ -60,7 +60,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
             title: data.title || 'Untitled',
             date: data.date || new Date().toISOString(),
             summary: data.summary || '',
-            tags: data.tags || [],
+            categories: data.categories || [],
             readingTime: readingTimeResult.text,
         };
     } catch {

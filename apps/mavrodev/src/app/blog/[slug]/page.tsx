@@ -38,7 +38,7 @@ export async function generateMetadata({
             type: 'article',
             publishedTime: post.date,
             authors: ['Stelios Mavro'],
-            tags: post.tags,
+            tags: post.categories,
         },
     };
 }

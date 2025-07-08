@@ -16,33 +16,25 @@ import { Card, Badge, Button, Input } from '@repo/ui/components';
 import Link from 'next/link';
 import React from 'react';
 import type { BlogPost } from '../../../lib/getBlogPosts';
+import type { ProjectCategory } from '@/types/resume';
+import { getCategoryLabel, getCategoryColor } from '@/lib/categories';
 
 interface BlogListProps {
     posts: BlogPost[];
 }
 
-const tagColors: Record<string, string> = {
-    AI: 'from-purple-400 to-pink-600',
-    TypeScript: 'from-blue-400 to-cyan-600',
-    React: 'from-cyan-400 to-blue-600',
-    'Next.js': 'from-gray-600 to-black',
-    'Developer Tools': 'from-orange-400 to-red-600',
-    Automation: 'from-green-400 to-emerald-600',
-    Web3: 'from-yellow-400 to-orange-600',
-    Performance: 'from-red-400 to-pink-600',
-};
-
 export default function BlogList({ posts }: BlogListProps) {
     const [searchQuery, setSearchQuery] = React.useState('');
-    const [selectedTag, setSelectedTag] = React.useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] =
+        React.useState<ProjectCategory | null>(null);
     const [hoveredPost, setHoveredPost] = React.useState<string | null>(null);
 
-    const allTags = React.useMemo(() => {
-        const tags = new Set<string>();
+    const allCategories = React.useMemo(() => {
+        const categories = new Set<ProjectCategory>();
         posts.forEach((post) => {
-            post.tags?.forEach((tag) => tags.add(tag));
+            post.categories?.forEach((category) => categories.add(category));
         });
-        return Array.from(tags);
+        return Array.from(categories);
     }, [posts]);
 
     const filteredPosts = React.useMemo(() => {
@@ -53,19 +45,23 @@ export default function BlogList({ posts }: BlogListProps) {
                 post.summary
                     ?.toLowerCase()
                     .includes(searchQuery.toLowerCase()) ||
-                post.tags?.some((tag) =>
-                    tag.toLowerCase().includes(searchQuery.toLowerCase()),
+                post.categories?.some((category) =>
+                    getCategoryLabel(category)
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()),
                 );
 
-            const matchesTag = !selectedTag || post.tags?.includes(selectedTag);
+            const matchesCategory =
+                !selectedCategory ||
+                post.categories?.includes(selectedCategory);
 
-            return matchesSearch && matchesTag;
+            return matchesSearch && matchesCategory;
         });
-    }, [posts, searchQuery, selectedTag]);
+    }, [posts, searchQuery, selectedCategory]);
 
     const featuredPost = posts[0];
     const regularPosts = filteredPosts.slice(
-        featuredPost && !searchQuery && !selectedTag ? 1 : 0,
+        featuredPost && !searchQuery && !selectedCategory ? 1 : 0,
     );
 
     return (
@@ -114,7 +110,7 @@ export default function BlogList({ posts }: BlogListProps) {
                                 <Search className="absolute z-1 left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/70 group-focus-within:text-primary transition-colors" />
                                 <Input
                                     type="search"
-                                    placeholder="Search posts by title, content, or tags..."
+                                    placeholder="Search posts by title, content, or categories..."
                                     value={searchQuery}
                                     onChange={(e) =>
                                         setSearchQuery(e.target.value)
@@ -126,28 +122,32 @@ export default function BlogList({ posts }: BlogListProps) {
                         <div className="flex gap-2 flex-wrap justify-center">
                             <Button
                                 variant={
-                                    selectedTag === null ? 'default' : 'outline'
+                                    selectedCategory === null
+                                        ? 'default'
+                                        : 'outline'
                                 }
                                 size="sm"
-                                onClick={() => setSelectedTag(null)}
+                                onClick={() => setSelectedCategory(null)}
                                 className="flex items-center gap-2"
                             >
                                 <Filter className="h-4 w-4" />
                                 All Posts
                             </Button>
-                            {allTags.map((tag) => (
+                            {allCategories.map((category) => (
                                 <Button
-                                    key={tag}
+                                    key={category}
                                     variant={
-                                        selectedTag === tag
+                                        selectedCategory === category
                                             ? 'default'
                                             : 'outline'
                                     }
                                     size="sm"
-                                    onClick={() => setSelectedTag(tag)}
+                                    onClick={() =>
+                                        setSelectedCategory(category)
+                                    }
                                     className="hover:scale-105 transition-transform"
                                 >
-                                    {tag}
+                                    {getCategoryLabel(category)}
                                 </Button>
                             ))}
                         </div>
@@ -159,7 +159,7 @@ export default function BlogList({ posts }: BlogListProps) {
             <section className="px-4 pt-12 pb-24">
                 <div className="max-w-6xl mx-auto space-y-16">
                     {/* Featured Post */}
-                    {featuredPost && !searchQuery && !selectedTag && (
+                    {featuredPost && !searchQuery && !selectedCategory && (
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -209,15 +209,19 @@ export default function BlogList({ posts }: BlogListProps) {
                                         </p>
 
                                         <div className="flex flex-wrap gap-2">
-                                            {featuredPost.tags?.map((tag) => (
-                                                <Badge
-                                                    key={tag}
-                                                    variant="outline"
-                                                >
-                                                    <Tag className="h-3 w-3 mr-1" />
-                                                    {tag}
-                                                </Badge>
-                                            ))}
+                                            {featuredPost.categories?.map(
+                                                (category) => (
+                                                    <Badge
+                                                        key={category}
+                                                        variant="outline"
+                                                    >
+                                                        <Tag className="h-3 w-3 mr-1" />
+                                                        {getCategoryLabel(
+                                                            category,
+                                                        )}
+                                                    </Badge>
+                                                ),
+                                            )}
                                         </div>
                                     </div>
                                 </Card>
@@ -229,9 +233,9 @@ export default function BlogList({ posts }: BlogListProps) {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <AnimatePresence mode="popLayout">
                             {regularPosts.map((post, index) => {
-                                const tagColor =
-                                    tagColors[post.tags?.[0] || ''] ||
-                                    'from-gray-400 to-gray-600';
+                                const categoryColor = post.categories?.[0]
+                                    ? getCategoryColor(post.categories[0])
+                                    : 'from-gray-400 to-gray-600';
                                 const isHovered = hoveredPost === post.slug;
 
                                 return (
@@ -253,7 +257,7 @@ export default function BlogList({ posts }: BlogListProps) {
                                         <Link href={`/blog/${post.slug}`}>
                                             <Card className="h-full group cursor-pointer relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                                                 <div
-                                                    className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${tagColor}`}
+                                                    className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${categoryColor}`}
                                                 />
 
                                                 <div className="p-6">
@@ -267,7 +271,7 @@ export default function BlogList({ posts }: BlogListProps) {
                                                             transition={{
                                                                 duration: 0.5,
                                                             }}
-                                                            className={`p-2 rounded-lg bg-gradient-to-br ${tagColor} text-white`}
+                                                            className={`p-2 rounded-lg bg-gradient-to-br ${categoryColor} text-white`}
                                                         >
                                                             {index % 3 === 0 ? (
                                                                 <Zap className="h-5 w-5" />
@@ -307,19 +311,25 @@ export default function BlogList({ posts }: BlogListProps) {
                                                         </span>
 
                                                         <div className="flex gap-1">
-                                                            {post.tags
+                                                            {post.categories
                                                                 ?.slice(0, 2)
-                                                                .map((tag) => (
-                                                                    <Badge
-                                                                        key={
-                                                                            tag
-                                                                        }
-                                                                        variant="outline"
-                                                                        className="text-xs"
-                                                                    >
-                                                                        {tag}
-                                                                    </Badge>
-                                                                ))}
+                                                                .map(
+                                                                    (
+                                                                        category,
+                                                                    ) => (
+                                                                        <Badge
+                                                                            key={
+                                                                                category
+                                                                            }
+                                                                            variant="outline"
+                                                                            className="text-xs"
+                                                                        >
+                                                                            {getCategoryLabel(
+                                                                                category,
+                                                                            )}
+                                                                        </Badge>
+                                                                    ),
+                                                                )}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -345,7 +355,7 @@ export default function BlogList({ posts }: BlogListProps) {
                                 variant="outline"
                                 onClick={() => {
                                     setSearchQuery('');
-                                    setSelectedTag(null);
+                                    setSelectedCategory(null);
                                 }}
                             >
                                 Clear filters
