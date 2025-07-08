@@ -55,7 +55,8 @@ export function getAllTechnologies(): string[] {
 
     // From projects
     resumeData.projects.forEach((project) => {
-        project.technologies.forEach((tech) => techSet.add(tech));
+        project.primaryTech.forEach((tech) => techSet.add(tech));
+        project.secondaryTech.forEach((tech) => techSet.add(tech));
     });
 
     // From experience

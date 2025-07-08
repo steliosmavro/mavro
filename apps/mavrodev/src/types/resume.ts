@@ -36,7 +36,9 @@ export interface Project {
     description: string;
     longDescription?: string;
     highlights: string[];
-    technologies: string[];
+    primaryTech: string[]; // Main technologies to showcase
+    secondaryTech: string[]; // Additional technologies
+    tags?: string[]; // For unified filtering across projects and blogs
     featured: boolean;
     live?: string;
     github?: string;

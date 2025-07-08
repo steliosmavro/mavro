@@ -166,11 +166,13 @@ function ProjectCardContent({ project }: { project: Project }) {
         <CardContent className="flex-grow">
             <p className="text-muted-foreground mb-4">{project.description}</p>
             <div className="flex flex-wrap gap-1.5">
-                {project.technologies.slice(0, 4).map((tech) => (
-                    <Badge key={tech} variant="outline" className="text-xs">
-                        {tech}
-                    </Badge>
-                ))}
+                {[...project.primaryTech, ...project.secondaryTech]
+                    .slice(0, 4)
+                    .map((tech) => (
+                        <Badge key={tech} variant="outline" className="text-xs">
+                            {tech}
+                        </Badge>
+                    ))}
             </div>
         </CardContent>
     );

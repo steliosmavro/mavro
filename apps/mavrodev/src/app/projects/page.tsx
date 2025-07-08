@@ -61,22 +61,36 @@ const categoryConfig = {
 };
 
 type CategoryType = keyof typeof categoryConfig | 'all';
+type FilterType = 'category' | 'tag';
 
 export default function ProjectsPage() {
     const [selectedCategory, setSelectedCategory] =
         React.useState<CategoryType>('all');
+    const [selectedTag, setSelectedTag] = React.useState<string | null>(null);
+    const [filterType, setFilterType] = React.useState<FilterType>('category');
     const [hoveredProject, setHoveredProject] = React.useState<string | null>(
         null,
     );
 
     const allProjects = getProjects();
 
+    // Get all unique tags
+    const allTags = React.useMemo(() => {
+        const tags = new Set<string>();
+        allProjects.forEach((project) => {
+            project.tags?.forEach((tag) => tags.add(tag));
+        });
+        return Array.from(tags).sort();
+    }, [allProjects]);
+
     const filteredProjects =
-        selectedCategory === 'all'
-            ? allProjects
-            : selectedCategory === 'featured'
-              ? allProjects.filter((p) => p.featured)
-              : allProjects.filter((p) => p.category === selectedCategory);
+        filterType === 'tag' && selectedTag
+            ? allProjects.filter((p) => p.tags?.includes(selectedTag))
+            : selectedCategory === 'all'
+              ? allProjects
+              : selectedCategory === 'featured'
+                ? allProjects.filter((p) => p.featured)
+                : allProjects.filter((p) => p.category === selectedCategory);
 
     const projectsByCategory = React.useMemo(() => {
         const grouped: Record<string, Project[]> = {
@@ -129,52 +143,142 @@ export default function ProjectsPage() {
                         </p>
                     </motion.div>
 
-                    {/* Category Filter */}
+                    {/* Filter Type Toggle */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        className="flex justify-center gap-2 mb-6"
+                    >
+                        <Button
+                            variant={
+                                filterType === 'category'
+                                    ? 'default'
+                                    : 'outline'
+                            }
+                            size="sm"
+                            onClick={() => {
+                                setFilterType('category');
+                                setSelectedTag(null);
+                            }}
+                        >
+                            Categories
+                        </Button>
+                        <Button
+                            variant={
+                                filterType === 'tag' ? 'default' : 'outline'
+                            }
+                            size="sm"
+                            onClick={() => {
+                                setFilterType('tag');
+                                setSelectedCategory('all');
+                            }}
+                        >
+                            Tags
+                        </Button>
+                    </motion.div>
+
+                    {/* Filters */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="flex flex-wrap justify-center gap-3 mb-12"
                     >
-                        <Button
-                            variant={
-                                selectedCategory === 'all'
-                                    ? 'default'
-                                    : 'outline'
-                            }
-                            onClick={() => setSelectedCategory('all')}
-                            className="group"
-                        >
-                            <Code2 className="h-4 w-4 mr-2" />
-                            All Projects
-                            <Badge variant="secondary" className="ml-2">
-                                {allProjects.length}
-                            </Badge>
-                        </Button>
-                        {Object.entries(categoryConfig).map(([key, config]) => {
-                            const count = projectsByCategory[key]?.length || 0;
-                            if (count === 0) return null;
-
-                            return (
+                        {filterType === 'category' ? (
+                            <>
                                 <Button
-                                    key={key}
                                     variant={
-                                        selectedCategory === key
+                                        selectedCategory === 'all'
                                             ? 'default'
                                             : 'outline'
                                     }
-                                    onClick={() =>
-                                        setSelectedCategory(key as CategoryType)
-                                    }
+                                    onClick={() => setSelectedCategory('all')}
                                     className="group"
                                 >
-                                    {config.label}
+                                    <Code2 className="h-4 w-4 mr-2" />
+                                    All Projects
                                     <Badge variant="secondary" className="ml-2">
-                                        {count}
+                                        {allProjects.length}
                                     </Badge>
                                 </Button>
-                            );
-                        })}
+                                {Object.entries(categoryConfig).map(
+                                    ([key, config]) => {
+                                        const count =
+                                            projectsByCategory[key]?.length ||
+                                            0;
+                                        if (count === 0) return null;
+
+                                        return (
+                                            <Button
+                                                key={key}
+                                                variant={
+                                                    selectedCategory === key
+                                                        ? 'default'
+                                                        : 'outline'
+                                                }
+                                                onClick={() =>
+                                                    setSelectedCategory(
+                                                        key as CategoryType,
+                                                    )
+                                                }
+                                                className="group"
+                                            >
+                                                {config.label}
+                                                <Badge
+                                                    variant="secondary"
+                                                    className="ml-2"
+                                                >
+                                                    {count}
+                                                </Badge>
+                                            </Button>
+                                        );
+                                    },
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    variant={
+                                        !selectedTag ? 'default' : 'outline'
+                                    }
+                                    onClick={() => setSelectedTag(null)}
+                                    className="group"
+                                >
+                                    <Code2 className="h-4 w-4 mr-2" />
+                                    All Projects
+                                    <Badge variant="secondary" className="ml-2">
+                                        {allProjects.length}
+                                    </Badge>
+                                </Button>
+                                {allTags.map((tag) => {
+                                    const count = allProjects.filter((p) =>
+                                        p.tags?.includes(tag),
+                                    ).length;
+
+                                    return (
+                                        <Button
+                                            key={tag}
+                                            variant={
+                                                selectedTag === tag
+                                                    ? 'default'
+                                                    : 'outline'
+                                            }
+                                            onClick={() => setSelectedTag(tag)}
+                                            className="group"
+                                        >
+                                            {tag}
+                                            <Badge
+                                                variant="secondary"
+                                                className="ml-2"
+                                            >
+                                                {count}
+                                            </Badge>
+                                        </Button>
+                                    );
+                                })}
+                            </>
+                        )}
                     </motion.div>
                 </div>
             </section>
@@ -222,20 +326,26 @@ export default function ProjectsPage() {
                                             />
                                         )}
                                         <CardHeader>
-                                            <div className="flex items-start justify-between mb-4">
-                                                <motion.div
-                                                    className={`p-3 rounded-lg bg-gradient-to-br ${categoryColor} text-white`}
-                                                    animate={{
-                                                        rotate: isHovered
-                                                            ? 360
-                                                            : 0,
-                                                    }}
-                                                    transition={{
-                                                        duration: 0.5,
-                                                    }}
-                                                >
-                                                    <Icon className="h-6 w-6" />
-                                                </motion.div>
+                                            {/* Icon, Name, and Badges on same line */}
+                                            <div className="flex items-start justify-between mb-3">
+                                                <div className="flex items-center gap-3">
+                                                    <motion.div
+                                                        className={`p-2 rounded-lg bg-gradient-to-br ${categoryColor} text-white`}
+                                                        animate={{
+                                                            rotate: isHovered
+                                                                ? 360
+                                                                : 0,
+                                                        }}
+                                                        transition={{
+                                                            duration: 0.5,
+                                                        }}
+                                                    >
+                                                        <Icon className="h-5 w-5" />
+                                                    </motion.div>
+                                                    <h3 className="text-xl font-bold">
+                                                        {project.name}
+                                                    </h3>
+                                                </div>
                                                 <div className="flex items-center gap-2">
                                                     {project.acquired && (
                                                         <Badge
@@ -247,22 +357,22 @@ export default function ProjectsPage() {
                                                         </Badge>
                                                     )}
                                                     {project.featured && (
-                                                        <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
+                                                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                                                     )}
                                                 </div>
                                             </div>
 
-                                            <h3 className="text-2xl font-bold mb-1">
-                                                {project.name}
-                                            </h3>
-                                            <p className="text-sm text-muted-foreground mb-2">
-                                                {project.period}
-                                            </p>
-                                            {project.impact && (
-                                                <p className="text-sm font-medium text-primary">
-                                                    {project.impact}
-                                                </p>
-                                            )}
+                                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                                <span>{project.period}</span>
+                                                {project.impact && (
+                                                    <>
+                                                        <span>•</span>
+                                                        <span className="font-medium text-primary">
+                                                            {project.impact}
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </div>
                                         </CardHeader>
 
                                         <CardContent>
@@ -273,31 +383,31 @@ export default function ProjectsPage() {
                                                     : project.description}
                                             </p>
 
-                                            <div className="flex flex-wrap gap-2">
-                                                {project.technologies
-                                                    .slice(0, 5)
-                                                    .map((tech) => (
-                                                        <Badge
-                                                            key={tech}
-                                                            variant="outline"
-                                                            className="text-xs"
-                                                        >
-                                                            {tech}
-                                                        </Badge>
-                                                    ))}
-                                                {project.technologies.length >
-                                                    5 && (
-                                                    <Badge
-                                                        variant="outline"
-                                                        className="text-xs"
-                                                    >
-                                                        +
-                                                        {project.technologies
-                                                            .length - 5}{' '}
-                                                        more
-                                                    </Badge>
-                                                )}
+                                            {/* Technologies - One line summary */}
+                                            <div className="text-sm text-muted-foreground mb-3">
+                                                <span className="font-medium">
+                                                    Built with:
+                                                </span>{' '}
+                                                {project.primaryTech.join(', ')}
                                             </div>
+
+                                            {/* Tags */}
+                                            {project.tags &&
+                                                project.tags.length > 0 && (
+                                                    <div className="flex flex-wrap gap-1.5">
+                                                        {project.tags.map(
+                                                            (tag) => (
+                                                                <Badge
+                                                                    key={tag}
+                                                                    variant="secondary"
+                                                                    className="text-xs px-2 py-0.5"
+                                                                >
+                                                                    {tag}
+                                                                </Badge>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                )}
                                         </CardContent>
 
                                         <CardFooter className="flex gap-3">

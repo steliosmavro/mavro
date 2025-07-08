@@ -215,17 +215,18 @@ export default function BlogPostClient({
                                                     {project.description}
                                                 </p>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {project.technologies
-                                                        .slice(0, 4)
-                                                        .map((tech) => (
-                                                            <Badge
-                                                                key={tech}
-                                                                variant="secondary"
-                                                                className="text-xs"
-                                                            >
-                                                                {tech}
-                                                            </Badge>
-                                                        ))}
+                                                    {[
+                                                        ...project.primaryTech,
+                                                        ...project.secondaryTech,
+                                                    ].map((tech) => (
+                                                        <Badge
+                                                            key={tech}
+                                                            variant="secondary"
+                                                            className="text-xs"
+                                                        >
+                                                            {tech}
+                                                        </Badge>
+                                                    ))}
                                                 </div>
                                             </div>
                                             <Button asChild size="sm">
