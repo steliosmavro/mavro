@@ -4,6 +4,10 @@ import React, { ReactNode } from 'react';
 import { Badge } from '../display/Badge';
 import { CodeBlock } from './CodeBlock';
 import { ExternalLink } from 'lucide-react';
+import {
+    extractLanguageFromCodeElement,
+    type PreComponentProps,
+} from './utils';
 
 interface LinkProps {
     href: string;
@@ -32,53 +36,16 @@ interface CodeProps {
 }
 
 const CustomCode = ({ children, className }: CodeProps) => {
-    // Extract language from className (e.g., "language-javascript" -> "javascript")
-    const language = className?.replace('language-', '') || undefined;
-
-    // If it's a block code (has language), wrap in CodeBlock
-    if (language) {
+    // Inline code only - block code is handled by pre component
+    if (!className || !className.includes('language-')) {
         return (
-            <CodeBlock language={language}>
-                <pre className="bg-muted/50 border border-border rounded-lg p-4 overflow-x-auto pt-12">
-                    <code className={className}>{children}</code>
-                </pre>
-            </CodeBlock>
-        );
-    }
-
-    // Inline code
-    return (
-        <code className="bg-muted px-2 py-1 rounded text-sm font-mono">
-            {children}
-        </code>
-    );
-};
-
-const CustomPre = ({ children }: { children: ReactNode }) => {
-    // For pre elements that contain code with language info
-    const child = React.Children.only(children) as React.ReactElement<{
-        className?: string;
-    }>;
-
-    if (child && child.props && child.props.className) {
-        const language = child.props.className.replace('language-', '');
-        return (
-            <CodeBlock language={language}>
-                <pre className="bg-muted/50 border border-border rounded-lg p-4 overflow-x-auto pt-12">
-                    {children}
-                </pre>
-            </CodeBlock>
-        );
-    }
-
-    // Fallback for pre without language
-    return (
-        <CodeBlock>
-            <pre className="bg-muted/50 border border-border rounded-lg p-4 overflow-x-auto">
+            <code className="bg-muted px-2 py-1 rounded text-sm font-mono">
                 {children}
-            </pre>
-        </CodeBlock>
-    );
+            </code>
+        );
+    }
+    // Block code - will be wrapped by pre component
+    return <code className={className}>{children}</code>;
 };
 
 export const MDXComponents = {
@@ -101,7 +68,15 @@ export const MDXComponents = {
         <p className="mb-4 text-foreground leading-relaxed">{children}</p>
     ),
     a: CustomLink,
-    pre: CustomPre,
+    pre: ({ children, ...props }: PreComponentProps) => {
+        const language = extractLanguageFromCodeElement(children);
+
+        return (
+            <CodeBlock language={language}>
+                <pre {...props}>{children}</pre>
+            </CodeBlock>
+        );
+    },
     code: CustomCode,
     ul: ({ children }: { children: ReactNode }) => (
         <ul className="list-disc list-inside mb-4 space-y-2 text-foreground">

@@ -22,7 +22,7 @@ const MemoizedMarkdownBlock = memo(
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}
                 components={{
-                    pre: ({ children }) => {
+                    pre: ({ children, ...props }) => {
                         const codeElement = React.Children.toArray(
                             children,
                         ).find((child) => {
@@ -46,7 +46,7 @@ const MemoizedMarkdownBlock = memo(
 
                         return (
                             <CodeBlock language={lang}>
-                                <pre>{children}</pre>
+                                <pre {...props}>{children}</pre>
                             </CodeBlock>
                         );
                     },

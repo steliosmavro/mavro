@@ -152,3 +152,12 @@ main {
     padding-left: 2rem;
     padding-right: 2rem;
 }
+
+/* Code block copy button hover effect */
+.code-copy-button {
+    opacity: 0;
+}
+
+.code-block-container:hover .code-copy-button {
+    opacity: 1;
+}
