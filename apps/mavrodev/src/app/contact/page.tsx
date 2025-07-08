@@ -99,42 +99,26 @@ export default function ContactPage() {
             <section className="relative pt-20 pb-16 px-4 overflow-hidden">
                 {/* Animated particles background */}
                 <div className="absolute inset-0 -z-10">
-                    {typeof window !== 'undefined' &&
-                        [...Array(50)].map((_, i) => (
-                            <motion.div
-                                key={i}
-                                className="absolute w-1 h-1 bg-primary/20 rounded-full"
-                                initial={{
-                                    x:
-                                        Math.random() *
-                                        (typeof window !== 'undefined'
-                                            ? window.innerWidth
-                                            : 1000),
-                                    y:
-                                        Math.random() *
-                                        (typeof window !== 'undefined'
-                                            ? window.innerHeight
-                                            : 800),
-                                }}
-                                animate={{
-                                    x:
-                                        Math.random() *
-                                        (typeof window !== 'undefined'
-                                            ? window.innerWidth
-                                            : 1000),
-                                    y:
-                                        Math.random() *
-                                        (typeof window !== 'undefined'
-                                            ? window.innerHeight
-                                            : 800),
-                                }}
-                                transition={{
-                                    duration: Math.random() * 20 + 10,
-                                    repeat: Infinity,
-                                    ease: 'linear',
-                                }}
-                            />
-                        ))}
+                    {[...Array(50)].map((_, i) => (
+                        <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-primary/20 rounded-full"
+                            style={{
+                                left: `${(i * 23) % 100}%`,
+                                top: `${(i * 31) % 100}%`,
+                            }}
+                            animate={{
+                                x: [0, 100, -50, 0],
+                                y: [0, -50, 100, 0],
+                            }}
+                            transition={{
+                                duration: 20 + (i % 10),
+                                repeat: Infinity,
+                                ease: 'linear',
+                                delay: i * 0.2,
+                            }}
+                        />
+                    ))}
                 </div>
 
                 <div className="max-w-6xl mx-auto">
@@ -368,14 +352,16 @@ export default function ContactPage() {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="mt-4 pt-4 border-t border-border">
-                                    <p className="text-sm text-muted-foreground">
-                                        Current time in Athens:{' '}
-                                        <span className="font-mono font-medium text-primary">
-                                            {currentTime || '--:--:--'}
-                                        </span>
-                                    </p>
-                                </div>
+                                {currentTime && (
+                                    <div className="mt-4 pt-4 border-t border-border">
+                                        <p className="text-sm text-muted-foreground">
+                                            Current time in Athens:{' '}
+                                            <span className="font-mono font-medium text-primary">
+                                                {currentTime}
+                                            </span>
+                                        </p>
+                                    </div>
+                                )}
                             </Card>
                         </motion.div>
 
