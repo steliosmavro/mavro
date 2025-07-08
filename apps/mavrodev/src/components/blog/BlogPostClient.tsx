@@ -16,14 +16,20 @@ import {
 import { Badge, Button, Card } from '@repo/ui/components';
 import Link from 'next/link';
 import React from 'react';
-import type { BlogPost } from '../../../../lib/getBlogPosts';
+import { useHighlightTheme } from '@/hooks/useHighlightTheme';
+import type { BlogPost } from '../../../lib/getBlogPosts';
 
-interface BlogPostProps {
+interface BlogPostClientProps {
     post: BlogPost;
+    children: React.ReactNode;
 }
 
-export default function BlogPost({ post }: BlogPostProps) {
+export default function BlogPostClient({
+    post,
+    children,
+}: BlogPostClientProps) {
     const [copied, setCopied] = React.useState(false);
+    useHighlightTheme();
 
     const shareOnTwitter = () => {
         const text = `Check out "${post.title}" by @steliosmavro`;
@@ -39,6 +45,31 @@ export default function BlogPost({ post }: BlogPostProps) {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
+
+    // Add smooth scrolling for anchor links
+    React.useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const anchor = target.closest('.anchor-link');
+
+            if (anchor && anchor instanceof HTMLAnchorElement) {
+                e.preventDefault();
+                const id = anchor.href.split('#')[1];
+                if (id) {
+                    const element = document.getElementById(id);
+
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                        // Update URL without triggering navigation
+                        window.history.pushState({}, '', `#${id}`);
+                    }
+                }
+            }
+        };
+
+        document.addEventListener('click', handleClick);
+        return () => document.removeEventListener('click', handleClick);
+    }, []);
 
     return (
         <article className="min-h-screen">
@@ -152,21 +183,8 @@ export default function BlogPost({ post }: BlogPostProps) {
                     transition={{ duration: 0.6, delay: 0.2 }}
                     className="max-w-4xl mx-auto"
                 >
-                    <div className="prose prose-lg dark:prose-invert max-w-none">
-                        {/* MDX content would be rendered here */}
-                        <div className="bg-muted/50 border border-border rounded-lg p-8 text-center">
-                            <p className="text-muted-foreground">
-                                MDX content rendering will be implemented next.
-                                For now, this is a preview of the blog post
-                                layout.
-                            </p>
-                            <div className="mt-6 text-left">
-                                <h2>Post Content Preview</h2>
-                                <p className="whitespace-pre-wrap">
-                                    {post.content.substring(0, 500)}...
-                                </p>
-                            </div>
-                        </div>
+                    <div className="prose prose-lg dark:prose-invert max-w-none markdown-content">
+                        {children}
                     </div>
 
                     {/* Related Project */}

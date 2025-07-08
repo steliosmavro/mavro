@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBlogPost, getBlogPosts } from '../../../../lib/getBlogPosts';
-import BlogPost from './BlogPost';
+import BlogPostClient from '@/components/blog/BlogPostClient';
+import { MDXContent } from '@/components/blog/MDXContent';
 
 interface BlogPostPageProps {
     params: Promise<{
@@ -50,5 +51,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         notFound();
     }
 
-    return <BlogPost post={post} />;
+    return (
+        <BlogPostClient post={post}>
+            <MDXContent source={post.content} />
+        </BlogPostClient>
+    );
 }

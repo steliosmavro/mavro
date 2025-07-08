@@ -133,3 +133,22 @@
 ::-webkit-scrollbar-thumb:hover {
     @apply bg-muted-foreground/50;
 }
+
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Style anchor links */
+.anchor-link {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+
+.anchor-link:hover::before {
+    content: '#';
+    position: absolute;
+    left: -1.5ch;
+    color: var(--muted-foreground);
+}

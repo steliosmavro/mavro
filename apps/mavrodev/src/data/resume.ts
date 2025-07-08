@@ -29,7 +29,7 @@ export const resumeData: Resume = {
         {
             name: 'MavroChat',
             slug: 'mavrochat',
-            period: '2025',
+            period: 'January 2025',
             type: 'open-source',
             category: 'ai-ml',
             description: 'Open-Source AI-Powered Chat Platform for Developers',
@@ -61,7 +61,7 @@ export const resumeData: Resume = {
         {
             name: 'MavroDev',
             slug: 'mavrodev',
-            period: '2024',
+            period: 'October 2024',
             type: 'personal',
             category: 'developer-tools',
             description: 'Personal Portfolio & Blog Platform',
@@ -91,7 +91,7 @@ export const resumeData: Resume = {
         {
             name: 'Nango Contributions',
             slug: 'nango-contributions',
-            period: '2025',
+            period: 'November 2024 - January 2025',
             type: 'open-source',
             category: 'oss',
             description: 'Open Source Developer Tool Contributions',
@@ -116,7 +116,7 @@ export const resumeData: Resume = {
         {
             name: 'Crypto Trading Bot Ecosystem',
             slug: 'crypto-trading-bots',
-            period: '2024 - 2025',
+            period: 'March 2024 - December 2024',
             type: 'acquired',
             category: 'web3',
             description:
@@ -154,7 +154,7 @@ export const resumeData: Resume = {
         {
             name: 'Nextjs13-template-auth',
             slug: 'nextjs13-template',
-            period: '2023',
+            period: 'November 2023',
             type: 'open-source',
             category: 'oss',
             description: 'Open-Source Google OAuth Starter Template',
@@ -237,7 +237,7 @@ export const resumeData: Resume = {
             company: 'Mind Alliance',
             location: 'Remote – New Jersey, USA',
             role: 'Full-Stack Software Engineer',
-            period: '2021 - 2023',
+            period: 'September 2021 - March 2023',
             current: false,
             description:
                 'Built internal SaaS platforms for Fragomen, a leading U.S. law firm specializing in immigration law.',

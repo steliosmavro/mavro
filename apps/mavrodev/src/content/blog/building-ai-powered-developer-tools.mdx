@@ -1,8 +1,8 @@
 ---
 title: "Building AI-Powered Developer Tools: Lessons from MavroChat"
-date: "2024-12-15"
+date: "2025-01-10"
 summary: "A deep dive into the architecture and design decisions behind MavroChat, an AI-powered chat platform built specifically for developers. Learn about streaming responses, model selection, and creating developer-friendly interfaces."
-tags: ["AI", "Developer Tools", "TypeScript", "React"]
+tags: ["AI", "Developer Tools", "TypeScript", "React", "Next.js", "Open Source"]
 relatedProject: "mavrochat"
 ---
 
@@ -74,12 +74,85 @@ The architecture follows a modular approach:
 3. **Flexibility Matters**: Support multiple models and let users choose
 4. **Performance First**: Optimize for speed, especially for code-heavy responses
 
+## Open-Sourcing and Monorepo Architecture
+
+In January 2025, I made the decision to open-source MavroChat as part of a larger monorepo that includes my portfolio site (MavroDev). This architectural decision brought several benefits:
+
+### Shared Component Library
+```typescript
+// packages/ui/src/components/
+├── form/          // Input, Select, Textarea
+├── display/       // Card, Badge, Avatar
+├── navigation/    // LogoButton
+├── theme/         // ThemeProvider, ThemeToggle
+└── utils/         // ElementHeightObserver
+```
+
+### Shared Configuration
+```typescript
+// packages/shared-config/
+├── security.ts    // Security headers
+├── index.ts       // API configs, rate limits
+└── types.ts       // Shared TypeScript types
+```
+
+### Benefits of the Monorepo Approach
+1. **Code Reusability**: Share UI components and utilities between apps
+2. **Consistent Styling**: Single Tailwind configuration
+3. **Type Safety**: Shared TypeScript configs ensure consistency
+4. **Efficient Development**: Changes to shared packages immediately reflect in all apps
+5. **Simplified CI/CD**: Single pipeline for all projects
+
+## Technical Implementation Details
+
+### Rate Limiting with Upstash Redis
+To protect against API cost overruns, I implemented a tiered rate limiting system:
+
+```typescript
+const rateLimits = {
+  anonymous: { requests: 10, window: '24 h' },
+  authenticated: { requests: 25, window: '24 h' },
+  premium: { requests: 100, window: '24 h' }
+};
+```
+
+### Real-time Streaming with Vercel AI SDK
+The streaming implementation uses the Vercel AI SDK for smooth, token-by-token responses:
+
+```typescript
+const response = await streamText({
+  model: openai('gpt-4o'),
+  messages,
+  onFinish: ({ usage, finishReason }) => {
+    // Log usage for analytics
+    logger.info({ usage, finishReason });
+  }
+});
+```
+
+## Lessons Learned
+
+1. **Start with the Developer Experience**: Every feature should make developers more productive
+2. **Streaming is Non-Negotiable**: Users expect real-time responses
+3. **Flexibility Matters**: Support multiple models and let users choose
+4. **Performance First**: Optimize for speed, especially for code-heavy responses
+5. **Open Source Accelerates Innovation**: Community contributions and feedback are invaluable
+
+## Impact and Reception
+
+Since open-sourcing MavroChat:
+- Active community engagement on GitHub
+- Multiple feature requests and contributions
+- Developers using it as a template for their own AI tools
+- Integration into various developer workflows
+
 ## What's Next
 
 The journey of building developer tools is never complete. Future plans include:
 - Local model support for privacy-conscious users
-- IDE integrations for seamless workflow
+- IDE integrations (VS Code, JetBrains)
 - Collaborative features for team coding sessions
-- Custom model fine-tuning for specific codebases
+- Plugin system for custom tool integrations
+- Self-hosting documentation and guides
 
-Building MavroChat taught me that the best developer tools are built by developers, for developers. When you understand the pain points firsthand, you can create solutions that truly make a difference.
+Building MavroChat taught me that the best developer tools are built by developers, for developers. When you understand the pain points firsthand, you can create solutions that truly make a difference. Open-sourcing it multiplied that impact beyond what I could have achieved alone.

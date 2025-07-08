@@ -4,7 +4,7 @@ import { marked } from 'marked';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
-import { CodeBlock } from './CodeBlock';
+import { CodeBlock } from '@repo/ui/components';
 
 function parseMarkdownIntoBlocks(markdown: string): string[] {
     const tokens = marked.lexer(markdown) as Array<{ raw: string }>;

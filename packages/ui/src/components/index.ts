@@ -15,3 +15,6 @@ export * from './theme';
 
 // Utility components
 export * from './utils';
+
+// MDX components
+export * from './mdx';
