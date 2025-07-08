@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import {
-    Github,
+    Code2 as GithubIcon,
     ExternalLink,
     Star,
     Award,
@@ -212,13 +212,16 @@ export default function ProjectsPage() {
                                     onHoverEnd={() => setHoveredProject(null)}
                                     className={`group ${project.featured ? 'md:col-span-2' : ''}`}
                                 >
-                                    <Card className="h-full relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary/30">
-                                        {/* Gradient border effect on hover */}
-                                        <div
-                                            className={`absolute inset-0 bg-gradient-to-r ${categoryColor} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                                        />
-
-                                        <CardHeader className="relative">
+                                    <Card
+                                        className={`h-full relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary/30 ${isHovered ? 'bg-gradient-to-br' : ''}`}
+                                    >
+                                        {/* Gradient overlay for hover effect */}
+                                        {isHovered && (
+                                            <div
+                                                className={`absolute inset-0 bg-gradient-to-br ${categoryColor} opacity-10 pointer-events-none`}
+                                            />
+                                        )}
+                                        <CardHeader>
                                             <div className="flex items-start justify-between mb-4">
                                                 <motion.div
                                                     className={`p-3 rounded-lg bg-gradient-to-br ${categoryColor} text-white`}
@@ -308,7 +311,6 @@ export default function ProjectsPage() {
                                                         href={project.live}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center justify-center gap-1.5"
                                                     >
                                                         <ExternalLink className="h-3.5 w-3.5" />
                                                         Live Demo
@@ -326,9 +328,8 @@ export default function ProjectsPage() {
                                                         href={project.github}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center justify-center gap-1.5"
                                                     >
-                                                        <Github className="h-3.5 w-3.5" />
+                                                        <GithubIcon className="h-3.5 w-3.5" />
                                                         View Code
                                                     </a>
                                                 </Button>
@@ -379,7 +380,7 @@ export default function ProjectsPage() {
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2"
                             >
-                                <Github className="h-5 w-5" />
+                                <GithubIcon className="h-5 w-5" />
                                 Follow on GitHub
                             </a>
                         </Button>
