@@ -98,9 +98,10 @@ export const resumeData: Resume = {
             longDescription:
                 'Contributed across multiple areas of Nango — a popular open-source platform for unified API integrations.',
             highlights: [
-                'Contributed across multiple areas of Nango — a popular open-source platform for unified API integrations',
                 'Added new sync and action endpoints in the integration-templates repo (e.g., ClickSend integration)',
-                'Contributed improvements, bug fixes, features, and docs across core codebases',
+                'Implemented best practices including incremental syncing, pagination, retry logic, testing, and documentation',
+                'Contributed improvements, bug fixes, and features across Dashboard, Connect UI, API, and Docs',
+                'Enhanced overall Developer Experience through documentation and code improvements',
                 'Used internal tooling such as npx nango dryrun, Zod, Vitest, MCP server, and Cursor IDE',
                 "Followed Nango's conventions for integration structure, model definitions, CI/CD, and clean architecture",
             ],
