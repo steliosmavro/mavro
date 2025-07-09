@@ -205,8 +205,11 @@ export const resumeData: Resume = {
                         'Technical lead for migrating and scaling the acquired bot ecosystem',
                     highlights: [
                         'Extended the architecture of EzPump into a more scalable and modular system',
-                        'Designed dynamic pricing models and automated bump logic tied to blockchain activity',
-                        'Coordinated feature rollouts and performance tuning post-migration',
+                        'Developed advanced Token Bundler for pump.fun Solana program - creates tokens and executes first buy in same atomic transaction, ensuring creator gets first entry advantage',
+                        'Engineered multi-wallet coordination system that generates multiple wallets and orchestrates simultaneous token purchases within single transaction block',
+                        'Built one-click sell functionality enabling rapid token liquidation through atomic transaction execution',
+                        'Implemented anti-MEV protection and transaction priority optimization for reliable execution in high-traffic conditions',
+                        'Created automated wallet management system with secure key generation and transaction signing',
                         'Ongoing enhancements focused on user growth, monetization features, and UX improvements',
                         'Currently serving 3.6K+ active users',
                     ],
@@ -218,7 +221,7 @@ export const resumeData: Resume = {
                     'Express',
                     'TypeScript',
                     'Solana Web3.js',
-                    'node-telegram-bot-api',
+                    'Node.js Telegram Bot API',
                 ],
                 databases: ['MongoDB', 'Mongoose'],
                 other: [
@@ -234,7 +237,7 @@ export const resumeData: Resume = {
         },
         {
             company: 'InstaShop',
-            location: 'UAE',
+            location: 'Dubai, UAE',
             workModel: 'Remote',
             role: 'Software Engineer',
             period: {
