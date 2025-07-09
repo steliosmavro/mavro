@@ -155,19 +155,15 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
                     </p>
 
                     {/* Show More Button - Only show if there are highlights or long description */}
-                    {hasExpandableContent && (
+                    {hasExpandableContent && !isExpanded && (
                         <Button
                             variant="outline"
                             size="sm"
                             onClick={toggleExpansion}
                             className="inline-flex items-center gap-2 text-xs"
                         >
-                            <span>Show {isExpanded ? 'less' : 'more'}</span>
-                            {isExpanded ? (
-                                <ChevronUp className="h-3.5 w-3.5" />
-                            ) : (
-                                <ChevronDown className="h-3.5 w-3.5" />
-                            )}
+                            <span>Show more</span>
+                            <ChevronDown className="h-3.5 w-3.5" />
                         </Button>
                     )}
 
@@ -190,7 +186,7 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
                                 transition={{
                                     duration: 0.3,
                                 }}
-                                className="mt-4 space-y-8"
+                                className="mt-4 space-y-4"
                             >
                                 {/* Long Description */}
                                 {project.longDescription && (
@@ -249,6 +245,17 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
                                         </Badge>
                                     ))}
                                 </div>
+
+                                {/* Show Less Button at the bottom */}
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={toggleExpansion}
+                                    className="inline-flex items-center gap-2 text-xs"
+                                >
+                                    <span>Show less</span>
+                                    <ChevronUp className="h-3.5 w-3.5" />
+                                </Button>
                             </motion.div>
                         )}
                     </AnimatePresence>
