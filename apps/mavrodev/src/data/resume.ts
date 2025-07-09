@@ -105,7 +105,8 @@ export const resumeData: Resume = {
             primaryTech: ['Express', 'Next.js', 'PostgreSQL', 'OAuth'],
             secondaryTech: ['Zod', 'Vitest'],
             featured: true,
-            github: 'https://github.com/NangoHQ',
+            live: 'https://www.nango.dev',
+            github: 'https://github.com/pulls?q=is%3Apr+author%3Asteliosmavro+org%3ANangoHQ',
         },
         {
             name: 'Crypto Trading Bot Ecosystem',
@@ -115,14 +116,14 @@ export const resumeData: Resume = {
                 end: new Date('2025-06-30'),
             },
             type: 'acquired',
-            categories: ['web3', 'automation'],
+            categories: ['web3', 'automation', 'open-source'],
             description:
                 'Suite of Solana trading tools that gained 1.2K+ users',
             icon: 'Bot',
             longDescription:
                 'Comprehensive ecosystem of trading bots for Solana including volume generation, growth automation, and token bundling.',
             highlights: [
-                'EzPump.fun - Telegram trading bot for Solana meme coins',
+                'ezpump.fun - Telegram trading bot for Solana meme coins',
                 'Generated simulated volume to boost token visibility on pump.fun',
                 'Comment Bot - Automated engagement tool that posts contextual comments on new token listings',
                 'Token Bundler - Creates tokens and executes first buy in same transaction',
@@ -149,6 +150,8 @@ export const resumeData: Resume = {
                 users: '1.2K+',
             },
             impact: '1.2K+ active users',
+            live: 'https://www.micropump.fun',
+            github: 'https://github.com/steliosmavro/pump-fun-telegram-bot',
         },
         {
             name: 'Nextjs13-template-auth',
@@ -207,12 +210,10 @@ export const resumeData: Resume = {
                     'Express',
                     'TypeScript',
                     'Solana Web3.js',
-                    '@pump-fun/pump-sdk',
                     'node-telegram-bot-api',
                 ],
                 databases: ['MongoDB', 'Mongoose'],
                 other: [
-                    '@solana/spl-token',
                     'Anchor Framework',
                     'Jupiter API',
                     'Metaplex',

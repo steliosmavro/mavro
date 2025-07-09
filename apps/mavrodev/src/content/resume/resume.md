@@ -52,7 +52,7 @@ Built a variety of full-stack applications for personal use and freelance client
     - Followed Nango's conventions for integration structure, model definitions, CI/CD, and clean architecture.
 
 - **Crypto Trading Bot Ecosystem (2024 - 2025 - Acquired by MicroPump)** — Suite of Solana trading tools that gained 1.2K+ users:
-    - **EzPump.fun** - Telegram trading bot for Solana meme coins:
+    - **ezpump.fun** - Telegram trading bot for Solana meme coins:
         - Generated simulated volume to boost token visibility on pump.fun.
         - Implemented Telegram authentication, Solana payment flows, and role-based access.
         - Designed flexible pricing tiers: Token Pass (single token) and Service Pass (all tokens).
