@@ -95,6 +95,8 @@ export const resumeData: Resume = {
             categories: ['contributions', 'open-source', 'developer-tools'],
             description: 'Open Source Developer Tool Contributions',
             icon: 'GitPullRequest',
+            longDescription:
+                'Contributed across multiple areas of Nango — a popular open-source platform for unified API integrations.',
             highlights: [
                 'Contributed across multiple areas of Nango — a popular open-source platform for unified API integrations',
                 'Added new sync and action endpoints in the integration-templates repo (e.g., ClickSend integration)',
@@ -121,7 +123,7 @@ export const resumeData: Resume = {
                 'Suite of Solana trading tools that gained 1.2K+ users',
             icon: 'Bot',
             longDescription:
-                'Comprehensive ecosystem of trading bots for Solana including volume generation, growth automation, and token bundling.',
+                'Comprehensive ecosystem of trading bots for Solana including volume generation, growth automation, and token bundling. Successfully acquired by MicroPump after reaching 1.2K+ active users.',
             highlights: [
                 'ezpump.fun - Telegram trading bot for Solana meme coins',
                 'Generated simulated volume to boost token visibility on pump.fun',
@@ -540,10 +542,9 @@ export const resumeData: Resume = {
     homepage: {
         heroSkillBadges: [
             'TypeScript',
-            'React/Next.js',
-            'AI/ML Integration',
             'System Design',
             'Open Source',
+            'Automation',
         ],
         featuredProjectSlugs: ['mavrochat', 'crypto-trading-bots', 'mavrodev'],
     },

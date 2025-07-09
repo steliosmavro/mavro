@@ -33,7 +33,7 @@ export function FeaturedProjects() {
         <section className="flex flex-col gap-12 w-full max-w-6xl mx-auto px-4">
             <FeaturedProjectsHeader />
             <div
-                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                className="grid grid-cols-1 gap-6 sm:grid-cols-2"
                 onMouseMove={handleMouseMove}
             >
                 {getFeaturedProjects()
@@ -135,13 +135,13 @@ function ProjectCard({ project, index, mouseX, mouseY }: ProjectCardProps) {
 
 function ProjectCardHeader({ project }: { project: Project }) {
     return (
-        <CardHeader className="pb-4">
-            <div className="flex items-start justify-between mb-2">
+        <CardHeader>
+            <div className="flex items-start justify-between gap-2 mb">
                 <div>
                     <h3 className="text-2xl font-bold mb-1">{project.name}</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <span className="text-sm text-muted-foreground">
                         {formatPeriod(project.period)}
-                    </p>
+                    </span>
                 </div>
                 <div className="flex items-center gap-2">
                     {project.acquired && (
@@ -165,7 +165,9 @@ function ProjectCardHeader({ project }: { project: Project }) {
 function ProjectCardContent({ project }: { project: Project }) {
     return (
         <CardContent className="flex-grow">
-            <p className="text-muted-foreground mb-4">{project.description}</p>
+            <p className="text-muted-foreground mb-4">
+                {project.longDescription || project.description}
+            </p>
             <div className="flex flex-wrap gap-1.5">
                 {[...project.primaryTech, ...project.secondaryTech]
                     .slice(0, 4)
