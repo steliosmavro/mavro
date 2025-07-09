@@ -1,9 +1,9 @@
 ---
-title: "Scaling a Telegram Trading Bot to 1.2K Users and Getting Acquired"
-date: "2025-07-01"
-summary: "The technical journey of building EzPump, a Solana trading bot that grew to 1.2K users and caught the attention of MicroPump, leading to a successful acquisition."
-tags: ["Web3", "TypeScript", "Telegram", "Solana", "Blockchain"]
-relatedProject: "crypto-trading-bots"
+title: 'Scaling a Telegram Trading Bot to 1.2K Users and Getting Acquired'
+date: '2025-07-01'
+summary: 'The technical journey of building EzPump, a Solana trading bot that grew to 1.2K users and caught the attention of MicroPump, leading to a successful acquisition.'
+tags: ['Web3', 'TypeScript', 'Telegram', 'Solana', 'Blockchain']
+relatedProject: 'crypto-trading-bots'
 ---
 
 Building a trading bot was never the plan. It started as a tool for myself, evolved into a product, and ended with an acquisition. Here's the technical story behind EzPump.
@@ -11,6 +11,7 @@ Building a trading bot was never the plan. It started as a tool for myself, evol
 ## The Genesis
 
 In late 2024, Solana meme coins were exploding. The opportunity was clear, but the tools were lacking:
+
 - Existing bots had terrible UX
 - Most required complex wallet setups
 - None offered the features power traders needed
@@ -20,12 +21,14 @@ I built EzPump to solve my own trading needs. Within weeks, traders in my networ
 ## Technical Architecture
 
 ### Why Telegram?
+
 - **Instant Distribution**: No app store approval
 - **Built-in Payments**: Telegram Stars for subscriptions
 - **User Trust**: Crypto traders already live in Telegram
 - **Real-time Updates**: Native support for instant notifications
 
 ### The Stack
+
 ```typescript
 // Core Technologies
 - Node.js with TypeScript for type safety
@@ -39,7 +42,9 @@ I built EzPump to solve my own trading needs. Within weeks, traders in my networ
 ## Key Features That Drove Growth
 
 ### 1. Volume Generation Bot
+
 Traders needed to create organic-looking volume. I built a system that:
+
 - Distributed trades across time with Gaussian distribution
 - Varied transaction amounts using weighted random algorithms
 - Managed multiple wallets with automatic SOL distribution
@@ -48,47 +53,51 @@ Traders needed to create organic-looking volume. I built a system that:
 ```typescript
 // Organic volume generation algorithm
 const generateOrganicVolume = async (config: VolumeConfig) => {
-  const wallets = await getWalletPool(config.walletCount);
-  const schedule = generateGaussianSchedule(config.duration);
-  
-  for (const timeSlot of schedule) {
-    const wallet = selectRandomWallet(wallets, weights);
-    const amount = generateRealisticAmount(
-      config.minAmount,
-      config.maxAmount,
-      marketConditions
-    );
-    
-    await executeTradeWithRetry(wallet, amount, config.slippage);
-    await humanDelay(2000, 10000); // Random delay 2-10s
-  }
+    const wallets = await getWalletPool(config.walletCount);
+    const schedule = generateGaussianSchedule(config.duration);
+
+    for (const timeSlot of schedule) {
+        const wallet = selectRandomWallet(wallets, weights);
+        const amount = generateRealisticAmount(
+            config.minAmount,
+            config.maxAmount,
+            marketConditions,
+        );
+
+        await executeTradeWithRetry(wallet, amount, config.slippage);
+        await humanDelay(2000, 10000); // Random delay 2-10s
+    }
 };
 ```
 
 ### 2. Token Bundler
+
 The killer feature - create and buy tokens in the same transaction:
+
 ```typescript
 async function bundleTokenLaunch(params: BundleParams) {
-  const tx = new Transaction();
-  
-  // Create token on Pump.fun
-  tx.add(createTokenInstruction(params));
-  
-  // Create new wallets
-  const buyers = await generateBuyerWallets(params.buyerCount);
-  
-  // Add buy instructions for each wallet
-  for (const buyer of buyers) {
-    tx.add(createBuyInstruction(buyer, params.amount));
-  }
-  
-  // Execute atomically
-  return await sendAndConfirmTransaction(tx);
+    const tx = new Transaction();
+
+    // Create token on Pump.fun
+    tx.add(createTokenInstruction(params));
+
+    // Create new wallets
+    const buyers = await generateBuyerWallets(params.buyerCount);
+
+    // Add buy instructions for each wallet
+    for (const buyer of buyers) {
+        tx.add(createBuyInstruction(buyer, params.amount));
+    }
+
+    // Execute atomically
+    return await sendAndConfirmTransaction(tx);
 }
 ```
 
 ### 3. Instant Buy/Sell
+
 Speed matters in meme coins. I optimized for sub-second execution:
+
 - Pre-signed transactions
 - Parallel RPC calls
 - Optimistic UI updates
@@ -97,24 +106,30 @@ Speed matters in meme coins. I optimized for sub-second execution:
 ## Scaling Challenges
 
 ### 1. RPC Limits
+
 At 1K+ users, we hit Solana RPC limits constantly. Solution:
+
 - Implemented RPC pooling
 - Added intelligent request routing
 - Built fallback mechanisms
 - Created caching layer for read operations
 
 ### 2. Wallet Management
+
 Managing thousands of wallets securely was complex:
+
 ```typescript
 // Hierarchical Deterministic wallet generation
 function deriveWallet(userId: string, index: number) {
-  const seed = hmac(MASTER_SEED, `${userId}:${index}`);
-  return Keypair.fromSeed(seed);
+    const seed = hmac(MASTER_SEED, `${userId}:${index}`);
+    return Keypair.fromSeed(seed);
 }
 ```
 
 ### 3. Telegram Rate Limits
+
 Telegram limits bot messages. I built a priority queue:
+
 - Critical alerts (trades) sent immediately
 - Status updates batched
 - Marketing messages throttled
@@ -123,31 +138,35 @@ Telegram limits bot messages. I built a priority queue:
 ## The Growth Journey: 0 to 1.2K Users
 
 ### Custom Automation That Scaled
+
 I built a growth engine that ran 24/7:
+
 ```typescript
 // Automated user onboarding system
 const onboardingBot = {
-  welcomeFlow: async (userId: string) => {
-    await sendWelcomeMessage(userId);
-    await scheduleFollowUp(userId, '24h');
-    await addToSegment(userId, 'new_users');
-    await trackActivation(userId);
-  },
-  
-  engagementAutomation: async () => {
-    // Daily token alerts
-    const hotTokens = await scanPumpFun();
-    await notifySegment('active_traders', hotTokens);
-    
-    // Win notifications to build FOMO
-    const bigWins = await trackProfitableExits();
-    await broadcastWins(bigWins, 'community_chat');
-  }
+    welcomeFlow: async (userId: string) => {
+        await sendWelcomeMessage(userId);
+        await scheduleFollowUp(userId, '24h');
+        await addToSegment(userId, 'new_users');
+        await trackActivation(userId);
+    },
+
+    engagementAutomation: async () => {
+        // Daily token alerts
+        const hotTokens = await scanPumpFun();
+        await notifySegment('active_traders', hotTokens);
+
+        // Win notifications to build FOMO
+        const bigWins = await trackProfitableExits();
+        await broadcastWins(bigWins, 'community_chat');
+    },
 };
 ```
 
 ### Community Marketing Engine
-- Automated success story sharing
+
+- Built active Twitter/X presence [@EzPumpFun](https://x.com/EzPumpFun) for updates and community engagement
+- Automated success story sharing across social channels
 - Referral program with instant rewards
 - Community competitions with leaderboards
 - Strategic partnerships with alpha groups
@@ -157,6 +176,7 @@ const onboardingBot = {
 After 8 months of growth from November 2024 to June 2025, we hit 1.2K active users. MicroPump approached with an offer I couldn't refuse. They were building a comprehensive trading ecosystem and wanted:
 
 ### What They Valued
+
 1. **The User Base**: 1.2K+ active, paying users
 2. **Technical Infrastructure**: Battle-tested system handling thousands of transactions daily
 3. **The Bundler Technology**: Our unique approach to token creation
@@ -164,47 +184,53 @@ After 8 months of growth from November 2024 to June 2025, we hit 1.2K active use
 5. **The Brand**: EzPump had become synonymous with reliable Solana trading bots
 
 ### Technical Due Diligence Deep Dive
+
 The acquisition process was intense:
+
 ```typescript
 // What they reviewed
 const dueDiligence = {
-  codeQuality: {
-    testCoverage: '72%',
-    typeScriptStrict: true,
-    eslintIssues: 0,
-    securityAudits: 'passed'
-  },
-  infrastructure: {
-    uptime: '99.7%',
-    responseTime: '<200ms',
-    dailyTransactions: '10K+',
-    monthlyRevenue: 'undisclosed'
-  },
-  techStack: {
-    scalability: 'horizontal scaling ready',
-    deployment: 'automated CI/CD',
-    monitoring: 'comprehensive logging',
-    documentation: 'extensive'
-  }
+    codeQuality: {
+        testCoverage: '72%',
+        typeScriptStrict: true,
+        eslintIssues: 0,
+        securityAudits: 'passed',
+    },
+    infrastructure: {
+        uptime: '99.7%',
+        responseTime: '<200ms',
+        dailyTransactions: '10K+',
+        monthlyRevenue: 'undisclosed',
+    },
+    techStack: {
+        scalability: 'horizontal scaling ready',
+        deployment: 'automated CI/CD',
+        monitoring: 'comprehensive logging',
+        documentation: 'extensive',
+    },
 };
 ```
 
 ### The Transition Process
+
 The handover took 6 weeks of intensive work:
 
 **Week 1-2: Knowledge Transfer**
+
 - Documented every system component
 - Created architectural diagrams
 - Recorded video walkthroughs
 - Set up development environments
 
 **Week 3-4: Integration Planning**
+
 - Merged authentication systems
 - Unified payment processing
 - Consolidated user databases
 - Integrated monitoring tools
 
 **Week 5-6: Team Training**
+
 - Trained their developers on our codebase
 - Established coding standards
 - Set up collaborative workflows
@@ -213,22 +239,29 @@ The handover took 6 weeks of intensive work:
 ## Lessons Learned
 
 ### 1. Start with Your Own Needs
+
 The best features came from my own trading frustrations. Dog-fooding led to genuine innovation.
 
 ### 2. Speed is Everything
+
 In crypto, being first matters more than being perfect. Ship fast, iterate faster.
 
 ### 3. Community is Your Moat
+
 Technical features get copied. Your community doesn't. I invested heavily in user support and feedback loops.
 
 ### 4. Prepare for Success
+
 I didn't expect 1K+ users. When growth hit, architecture decisions made early saved us:
+
 - Stateless bot design
 - Horizontal scaling ready
 - Proper abstraction layers
 
 ### 5. Security First
+
 One hack could've ended everything. Security measures included:
+
 - Encrypted wallet storage
 - Rate limiting everything
 - Audit logging
@@ -237,6 +270,7 @@ One hack could've ended everything. Security measures included:
 ## Technical Takeaways
 
 Building EzPump taught me:
+
 - **Blockchain development** requires different thinking
 - **Real-time systems** need careful architecture
 - **User trust** in crypto is everything
@@ -248,4 +282,4 @@ The acquisition was a win, but the journey continues. I'm applying these lessons
 
 Building in crypto is wild - the pace, the users, the opportunity. If you're considering it, my advice: start building. The ecosystem needs more builders who care about user experience.
 
-*Working on something in Web3? I'd love to chat. [Reach out](/contact).*
+_Working on something in Web3? I'd love to chat. [Reach out](/contact)._

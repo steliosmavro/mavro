@@ -135,6 +135,7 @@ export const resumeData: Resume = {
                 'Comment Bot - Automated engagement tool that posts contextual comments on new token listings',
                 'Token Bundler - Creates tokens and executes first buy in same transaction',
                 'Built anti-detection system with rotating proxies and randomized behavior',
+                'Built active Twitter/X presence @EzPumpFun for updates and community engagement',
                 'Reached 1.2K+ users through custom automation and community marketing',
             ],
             primaryTech: ['TypeScript', 'Solana Web3.js', 'MongoDB', 'Express'],
