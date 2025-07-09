@@ -62,7 +62,7 @@ export const resumeData: Resume = {
             period: 'October 2024',
             type: 'personal',
             categories: ['website'],
-            description: 'Personal Portfolio & Blog Platform',
+            description: 'Personal Website & Blog Platform',
             icon: 'Palette',
             longDescription:
                 'Modern portfolio website showcasing projects, blog, and professional experience with MDX support and beautiful animations.',
@@ -103,7 +103,7 @@ export const resumeData: Resume = {
         {
             name: 'Crypto Trading Bot Ecosystem',
             slug: 'crypto-trading-bots',
-            period: 'March 2024 - December 2024',
+            period: 'November 2024 - June 2025',
             type: 'acquired',
             categories: ['web3', 'automation'],
             description:

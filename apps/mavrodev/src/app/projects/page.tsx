@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     Code2 as GithubIcon,
     ExternalLink,
@@ -15,6 +15,8 @@ import {
     Brain,
     Code2,
     Sparkles,
+    ChevronDown,
+    ChevronUp,
 } from 'lucide-react';
 import {
     Badge,
@@ -55,8 +57,23 @@ export default function ProjectsPage() {
     const [hoveredProject, setHoveredProject] = React.useState<string | null>(
         null,
     );
+    const [expandedProjects, setExpandedProjects] = React.useState<Set<string>>(
+        new Set(),
+    );
 
     const allProjects = getProjects();
+
+    const toggleProjectExpansion = (slug: string) => {
+        setExpandedProjects((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has(slug)) {
+                newSet.delete(slug);
+            } else {
+                newSet.add(slug);
+            }
+            return newSet;
+        });
+    };
 
     // Get all unique categories
     const allCategories = React.useMemo(() => {
@@ -201,6 +218,9 @@ export default function ProjectsPage() {
                                 ? iconMap[project.icon] || Code2
                                 : Code2;
                             const isHovered = hoveredProject === project.name;
+                            const isExpanded = expandedProjects.has(
+                                project.slug,
+                            );
                             const primaryCategory = getPrimaryCategory(
                                 project.categories,
                             );
@@ -303,7 +323,7 @@ export default function ProjectsPage() {
                                             </div>
 
                                             {/* Categories with outline style */}
-                                            <div className="flex flex-wrap gap-1.5">
+                                            <div className="flex flex-wrap gap-1.5 mb-4">
                                                 {project.categories.map(
                                                     (category) => (
                                                         <Badge
@@ -318,6 +338,91 @@ export default function ProjectsPage() {
                                                     ),
                                                 )}
                                             </div>
+
+                                            {/* Show More Button - Only show if there are highlights */}
+                                            {project.highlights &&
+                                                project.highlights.length >
+                                                    0 && (
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            toggleProjectExpansion(
+                                                                project.slug,
+                                                            );
+                                                        }}
+                                                        className="w-full justify-between text-xs"
+                                                    >
+                                                        <span>
+                                                            Show{' '}
+                                                            {isExpanded
+                                                                ? 'less'
+                                                                : 'highlights'}
+                                                        </span>
+                                                        {isExpanded ? (
+                                                            <ChevronUp className="h-3.5 w-3.5" />
+                                                        ) : (
+                                                            <ChevronDown className="h-3.5 w-3.5" />
+                                                        )}
+                                                    </Button>
+                                                )}
+
+                                            {/* Highlights Section */}
+                                            <AnimatePresence>
+                                                {isExpanded &&
+                                                    project.highlights && (
+                                                        <motion.div
+                                                            initial={{
+                                                                opacity: 0,
+                                                                height: 0,
+                                                            }}
+                                                            animate={{
+                                                                opacity: 1,
+                                                                height: 'auto',
+                                                            }}
+                                                            exit={{
+                                                                opacity: 0,
+                                                                height: 0,
+                                                            }}
+                                                            transition={{
+                                                                duration: 0.3,
+                                                            }}
+                                                            className="mt-4"
+                                                        >
+                                                            <div className="border-l-2 border-primary/20 pl-4 space-y-2">
+                                                                <h4 className="text-sm font-semibold mb-2">
+                                                                    Key
+                                                                    Highlights:
+                                                                </h4>
+                                                                <ul className="space-y-1">
+                                                                    {project.highlights.map(
+                                                                        (
+                                                                            highlight,
+                                                                            idx,
+                                                                        ) => (
+                                                                            <li
+                                                                                key={
+                                                                                    idx
+                                                                                }
+                                                                                className="text-sm text-muted-foreground flex items-start gap-2"
+                                                                            >
+                                                                                <span className="text-primary mt-1">
+                                                                                    •
+                                                                                </span>
+                                                                                <span>
+                                                                                    {
+                                                                                        highlight
+                                                                                    }
+                                                                                </span>
+                                                                            </li>
+                                                                        ),
+                                                                    )}
+                                                                </ul>
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+                                            </AnimatePresence>
                                         </CardContent>
 
                                         <CardFooter className="flex gap-3">
