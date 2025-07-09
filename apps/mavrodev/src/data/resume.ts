@@ -134,33 +134,12 @@ export const resumeData: Resume = {
             acquired: {
                 by: 'MicroPump',
                 details:
-                    'Successfully transitioned entire ecosystem after acquisition',
+                    'Successfully acquired in June 2025. Entire ecosystem transitioned to new ownership.',
             },
             metrics: {
                 users: '1.2K+',
             },
             impact: '1.2K+ active users',
-        },
-        {
-            name: 'MicroPump',
-            slug: 'micropump',
-            period: 'June 2025 - Present',
-            type: 'acquired',
-            categories: ['web3', 'automation'],
-            description: 'Advanced Telegram Bot for Token Promotion',
-            icon: 'Zap',
-            longDescription:
-                'Successor to EzPump, MicroPump is a Telegram-based tool focused on expanding token visibility and trading behavior analytics for Solana meme coins.',
-            highlights: [
-                'Extended the architecture of EzPump into a more scalable and modular system',
-                'Designed dynamic pricing models and automated bump logic tied to blockchain activity',
-                'Coordinated feature rollouts and performance tuning post-migration from EzPump',
-                'Ongoing enhancements focused on user growth, monetization features, and UX improvements',
-            ],
-            primaryTech: ['TypeScript', 'Solana Web3.js', 'MongoDB'],
-            secondaryTech: ['Telegraf', 'Node.js', 'NestJS'],
-            featured: false,
-            impact: '3.6K+ active users',
         },
         {
             name: 'Nextjs13-template-auth',
@@ -184,6 +163,38 @@ export const resumeData: Resume = {
         },
     ],
     experience: [
+        {
+            company: 'MicroPump',
+            location: 'Remote',
+            role: 'Technical Consultant',
+            period: 'June 2025 - Present',
+            current: true,
+            description:
+                'Providing ongoing technical consultation and development services after the acquisition of my EzPump bot ecosystem. Working on scaling infrastructure and implementing new features.',
+            projects: [
+                {
+                    name: 'Post-Acquisition Integration',
+                    description:
+                        'Technical lead for migrating and scaling the acquired bot ecosystem',
+                    highlights: [
+                        'Extended the architecture of EzPump into a more scalable and modular system',
+                        'Designed dynamic pricing models and automated bump logic tied to blockchain activity',
+                        'Coordinated feature rollouts and performance tuning post-migration',
+                        'Ongoing enhancements focused on user growth, monetization features, and UX improvements',
+                        'Currently serving 3.6K+ active users',
+                    ],
+                },
+            ],
+            technologies: {
+                backend: [
+                    'Node.js',
+                    'Solana Web3.js',
+                    'Node.js Telegram Bot API',
+                ],
+                databases: ['MongoDB'],
+                other: [],
+            },
+        },
         {
             company: 'InstaShop',
             location: 'Remote – UAE',
