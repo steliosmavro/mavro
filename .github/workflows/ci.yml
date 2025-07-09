@@ -40,3 +40,6 @@ jobs:
 
             - name: Build packages and apps
               run: npm run build
+              env:
+                  RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+                  CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
