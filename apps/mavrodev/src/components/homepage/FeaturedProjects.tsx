@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, MotionValue } from 'framer-motion';
 import { getFeaturedProjects } from '@/lib/resumeHelpers';
+import { formatPeriod } from '@/lib/dateUtils';
 import { Github, ExternalLink, Award, Star } from 'lucide-react';
 import {
     Badge,
@@ -139,7 +140,7 @@ function ProjectCardHeader({ project }: { project: Project }) {
                 <div>
                     <h3 className="text-2xl font-bold mb-1">{project.name}</h3>
                     <p className="text-sm text-muted-foreground">
-                        {project.period}
+                        {formatPeriod(project.period)}
                     </p>
                 </div>
                 <div className="flex items-center gap-2">

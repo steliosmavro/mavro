@@ -33,7 +33,10 @@ export type ProjectCategory =
 export interface Project {
     name: string;
     slug: string;
-    period: string;
+    period: {
+        start: Date;
+        end?: Date;
+    };
     type: 'open-source' | 'client' | 'personal' | 'acquired';
     categories: ProjectCategory[]; // Multiple categories per project
     description: string;
@@ -60,9 +63,15 @@ export interface Project {
 export interface Experience {
     company: string;
     location: string;
+    workModel?: 'Remote' | 'Hybrid' | 'On-site';
     role: string;
-    period: string;
+    period: {
+        start: Date;
+        end?: Date;
+    };
     current: boolean;
+    website?: string;
+    logo?: string;
     description: string;
     projects: Array<{
         name: string;

@@ -17,6 +17,9 @@ import {
     Sparkles,
     ChevronDown,
     ChevronUp,
+    Briefcase,
+    Calendar,
+    MapPin,
 } from 'lucide-react';
 import {
     Badge,
@@ -25,16 +28,21 @@ import {
     CardHeader,
     CardContent,
     CardFooter,
+    Tabs,
+    TabsList,
+    TabsTrigger,
+    TabsContent,
 } from '@repo/ui/components';
 import React from 'react';
 import { resumeData } from '@/data/resume';
 import { getProjects } from '@/lib/resumeHelpers';
-import type { Project, ProjectCategory } from '@/types/resume';
+import type { Project, ProjectCategory, Experience } from '@/types/resume';
 import {
     getCategoryLabel,
     getCategoryColor,
     getPrimaryCategory,
 } from '@/lib/categories';
+import { formatPeriod } from '@/lib/dateUtils';
 
 // Icon mapping for projects
 const iconMap: Record<string, React.ElementType> = {
@@ -50,6 +58,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 type FilterType = ProjectCategory | 'all' | 'featured';
+type TabType = 'personal' | 'professional';
 
 export default function ProjectsPage() {
     const [selectedFilter, setSelectedFilter] =
@@ -60,8 +69,14 @@ export default function ProjectsPage() {
     const [expandedProjects, setExpandedProjects] = React.useState<Set<string>>(
         new Set(),
     );
+    const [expandedExperience, setExpandedExperience] = React.useState<
+        Set<string>
+    >(new Set());
+    const [activeTab, setActiveTab] = React.useState<TabType>('personal');
 
     const allProjects = getProjects();
+    const personalProjects = allProjects.filter((p) => p.type !== 'client');
+    const clientProjects = allProjects.filter((p) => p.type === 'client');
 
     const toggleProjectExpansion = (slug: string) => {
         setExpandedProjects((prev) => {
@@ -75,21 +90,33 @@ export default function ProjectsPage() {
         });
     };
 
-    // Get all unique categories
+    const toggleExperienceExpansion = (company: string) => {
+        setExpandedExperience((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has(company)) {
+                newSet.delete(company);
+            } else {
+                newSet.add(company);
+            }
+            return newSet;
+        });
+    };
+
+    // Get all unique categories from personal projects only
     const allCategories = React.useMemo(() => {
         const categories = new Set<ProjectCategory>();
-        allProjects.forEach((project) => {
+        personalProjects.forEach((project) => {
             project.categories.forEach((cat) => categories.add(cat));
         });
         return Array.from(categories).sort();
-    }, [allProjects]);
+    }, [personalProjects]);
 
     const filteredProjects =
         selectedFilter === 'all'
-            ? allProjects
+            ? personalProjects
             : selectedFilter === 'featured'
-              ? allProjects.filter((p) => p.featured)
-              : allProjects.filter((p) =>
+              ? personalProjects.filter((p) => p.featured)
+              : personalProjects.filter((p) =>
                     p.categories.includes(selectedFilter as ProjectCategory),
                 );
 
@@ -121,7 +148,7 @@ export default function ProjectsPage() {
             contributions: [],
         };
 
-        allProjects.forEach((project) => {
+        personalProjects.forEach((project) => {
             if (project.featured) {
                 grouped.featured.push(project);
             }
@@ -133,7 +160,7 @@ export default function ProjectsPage() {
         });
 
         return grouped;
-    }, [allProjects]);
+    }, [personalProjects]);
 
     const renderProjectCard = (project: Project, index: number) => {
         const Icon = project.icon ? iconMap[project.icon] || Code2 : Code2;
@@ -155,7 +182,7 @@ export default function ProjectsPage() {
                 }}
                 onHoverStart={() => setHoveredProject(project.name)}
                 onHoverEnd={() => setHoveredProject(null)}
-                className="group break-inside-avoid mb-6"
+                className="group break-inside-avoid"
                 style={{
                     breakInside: 'avoid-column',
                     pageBreakInside: 'avoid',
@@ -206,7 +233,7 @@ export default function ProjectsPage() {
                         </div>
 
                         <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                            <span>{project.period}</span>
+                            <span>{formatPeriod(project.period)}</span>
                             {project.impact && (
                                 <>
                                     <span>•</span>
@@ -220,60 +247,34 @@ export default function ProjectsPage() {
 
                     <CardContent>
                         <p className="text-muted-foreground mb-4">
-                            {isHovered && project.longDescription
-                                ? project.longDescription
-                                : project.description}
+                            {project.description}
                         </p>
 
-                        {/* Technologies - Combined primary and secondary */}
-                        <div className="text-sm text-muted-foreground mb-3">
-                            <span className="font-medium">Built with:</span>{' '}
-                            {[
-                                ...project.primaryTech,
-                                ...project.secondaryTech,
-                            ].join(', ')}
-                        </div>
+                        {/* Show More Button - Only show if there are highlights or long description */}
+                        {((project.highlights &&
+                            project.highlights.length > 0) ||
+                            project.longDescription) && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleProjectExpansion(project.slug);
+                                }}
+                                className="inline-flex items-center gap-2 text-xs"
+                            >
+                                <span>Show {isExpanded ? 'less' : 'more'}</span>
+                                {isExpanded ? (
+                                    <ChevronUp className="h-3.5 w-3.5" />
+                                ) : (
+                                    <ChevronDown className="h-3.5 w-3.5" />
+                                )}
+                            </Button>
+                        )}
 
-                        {/* Categories with outline style */}
-                        <div className="flex flex-wrap gap-1.5 mb-4">
-                            {project.categories.map((category) => (
-                                <Badge
-                                    key={category}
-                                    variant="outline"
-                                    className="text-xs px-2 py-0.5"
-                                >
-                                    {getCategoryLabel(category)}
-                                </Badge>
-                            ))}
-                        </div>
-
-                        {/* Show More Button - Only show if there are highlights */}
-                        {project.highlights &&
-                            project.highlights.length > 0 && (
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        toggleProjectExpansion(project.slug);
-                                    }}
-                                    className="w-full justify-between text-xs"
-                                >
-                                    <span>
-                                        Show{' '}
-                                        {isExpanded ? 'less' : 'highlights'}
-                                    </span>
-                                    {isExpanded ? (
-                                        <ChevronUp className="h-3.5 w-3.5" />
-                                    ) : (
-                                        <ChevronDown className="h-3.5 w-3.5" />
-                                    )}
-                                </Button>
-                            )}
-
-                        {/* Highlights Section */}
+                        {/* Expanded Section */}
                         <AnimatePresence>
-                            {isExpanded && project.highlights && (
+                            {isExpanded && (
                                 <motion.div
                                     initial={{
                                         opacity: 0,
@@ -290,27 +291,64 @@ export default function ProjectsPage() {
                                     transition={{
                                         duration: 0.3,
                                     }}
-                                    className="mt-4"
+                                    className="mt-4 space-y-4"
                                 >
-                                    <div className="border-l-2 border-primary/20 pl-4 space-y-2">
-                                        <h4 className="text-sm font-semibold mb-2">
-                                            Key Highlights:
-                                        </h4>
-                                        <ul className="space-y-1">
-                                            {project.highlights.map(
-                                                (highlight, idx) => (
-                                                    <li
-                                                        key={idx}
-                                                        className="text-sm text-muted-foreground flex items-start gap-2"
-                                                    >
-                                                        <span className="text-primary mt-1">
-                                                            •
-                                                        </span>
-                                                        <span>{highlight}</span>
-                                                    </li>
-                                                ),
-                                            )}
-                                        </ul>
+                                    {/* Long Description */}
+                                    {project.longDescription && (
+                                        <p className="text-sm text-muted-foreground">
+                                            {project.longDescription}
+                                        </p>
+                                    )}
+
+                                    {/* Technologies */}
+                                    <div className="text-sm text-muted-foreground">
+                                        <span className="font-medium">
+                                            Technologies used:
+                                        </span>{' '}
+                                        {[
+                                            ...project.primaryTech,
+                                            ...project.secondaryTech,
+                                        ].join(', ')}
+                                    </div>
+
+                                    {/* Highlights */}
+                                    {project.highlights &&
+                                        project.highlights.length > 0 && (
+                                            <div className="border-l-2 border-primary/20 pl-4 space-y-2">
+                                                <h4 className="text-sm font-semibold mb-2">
+                                                    Key Highlights:
+                                                </h4>
+                                                <ul className="space-y-1">
+                                                    {project.highlights.map(
+                                                        (highlight, idx) => (
+                                                            <li
+                                                                key={idx}
+                                                                className="text-sm text-muted-foreground flex items-start gap-2"
+                                                            >
+                                                                <span className="text-primary mt-1">
+                                                                    •
+                                                                </span>
+                                                                <span>
+                                                                    {highlight}
+                                                                </span>
+                                                            </li>
+                                                        ),
+                                                    )}
+                                                </ul>
+                                            </div>
+                                        )}
+
+                                    {/* Categories - Now shown only in expanded view */}
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {project.categories.map((category) => (
+                                            <Badge
+                                                key={category}
+                                                variant="secondary"
+                                                className="text-xs px-2 py-0.5"
+                                            >
+                                                {getCategoryLabel(category)}
+                                            </Badge>
+                                        ))}
                                     </div>
                                 </motion.div>
                             )}
@@ -353,6 +391,303 @@ export default function ProjectsPage() {
         );
     };
 
+    const renderExperienceCard = (experience: Experience, index: number) => {
+        const isExpanded = expandedExperience.has(experience.company);
+
+        return (
+            <motion.div
+                key={experience.company}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                    duration: 0.5,
+                    delay: index * 0.1,
+                }}
+                className=""
+            >
+                <Card className="relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary/30">
+                    <CardHeader>
+                        <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                                {experience.website ? (
+                                    <a
+                                        href={experience.website}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="transition-opacity hover:opacity-80"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        {experience.logo ? (
+                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white/5 border border-border/50">
+                                                <img
+                                                    src={experience.logo}
+                                                    alt={`${experience.company} logo`}
+                                                    className="w-full h-full object-contain"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                                                <Briefcase className="h-5 w-5" />
+                                            </div>
+                                        )}
+                                    </a>
+                                ) : (
+                                    <>
+                                        {experience.logo ? (
+                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white/5 border border-border/50">
+                                                <img
+                                                    src={experience.logo}
+                                                    alt={`${experience.company} logo`}
+                                                    className="w-full h-full object-contain"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                                                <Briefcase className="h-5 w-5" />
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                                <div className="flex flex-col gap-1">
+                                    {experience.website ? (
+                                        <a
+                                            href={experience.website}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-xl font-bold hover:text-primary transition-colors"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            {experience.company}
+                                        </a>
+                                    ) : (
+                                        <h3 className="text-xl font-bold">
+                                            {experience.company}
+                                        </h3>
+                                    )}
+                                    <span className="text-sm font-medium text-muted-foreground">
+                                        {experience.role}
+                                    </span>
+                                </div>
+                            </div>
+                            {experience.current && (
+                                <Badge
+                                    variant="secondary"
+                                    className="bg-green-500/10 text-green-600"
+                                >
+                                    Current
+                                </Badge>
+                            )}
+                        </div>
+
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                                <Calendar className="h-3.5 w-3.5" />
+                                <span>{formatPeriod(experience.period)}</span>
+                            </div>
+                            <span>•</span>
+                            <div className="flex items-center gap-1">
+                                <MapPin className="h-3.5 w-3.5" />
+                                <span>
+                                    {experience.location ||
+                                        experience.workModel}
+                                </span>
+                            </div>
+                        </div>
+                    </CardHeader>
+
+                    <CardContent>
+                        <p className="text-muted-foreground mb-4">
+                            {experience.description}
+                        </p>
+
+                        {/* Client Projects */}
+                        {clientProjects.filter((p) =>
+                            experience.projects.some((ep) =>
+                                ep.name.includes(p.name),
+                            ),
+                        ).length > 0 && (
+                            <div className="mb-4">
+                                <h4 className="text-sm font-semibold mb-2">
+                                    Related Projects:
+                                </h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {clientProjects
+                                        .filter((p) =>
+                                            experience.projects.some((ep) =>
+                                                ep.name.includes(p.name),
+                                            ),
+                                        )
+                                        .map((project) => (
+                                            <Badge
+                                                key={project.slug}
+                                                variant="outline"
+                                            >
+                                                {project.name}
+                                            </Badge>
+                                        ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Show More Button */}
+                        {experience.projects.length > 0 && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleExperienceExpansion(
+                                        experience.company,
+                                    );
+                                }}
+                                className="inline-flex items-center gap-2 text-xs"
+                            >
+                                <span>Show {isExpanded ? 'less' : 'more'}</span>
+                                {isExpanded ? (
+                                    <ChevronUp className="h-3.5 w-3.5" />
+                                ) : (
+                                    <ChevronDown className="h-3.5 w-3.5" />
+                                )}
+                            </Button>
+                        )}
+
+                        {/* Expanded Section */}
+                        <AnimatePresence>
+                            {isExpanded && (
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                        height: 0,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        height: 'auto',
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        height: 0,
+                                    }}
+                                    transition={{
+                                        duration: 0.3,
+                                    }}
+                                    className="mt-4 space-y-4"
+                                >
+                                    {/* Projects */}
+                                    {experience.projects.map((project, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="border-l-2 border-primary/20 pl-4"
+                                        >
+                                            <h5 className="text-sm font-semibold mb-1">
+                                                {project.name}
+                                                {project.role && (
+                                                    <span className="font-normal text-muted-foreground">
+                                                        {' '}
+                                                        - {project.role}
+                                                    </span>
+                                                )}
+                                            </h5>
+                                            <p className="text-sm text-muted-foreground mb-2">
+                                                {project.description}
+                                            </p>
+                                            <ul className="space-y-1">
+                                                {project.highlights.map(
+                                                    (highlight, hidx) => (
+                                                        <li
+                                                            key={hidx}
+                                                            className="text-sm text-muted-foreground flex items-start gap-2"
+                                                        >
+                                                            <span className="text-primary mt-1">
+                                                                •
+                                                            </span>
+                                                            <span>
+                                                                {highlight}
+                                                            </span>
+                                                        </li>
+                                                    ),
+                                                )}
+                                            </ul>
+                                        </div>
+                                    ))}
+
+                                    {/* Technologies */}
+                                    <div className="space-y-2">
+                                        <h4 className="text-sm font-semibold">
+                                            Technologies used:
+                                        </h4>
+                                        <div className="space-y-1">
+                                            {experience.technologies.frontend &&
+                                                experience.technologies.frontend
+                                                    .length > 0 && (
+                                                    <div className="text-sm text-muted-foreground">
+                                                        <span className="font-medium">
+                                                            Frontend:
+                                                        </span>{' '}
+                                                        {experience.technologies.frontend.join(
+                                                            ', ',
+                                                        )}
+                                                    </div>
+                                                )}
+                                            {experience.technologies.backend &&
+                                                experience.technologies.backend
+                                                    .length > 0 && (
+                                                    <div className="text-sm text-muted-foreground">
+                                                        <span className="font-medium">
+                                                            Backend:
+                                                        </span>{' '}
+                                                        {experience.technologies.backend.join(
+                                                            ', ',
+                                                        )}
+                                                    </div>
+                                                )}
+                                            {experience.technologies
+                                                .databases &&
+                                                experience.technologies
+                                                    .databases.length > 0 && (
+                                                    <div className="text-sm text-muted-foreground">
+                                                        <span className="font-medium">
+                                                            Databases:
+                                                        </span>{' '}
+                                                        {experience.technologies.databases.join(
+                                                            ', ',
+                                                        )}
+                                                    </div>
+                                                )}
+                                            {experience.technologies.devops &&
+                                                experience.technologies.devops
+                                                    .length > 0 && (
+                                                    <div className="text-sm text-muted-foreground">
+                                                        <span className="font-medium">
+                                                            DevOps:
+                                                        </span>{' '}
+                                                        {experience.technologies.devops.join(
+                                                            ', ',
+                                                        )}
+                                                    </div>
+                                                )}
+                                            {experience.technologies.other &&
+                                                experience.technologies.other
+                                                    .length > 0 && (
+                                                    <div className="text-sm text-muted-foreground">
+                                                        <span className="font-medium">
+                                                            Other:
+                                                        </span>{' '}
+                                                        {experience.technologies.other.join(
+                                                            ', ',
+                                                        )}
+                                                    </div>
+                                                )}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </CardContent>
+                </Card>
+            </motion.div>
+        );
+    };
+
     return (
         <main className="min-h-screen">
             {/* Hero Section */}
@@ -371,142 +706,214 @@ export default function ProjectsPage() {
                         className="text-center mb-12"
                     >
                         <h1 className="text-5xl md:text-[3.75rem] font-bold mb-6 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                            Projects
+                            Projects & Experience
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                             {resumeData.summary.headline}
                         </p>
                     </motion.div>
-
-                    {/* Filters */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="flex flex-wrap justify-center gap-3 mb-12"
-                    >
-                        <Button
-                            variant={
-                                selectedFilter === 'all' ? 'default' : 'outline'
-                            }
-                            onClick={() => setSelectedFilter('all')}
-                            className="group"
-                        >
-                            <Code2 className="h-4 w-4 mr-2" />
-                            All Projects
-                            <Badge variant="secondary" className="ml-2">
-                                {allProjects.length}
-                            </Badge>
-                        </Button>
-                        <Button
-                            variant={
-                                selectedFilter === 'featured'
-                                    ? 'default'
-                                    : 'outline'
-                            }
-                            onClick={() => setSelectedFilter('featured')}
-                            className="group"
-                        >
-                            <Star className="h-4 w-4 mr-2" />
-                            Featured
-                            <Badge variant="secondary" className="ml-2">
-                                {projectsByCategory.featured.length}
-                            </Badge>
-                        </Button>
-                        {allCategories.map((category) => {
-                            const count =
-                                projectsByCategory[category]?.length || 0;
-                            if (count === 0) return null;
-
-                            return (
-                                <Button
-                                    key={category}
-                                    variant={
-                                        selectedFilter === category
-                                            ? 'default'
-                                            : 'outline'
-                                    }
-                                    onClick={() => setSelectedFilter(category)}
-                                    className="group"
-                                >
-                                    {getCategoryLabel(category)}
-                                    <Badge variant="secondary" className="ml-2">
-                                        {count}
-                                    </Badge>
-                                </Button>
-                            );
-                        })}
-                    </motion.div>
                 </div>
             </section>
 
-            {/* Projects Grid */}
+            {/* Main Content with Tabs */}
             <section className="px-4 pb-24">
                 <div className="max-w-6xl mx-auto">
-                    {/* Desktop XL: 3 columns */}
-                    <div className="hidden xl:flex flex-row gap-6">
-                        {distributeIntoColumns(filteredProjects, 3).map(
-                            (column, columnIndex) => (
-                                <div
-                                    key={columnIndex}
-                                    className="flex-1 flex flex-col gap-6"
+                    <Tabs
+                        value={activeTab}
+                        onValueChange={(value) =>
+                            setActiveTab(value as TabType)
+                        }
+                        className="w-full"
+                    >
+                        <TabsList className="grid w-full max-w-md mx-auto mb-12 mt-8 grid-cols-2 h-12 p-1 bg-muted/50 backdrop-blur-sm border border-border/50 shadow-sm">
+                            <TabsTrigger
+                                value="personal"
+                                className="data-[state=active]:!bg-primary data-[state=active]:!text-primary-foreground data-[state=active]:shadow-sm"
+                            >
+                                Personal Projects
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="professional"
+                                className="data-[state=active]:!bg-primary data-[state=active]:!text-primary-foreground data-[state=active]:shadow-sm"
+                            >
+                                Work Experience
+                            </TabsTrigger>
+                        </TabsList>
+
+                        {/* Personal Projects Tab */}
+                        <TabsContent value="personal" className="mt-0">
+                            {/* Filters */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                                className="flex flex-wrap justify-center gap-3 mb-12"
+                            >
+                                <Button
+                                    variant={
+                                        selectedFilter === 'all'
+                                            ? 'default'
+                                            : 'outline'
+                                    }
+                                    onClick={() => setSelectedFilter('all')}
+                                    className="group"
                                 >
-                                    {column.map((project, index) =>
-                                        renderProjectCard(
-                                            project,
-                                            columnIndex *
-                                                Math.ceil(
-                                                    filteredProjects.length / 3,
-                                                ) +
-                                                index,
-                                        ),
-                                    )}
-                                </div>
-                            ),
-                        )}
-                    </div>
-
-                    {/* Desktop MD-LG: 2 columns */}
-                    <div className="hidden md:flex xl:hidden flex-row gap-6">
-                        {distributeIntoColumns(filteredProjects, 2).map(
-                            (column, columnIndex) => (
-                                <div
-                                    key={columnIndex}
-                                    className="flex-1 flex flex-col gap-6"
+                                    <Code2 className="h-4 w-4 mr-2" />
+                                    All Projects
+                                    <Badge variant="secondary" className="ml-2">
+                                        {personalProjects.length}
+                                    </Badge>
+                                </Button>
+                                <Button
+                                    variant={
+                                        selectedFilter === 'featured'
+                                            ? 'default'
+                                            : 'outline'
+                                    }
+                                    onClick={() =>
+                                        setSelectedFilter('featured')
+                                    }
+                                    className="group"
                                 >
-                                    {column.map((project, index) =>
-                                        renderProjectCard(
-                                            project,
-                                            columnIndex *
-                                                Math.ceil(
-                                                    filteredProjects.length / 2,
-                                                ) +
-                                                index,
-                                        ),
-                                    )}
-                                </div>
-                            ),
-                        )}
-                    </div>
+                                    <Star className="h-4 w-4 mr-2" />
+                                    Featured
+                                    <Badge variant="secondary" className="ml-2">
+                                        {projectsByCategory.featured.length}
+                                    </Badge>
+                                </Button>
+                                {allCategories.map((category) => {
+                                    const count =
+                                        projectsByCategory[category]?.length ||
+                                        0;
+                                    if (count === 0) return null;
 
-                    {/* Tablet & Mobile: Single column */}
-                    <div className="flex md:hidden flex-col gap-6">
-                        {filteredProjects.map((project, index) =>
-                            renderProjectCard(project, index),
-                        )}
-                    </div>
+                                    return (
+                                        <Button
+                                            key={category}
+                                            variant={
+                                                selectedFilter === category
+                                                    ? 'default'
+                                                    : 'outline'
+                                            }
+                                            onClick={() =>
+                                                setSelectedFilter(category)
+                                            }
+                                            className="group"
+                                        >
+                                            {getCategoryLabel(category)}
+                                            <Badge
+                                                variant="secondary"
+                                                className="ml-2"
+                                            >
+                                                {count}
+                                            </Badge>
+                                        </Button>
+                                    );
+                                })}
+                            </motion.div>
 
-                    {filteredProjects.length === 0 && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="text-center py-16"
-                        >
-                            <p className="text-muted-foreground">
-                                No projects found in this category.
-                            </p>
-                        </motion.div>
-                    )}
+                            {/* Projects Grid */}
+                            {/* Desktop XL: 3 columns */}
+                            <div className="hidden xl:flex flex-row gap-6">
+                                {distributeIntoColumns(filteredProjects, 3).map(
+                                    (column, columnIndex) => (
+                                        <div
+                                            key={columnIndex}
+                                            className="flex-1 flex flex-col gap-6"
+                                        >
+                                            {column.map((project, index) =>
+                                                renderProjectCard(
+                                                    project,
+                                                    columnIndex *
+                                                        Math.ceil(
+                                                            filteredProjects.length /
+                                                                3,
+                                                        ) +
+                                                        index,
+                                                ),
+                                            )}
+                                        </div>
+                                    ),
+                                )}
+                            </div>
+
+                            {/* Desktop MD-LG: 2 columns */}
+                            <div className="hidden md:flex xl:hidden flex-row gap-6">
+                                {distributeIntoColumns(filteredProjects, 2).map(
+                                    (column, columnIndex) => (
+                                        <div
+                                            key={columnIndex}
+                                            className="flex-1 flex flex-col gap-6"
+                                        >
+                                            {column.map((project, index) =>
+                                                renderProjectCard(
+                                                    project,
+                                                    columnIndex *
+                                                        Math.ceil(
+                                                            filteredProjects.length /
+                                                                2,
+                                                        ) +
+                                                        index,
+                                                ),
+                                            )}
+                                        </div>
+                                    ),
+                                )}
+                            </div>
+
+                            {/* Tablet & Mobile: Single column */}
+                            <div className="flex md:hidden flex-col gap-6">
+                                {filteredProjects.map((project, index) =>
+                                    renderProjectCard(project, index),
+                                )}
+                            </div>
+
+                            {filteredProjects.length === 0 && (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="text-center py-16"
+                                >
+                                    <p className="text-muted-foreground">
+                                        No projects found in this category.
+                                    </p>
+                                </motion.div>
+                            )}
+                        </TabsContent>
+
+                        {/* Professional Work Tab */}
+                        <TabsContent value="professional" className="mt-0">
+                            <div className="space-y-6">
+                                {resumeData.experience.map((exp, index) =>
+                                    renderExperienceCard(exp, index),
+                                )}
+
+                                {clientProjects.length > 0 && (
+                                    <>
+                                        <div className="text-center my-8">
+                                            <h3 className="text-2xl font-bold">
+                                                Client Projects
+                                            </h3>
+                                            <p className="text-muted-foreground mt-2">
+                                                Projects delivered for clients
+                                            </p>
+                                        </div>
+
+                                        {/* Client Projects Grid */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            {clientProjects.map(
+                                                (project, index) =>
+                                                    renderProjectCard(
+                                                        project,
+                                                        index,
+                                                    ),
+                                            )}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </TabsContent>
+                    </Tabs>
                 </div>
             </section>
 

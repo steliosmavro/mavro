@@ -29,7 +29,9 @@ export const resumeData: Resume = {
         {
             name: 'MavroChat',
             slug: 'mavrochat',
-            period: 'January 2025',
+            period: {
+                start: new Date('2025-01-01'),
+            },
             type: 'open-source',
             categories: ['ai-ml', 'developer-tools', 'open-source'],
             description: 'Open-Source AI-Powered Chat Platform for Developers',
@@ -59,7 +61,9 @@ export const resumeData: Resume = {
         {
             name: 'MavroDev',
             slug: 'mavrodev',
-            period: 'October 2024',
+            period: {
+                start: new Date('2024-10-01'),
+            },
             type: 'personal',
             categories: ['website'],
             description: 'Personal Website & Blog Platform',
@@ -83,7 +87,10 @@ export const resumeData: Resume = {
         {
             name: 'Nango Contributions',
             slug: 'nango-contributions',
-            period: 'November 2024 - January 2025',
+            period: {
+                start: new Date('2024-11-01'),
+                end: new Date('2025-01-31'),
+            },
             type: 'open-source',
             categories: ['contributions', 'open-source', 'developer-tools'],
             description: 'Open Source Developer Tool Contributions',
@@ -103,7 +110,10 @@ export const resumeData: Resume = {
         {
             name: 'Crypto Trading Bot Ecosystem',
             slug: 'crypto-trading-bots',
-            period: 'November 2024 - June 2025',
+            period: {
+                start: new Date('2024-11-01'),
+                end: new Date('2025-06-30'),
+            },
             type: 'acquired',
             categories: ['web3', 'automation'],
             description:
@@ -119,16 +129,15 @@ export const resumeData: Resume = {
                 'Built anti-detection system with rotating proxies and randomized behavior',
                 'Reached 1.2K+ users through custom automation and community marketing',
             ],
-            primaryTech: ['TypeScript', 'Solana Web3.js', 'MongoDB'],
+            primaryTech: ['TypeScript', 'Solana Web3.js', 'MongoDB', 'Express'],
             secondaryTech: [
-                'Telegraf',
-                'Node.js',
-                'NestJS',
-                'Express',
-                'REST APIs',
-                'WebSockets',
-                'JWT',
-                'bcrypt',
+                'Node.js Telegram Bot API',
+                'Solana SPL Token',
+                'Mongoose',
+                'Anchor Framework',
+                'Jupiter API',
+                'Jito MEV',
+                'Cheerio',
             ],
             featured: true,
             acquired: {
@@ -144,7 +153,9 @@ export const resumeData: Resume = {
         {
             name: 'Nextjs13-template-auth',
             slug: 'nextjs13-template',
-            period: 'November 2023',
+            period: {
+                start: new Date('2023-11-01'),
+            },
             type: 'open-source',
             categories: ['open-source', 'developer-tools'],
             description:
@@ -165,10 +176,15 @@ export const resumeData: Resume = {
     experience: [
         {
             company: 'MicroPump',
-            location: 'Remote',
+            location: '',
+            workModel: 'Remote',
             role: 'Technical Consultant',
-            period: 'June 2025 - Present',
+            period: {
+                start: new Date('2025-06-01'),
+            },
             current: true,
+            website: 'https://www.micropump.fun',
+            logo: '/micropump-logo.webp',
             description:
                 'Providing ongoing technical consultation and development services after the acquisition of my EzPump bot ecosystem. Working on scaling infrastructure and implementing new features.',
             projects: [
@@ -188,19 +204,37 @@ export const resumeData: Resume = {
             technologies: {
                 backend: [
                     'Node.js',
+                    'Express',
+                    'TypeScript',
                     'Solana Web3.js',
-                    'Node.js Telegram Bot API',
+                    '@pump-fun/pump-sdk',
+                    'node-telegram-bot-api',
                 ],
-                databases: ['MongoDB'],
-                other: [],
+                databases: ['MongoDB', 'Mongoose'],
+                other: [
+                    '@solana/spl-token',
+                    'Anchor Framework',
+                    'Jupiter API',
+                    'Metaplex',
+                    'Jito MEV',
+                    'Axios',
+                    'Cheerio',
+                    '2captcha',
+                ],
             },
         },
         {
             company: 'InstaShop',
-            location: 'Remote – UAE',
+            location: 'UAE',
+            workModel: 'Remote',
             role: 'Software Engineer',
-            period: '2023 - 2025',
+            period: {
+                start: new Date('2023-01-01'),
+                end: new Date('2025-12-31'),
+            },
             current: false,
+            website: 'https://instashop.com/en-ae',
+            logo: '/instashop-logo.webp',
             description:
                 'Contributed to the leading grocery delivery app in MENA, acquired by Delivery Hero ($360M). Operated in a fast-paced team of 60+ developers.',
             projects: [
@@ -262,10 +296,16 @@ export const resumeData: Resume = {
         },
         {
             company: 'Mind Alliance',
-            location: 'Remote – New Jersey, USA',
+            location: 'New Jersey, USA',
+            workModel: 'Remote',
             role: 'Full-Stack Software Engineer',
-            period: 'September 2021 - March 2023',
+            period: {
+                start: new Date('2021-09-01'),
+                end: new Date('2023-03-31'),
+            },
             current: false,
+            website: 'https://www.mind-alliance.com',
+            logo: '/mind-alliance-logo.jpg',
             description:
                 'Built internal SaaS platforms for Fragomen, a leading U.S. law firm specializing in immigration law.',
             projects: [
