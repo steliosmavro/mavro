@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getBlogPost, getBlogPosts } from '../../../../lib/getBlogPosts';
 import BlogPostClient from '@/components/blog/BlogPostClient';
 import { MDXContent } from '@/components/blog/MDXContent';
+import { resumeData } from '@/data/resume';
 
 interface BlogPostPageProps {
     params: Promise<{
@@ -30,14 +31,14 @@ export async function generateMetadata({
     }
 
     return {
-        title: `${post.title} | Stelios Mavro`,
+        title: `${post.title} | ${resumeData.personal.name}`,
         description: post.summary,
         openGraph: {
             title: post.title,
             description: post.summary,
             type: 'article',
             publishedTime: post.date,
-            authors: ['Stelios Mavro'],
+            authors: [resumeData.personal.name],
             tags: post.categories,
         },
     };

@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import BlogList from './BlogList';
 import { getBlogPosts } from '../../../lib/getBlogPosts';
+import { resumeData } from '@/data/resume';
 
 export const metadata: Metadata = {
-    title: 'Blog | Stelios Mavro',
+    title: `Blog | ${resumeData.personal.name}`,
     description:
         'Thoughts on AI, developer tools, automation, and building better software.',
 };

@@ -33,7 +33,9 @@ export default function BlogPostClient({
     useHighlightTheme();
 
     const shareOnTwitter = () => {
-        const text = `Check out "${post.title}" by @steliosmavro`;
+        const twitterHandle =
+            resumeData.personal.twitter?.split('/').pop() || 'mavrodev';
+        const text = `Check out "${post.title}" by @${twitterHandle}`;
         const url = window.location.href;
         window.open(
             `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
@@ -272,7 +274,7 @@ export default function BlogPostClient({
                                         <Button size="sm">Get in Touch</Button>
                                     </Link>
                                     <Link
-                                        href="https://github.com/steliosmavro"
+                                        href={resumeData.personal.github}
                                         target="_blank"
                                     >
                                         <Button variant="outline" size="sm">
