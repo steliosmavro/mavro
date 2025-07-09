@@ -209,10 +209,7 @@ export default function ProjectsPage() {
             {/* Projects Grid */}
             <section className="px-4 pb-24">
                 <div className="max-w-6xl mx-auto">
-                    <motion.div
-                        className="grid grid-cols-1 md:grid-cols-2 gap-6"
-                        layout
-                    >
+                    <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
                         {filteredProjects.map((project, index) => {
                             const Icon = project.icon
                                 ? iconMap[project.icon] || Code2
@@ -242,10 +239,10 @@ export default function ProjectsPage() {
                                         setHoveredProject(project.name)
                                     }
                                     onHoverEnd={() => setHoveredProject(null)}
-                                    className={`group ${project.featured ? 'md:col-span-2' : ''}`}
+                                    className="group break-inside-avoid"
                                 >
                                     <Card
-                                        className={`h-full relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary/30 ${isHovered ? 'bg-gradient-to-br' : ''}`}
+                                        className={`relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-primary/30 ${isHovered ? 'bg-gradient-to-br' : ''}`}
                                     >
                                         {/* Gradient overlay for hover effect */}
                                         {isHovered && (
@@ -464,7 +461,7 @@ export default function ProjectsPage() {
                                 </motion.div>
                             );
                         })}
-                    </motion.div>
+                    </div>
 
                     {filteredProjects.length === 0 && (
                         <motion.div
