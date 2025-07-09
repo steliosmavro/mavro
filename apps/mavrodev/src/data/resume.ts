@@ -10,7 +10,7 @@ export const resumeData: Resume = {
         website: 'https://mavro.dev',
         linkedin: 'https://www.linkedin.com/in/steliosmavro',
         github: 'https://github.com/steliosmavro',
-        twitter: 'https://twitter.com/steliosmavro',
+        twitter: 'https://twitter.com/mavrodev',
         avatar: '/business-transparent-bg-cropped.png',
         casualAvatar: '/casual.jpg',
         timezone: 'Europe/Athens',
@@ -417,8 +417,8 @@ export const resumeData: Resume = {
         {
             type: 'twitter',
             label: 'X (Twitter)',
-            value: '@steliosmavro',
-            href: 'https://twitter.com/steliosmavro',
+            value: '@mavrodev',
+            href: 'https://twitter.com/mavrodev',
             color: 'from-gray-700 to-gray-900',
         },
     ],
@@ -445,7 +445,7 @@ export const resumeConfig: ResumeConfig = {
         projectsPerPage: 6,
     },
     seo: {
-        twitterHandle: '@steliosmavro',
+        twitterHandle: '@mavrodev',
         ogImage: '/og-image.png',
     },
 };

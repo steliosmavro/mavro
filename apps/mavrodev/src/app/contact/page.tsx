@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { resumeData } from '@/data/resume';
 import { getFAQs, getContactMethods } from '@/lib/resumeHelpers';
 import {
@@ -14,6 +14,8 @@ import {
     Clock,
     MessageSquare,
     Sparkles,
+    AlertCircle,
+    CheckCircle,
 } from 'lucide-react';
 import { Button, Card, Input, Textarea } from '@repo/ui/components';
 import React from 'react';
@@ -39,6 +41,7 @@ export default function ContactPage() {
     });
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [submitted, setSubmitted] = React.useState(false);
+    const [error, setError] = React.useState<string | null>(null);
     const [currentTime, setCurrentTime] = React.useState<string>('');
 
     // Update time every second
@@ -54,34 +57,48 @@ export default function ContactPage() {
             setCurrentTime(time);
         };
 
-        // Update immediately
         updateTime();
-
-        // Update every second
         const interval = setInterval(updateTime, 1000);
-
-        // Cleanup
         return () => clearInterval(interval);
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setError(null);
 
-        // Simulate form submission
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
 
-        // In a real app, you would send the email here
-        console.log('Form submitted:', formData);
+            const data = await response.json();
 
-        setIsSubmitting(false);
-        setSubmitted(true);
+            if (data.success) {
+                setSubmitted(true);
+                setFormData({ name: '', email: '', message: '' });
 
-        // Reset form after 3 seconds
-        setTimeout(() => {
-            setFormData({ name: '', email: '', message: '' });
-            setSubmitted(false);
-        }, 3000);
+                // Reset success state after 5 seconds
+                setTimeout(() => {
+                    setSubmitted(false);
+                }, 5000);
+            } else {
+                setError(
+                    data.error.message ||
+                        'Failed to send message. Please try again.',
+                );
+            }
+        } catch {
+            setError(
+                'Failed to send message. Please check your connection and try again.',
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (
@@ -91,6 +108,8 @@ export default function ContactPage() {
             ...prev,
             [e.target.name]: e.target.value,
         }));
+        // Clear error when user starts typing
+        if (error) setError(null);
     };
 
     return (
@@ -181,8 +200,9 @@ export default function ContactPage() {
                                         required
                                         value={formData.name}
                                         onChange={handleChange}
-                                        placeholder="John Doe"
+                                        placeholder="Your name"
                                         className="w-full"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
@@ -200,8 +220,9 @@ export default function ContactPage() {
                                         required
                                         value={formData.email}
                                         onChange={handleChange}
-                                        placeholder="john@example.com"
+                                        placeholder="your@email.com"
                                         className="w-full"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
 
@@ -221,8 +242,42 @@ export default function ContactPage() {
                                         placeholder="Tell me about your project..."
                                         rows={5}
                                         className="w-full resize-none"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
+
+                                {/* Error message */}
+                                <AnimatePresence>
+                                    {error && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 text-destructive"
+                                        >
+                                            <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                                            <p className="text-sm">{error}</p>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Success message */}
+                                <AnimatePresence>
+                                    {!submitted && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            className="flex justify-center items-center gap-2 p-3 rounded-lg bg-green-500/10 text-green-600 dark:text-green-400"
+                                        >
+                                            <CheckCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                                            <span className="text-sm">
+                                                Message sent successfully!
+                                                I&apos;ll get back to you soon.
+                                            </span>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
 
                                 <Button
                                     type="submit"

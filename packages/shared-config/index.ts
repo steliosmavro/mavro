@@ -13,16 +13,16 @@ export const geistMono = Geist_Mono({
 
 export const sharedConfig = {
     social: {
-        twitter: '@steliosmavro',
-        github: 'https://github.com/steliosmavro',
-        linkedin: 'https://www.linkedin.com/in/steliosmavro',
+        twitter: '@mavrodev',
+        github: 'https://github.com/mavrodev',
+        linkedin: 'https://www.linkedin.com/in/mavrodev',
     },
     author: {
         name: 'Stelios Mavro',
         email: 'stelios@mavro.dev',
     },
     seo: {
-        twitterCreator: '@steliosmavro',
+        twitterCreator: '@mavrodev',
         keywords: [
             'developer',
             'full-stack',
