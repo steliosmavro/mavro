@@ -52,7 +52,8 @@
       "Bash(netstat:*)",
       "Bash(yarn:*)",
       "Bash(pnpm:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [
       "Bash(rm -rf /)",
