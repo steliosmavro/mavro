@@ -58,10 +58,10 @@ This refactor paid dividends - new features that would've taken days now took ho
 Traders needed to boost their tokens' visibility on pump.fun. I engineered a clever system that:
 
 - Created dedicated wallets for each user automatically
-- Updated pump.fun profiles with EzPump branding (logo, description, name)
+- Automatically created and branded pump.fun accounts with EzPump logo, description, and name
 - Applied strategic "bumps" - executing buy and sell orders in the same transaction block
 - Generated real volume without users losing money (net zero trades)
-- Exploited pump.fun's algorithm that promoted high-volume tokens
+- Exploited pump.fun's algorithm that promoted high-volume tokens to homepage visibility
 
 ```typescript
 // Volume generation through atomic bumps
@@ -148,10 +148,12 @@ const calculateTotalFees = async (bumpConfig: BumpConfig) => {
 ### 3. Advanced Features That Set Us Apart
 
 **Customizable Trading Parameters:**
-- Bump frequency control
-- SOL amount per bump
-- Slippage tolerance settings
-- Transaction priority fees (with speed warnings)
+Users had full control through settings:
+- **SOL Amount**: How much to use per bump
+- **Bump Frequency**: Time interval between bumps
+- **Max Bump Limit**: Stop after X bumps to control spending
+- **Priority Fee**: Higher fees = faster transactions (with speed impact warnings)
+- **Slippage Tolerance**: Maximum acceptable price movement
 
 **Flexible Business Models:**
 - **Token Passes**: One-time purchase for unlimited bumps on specific tokens
@@ -161,17 +163,19 @@ const calculateTotalFees = async (bumpConfig: BumpConfig) => {
 
 **Comment Bot with Anti-Detection:**
 ```typescript
-// Reverse-engineered pump.fun's comment system
+// Reverse-engineered browser comment submission
 const postComment = async (message: string) => {
     const browser = await puppeteer.launch({
         args: ['--proxy-server=' + getRotatingProxy()]
     });
     
-    // Simulate human behavior patterns
-    await humanizeActions(page);
-    await typeWithVariableSpeed(commentBox, message);
-    await randomDelay(1000, 3000);
-    await submitComment();
+    // Submit comments through browser automation
+    await navigateToPumpFun(page);
+    await page.type('#comment-box', message);
+    await page.click('#submit-button');
+    
+    // Rotate proxy for next request
+    await browser.close();
 };
 ```
 
