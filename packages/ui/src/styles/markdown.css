@@ -3,8 +3,6 @@
  */
 
 .markdown-content {
-    @apply space-y-6;
-
     /*
      * Markdown checkboxes are parsed as native <input type="checkbox"> elements
      * and are disabled by default. Unlike shadcn's custom checkbox component, these
@@ -47,6 +45,10 @@
         @apply flex items-center gap-2 list-none;
     }
 
+    .code-block-container {
+        @apply mt-4;
+    }
+
     pre {
         code,
         code.hljs {
@@ -62,4 +64,29 @@
     /* a:not(h1 a, h2 a, h3 a, h4 a, h5 a, h6 a):visited {
         @apply text-purple-500 hover:text-purple-600 dark:text-purple-400 dark:hover:text-purple-300 decoration-purple-500/30 hover:decoration-purple-500/50;
     } */
+
+    /* Add margin to the top of the headings based on the heading level */
+    h1 {
+        @apply mt-12;
+    }
+
+    h2 {
+        @apply mt-10;
+    }
+
+    h3 {
+        @apply mt-8;
+    }
+
+    h4 {
+        @apply mt-6;
+    }
+
+    h5 {
+        @apply mt-4;
+    }
+
+    h6 {
+        @apply mt-2;
+    }
 }

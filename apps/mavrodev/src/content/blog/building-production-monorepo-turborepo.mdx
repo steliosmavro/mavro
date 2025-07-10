@@ -1,0 +1,450 @@
+---
+title: 'Building a Production-Ready Monorepo with Turborepo: Architecture Patterns and Best Practices'
+date: '2025-01-10'
+summary: 'Deep dive into monorepo architecture using Turborepo, exploring real-world patterns from building mavrodev and mavrochat. Learn how to structure shared packages, orchestrate builds, implement CI/CD, and maintain consistency across multiple applications.'
+tags: ['Monorepo', 'Turborepo', 'Architecture', 'Developer Tools', 'TypeScript']
+---
+
+Monorepos have become the architecture of choice for teams building multiple related applications. But without proper tooling, they quickly become unwieldy - slow builds, inconsistent dependencies, and complex deployment pipelines. This is the story of how I architected a production-ready monorepo using Turborepo, building both a developer portfolio site and an open-source ChatGPT clone for developers.
+
+## The Monorepo Journey: From Chaos to Order
+
+I started with two separate repositories - mavrodev (my portfolio) and mavrochat (a developer-focused AI chat tool). Maintaining them separately meant:
+
+- Duplicated UI components and utilities
+- Inconsistent configurations across projects
+- Copy-pasting hooks and helpers between codebases
+- Diverging TypeScript/ESLint settings
+- No shared learning between projects
+
+The turning point came when I realized both applications shared 70% of their foundation - UI components, authentication logic, API patterns, and configuration. A monorepo wasn't just convenient; it was architecturally correct.
+
+## Choosing Turborepo: The Build System That Scales
+
+Turborepo transforms JavaScript/TypeScript monorepos from slow, complex beasts into fast, manageable codebases. Here's why it became my build system of choice:
+
+### Intelligent Task Orchestration
+
+```json
+// turbo.json
+{
+    "pipeline": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": [".next/**", "dist/**"]
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        }
+    }
+}
+```
+
+The `^build` syntax ensures packages build in topological order - shared dependencies first, then consumers. No more manual orchestration or race conditions.
+
+### Zero-Config Caching
+
+Turborepo caches everything intelligently. When I change a blog post in mavrodev, it doesn't rebuild the entire UI package. This granular caching turned 5-minute builds into 30-second updates.
+
+## Architecture: Structure That Scales
+
+Here's how I structured the monorepo to support both current needs and future growth:
+
+```
+mavro/
+├── apps/
+│   ├── mavrochat/          # AI chat application
+│   └── mavrodev/           # Portfolio & blog
+├── packages/
+│   ├── ui/                 # Shared components
+│   ├── hooks/              # React hooks
+│   ├── shared-config/      # Configuration
+│   ├── eslint-config/      # ESLint rules
+│   └── typescript-config/  # TypeScript configs
+```
+
+### The Apps Layer: Business Logic Lives Here
+
+Each app is a complete Next.js application with its own:
+
+- API routes and server logic
+- Page components and routing
+- Environment variables
+- Deployment configuration
+
+Apps import from packages but never from each other. This maintains clear boundaries and prevents circular dependencies.
+
+### The Packages Layer: Share Everything
+
+Packages follow a simple rule: if two apps need it, it becomes a package.
+
+#### UI Package: Component Consistency
+
+```typescript
+// packages/ui/src/components/button.tsx
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => {
+    return (
+      <button
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+```
+
+Built on shadcn/ui, the UI package provides:
+
+- Consistent design system
+- Accessibility out of the box
+- Tree-shakeable exports
+- TypeScript autocompletion
+
+#### Hooks Package: Logic Reusability
+
+```typescript
+// packages/hooks/src/use-local-storage.ts
+export function useLocalStorage<T>(key: string, initialValue: T) {
+    const [storedValue, setStoredValue] = useState<T>(() => {
+        try {
+            const item = window.localStorage.getItem(key);
+            return item ? JSON.parse(item) : initialValue;
+        } catch (error) {
+            return initialValue;
+        }
+    });
+    // ... rest of implementation
+}
+```
+
+Common hooks prevent reinventing the wheel across apps.
+
+#### Configuration Packages: Consistency at Scale
+
+ESLint and TypeScript configurations ensure every line of code follows the same standards:
+
+```javascript
+// packages/eslint-config/base.js
+export default tseslint.config(
+    {
+        ignores: ['**/node_modules/**', '**/dist/**'],
+    },
+    eslint.configs.recommended,
+    ...tseslint.configs.strictTypeChecked,
+    // Custom rules for the monorepo
+);
+```
+
+## Dependency Management: The Syncpack Solution
+
+Managing dependencies across multiple packages is a monorepo's Achilles heel. Different versions of React in different packages? Recipe for disaster.
+
+Enter Syncpack:
+
+```json
+// .syncpackrc
+{
+    "versionGroups": [
+        {
+            "label": "React packages",
+            "packages": ["**"],
+            "dependencies": ["react", "react-dom", "@types/react"],
+            "policy": "sameRange"
+        }
+    ]
+}
+```
+
+This configuration ensures:
+
+- All packages use the same React version
+- TypeScript versions stay synchronized
+- Build tools remain consistent
+- No duplicate dependencies in the bundle
+
+CI enforces this with:
+
+```bash
+npm run sync:check || (echo "Dependency versions out of sync" && exit 1)
+```
+
+## CI/CD: Automation That Scales
+
+The GitHub Actions workflow demonstrates production-ready CI/CD:
+
+```yaml
+name: CI
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+jobs:
+    ci:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Check dependency sync
+              run: npm run sync:check
+
+            - name: Lint
+              run: npm run lint
+
+            - name: Type check
+              run: npm run check-types
+
+            - name: Build
+              run: npm run build
+              env:
+                  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+                  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+```
+
+Key features:
+
+- **Dependency verification** before any code checks
+- **Parallel execution** where possible
+- **Turbo remote caching** for faster builds
+- **Comprehensive checks** ensuring quality
+
+## Development Experience: Where Magic Happens
+
+### Parallel Development Servers
+
+```json
+// package.json
+{
+    "scripts": {
+        "dev": "turbo dev",
+        "dev:mavrochat": "turbo dev --filter=mavrochat",
+        "dev:mavrodev": "turbo dev --filter=mavrodev"
+    }
+}
+```
+
+Develop one app or all apps with a single command. Turborepo handles the orchestration.
+
+### Component Development Workflow
+
+Adding a new UI component follows a streamlined process:
+
+```bash
+# Navigate to the app that will use the component
+cd apps/mavrochat  # or apps/mavrodev
+
+# Add components (they'll be auto-placed in packages/ui)
+npx shadcn@latest add dialog toast alert
+
+# Components appear in packages/ui/src/components/
+# Must be manually exported from packages/ui/index.ts
+# TypeScript types included
+# Ready to use in any app
+```
+
+### Smart vs Pure Components
+
+The architecture enforces a clear separation:
+
+```typescript
+// apps/mavrochat/components/ChatInterface.tsx (Smart)
+export function ChatInterface() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const { user } = useAuth();
+
+  return (
+    <Card>
+      <MessageList messages={messages} />
+      <MessageInput onSend={handleSend} />
+    </Card>
+  );
+}
+
+// packages/ui/src/components/MessageList.tsx (Pure)
+export function MessageList({ messages }: { messages: Message[] }) {
+  return (
+    <div className="space-y-4">
+      {messages.map(msg => <MessageItem key={msg.id} {...msg} />)}
+    </div>
+  );
+}
+```
+
+Smart components live in apps and handle state. Pure components live in packages and handle presentation.
+
+## Performance Optimizations: Speed Matters
+
+### Build Performance
+
+Turborepo's caching is transformative. Real metrics from the project:
+
+- **Cold build**: 2m 34s
+- **Cached build** (no changes): 0.8s
+- **Partial rebuild** (UI change): 12s
+- **Remote cached build** (CI): 5s
+
+### Runtime Performance
+
+The monorepo structure enables shared optimizations across all apps:
+
+```typescript
+// Shared font configuration in packages/shared-config
+import { Geist, Geist_Mono } from 'next/font/google';
+
+export const geistSans = Geist({
+    variable: '--font-geist-sans',
+    subsets: ['latin'],
+});
+
+// Used consistently across both apps
+// apps/mavrochat/app/layout.tsx
+// apps/mavrodev/app/layout.tsx
+<body className={`${geistSans.variable} ${geistMono.variable}`}>
+```
+
+This centralized approach ensures consistent typography and optimal font loading across all applications without duplication.
+
+## Security and Best Practices
+
+### Environment Variable Management
+
+Turborepo provides built-in environment variable handling:
+
+```json
+{
+    "globalEnv": ["NODE_ENV"],
+    "pipeline": {
+        "build": {
+            "env": ["NEXT_PUBLIC_*", "DATABASE_URL", "AUTH_SECRET"]
+        }
+    }
+}
+```
+
+This explicitly declares which variables affect builds, improving caching and security.
+
+### Input Validation Everywhere
+
+Shared Zod schemas ensure consistent validation:
+
+```typescript
+// packages/shared-config/schemas/api.ts
+export const apiResponseSchema = z.object({
+    success: z.boolean(),
+    data: z.unknown().optional(),
+    error: z
+        .object({
+            code: z.string(),
+            message: z.string(),
+        })
+        .optional(),
+});
+
+// Used across all apps
+const response = apiResponseSchema.parse(await res.json());
+```
+
+## Scaling Patterns: Growing Beyond Two Apps
+
+The architecture scales elegantly:
+
+### Adding a New App
+
+```bash
+# Create new app from template
+cp -r apps/mavrodev apps/newapp
+cd apps/newapp
+
+# Update package.json name
+# Update imports to use @repo/* packages
+# Configure environment variables
+# Deploy independently
+```
+
+### Extracting Shared Logic
+
+When apps share functionality:
+
+1. Identify the common code
+2. Create a new package
+3. Move code with tests
+4. Update imports
+5. Turborepo handles the rest
+
+### Package Versioning Strategy
+
+Internal packages use `0.0.0`:
+
+```json
+{
+    "name": "@repo/ui",
+    "version": "0.0.0",
+    "private": true
+}
+```
+
+This prevents version mismatch issues and clarifies these are internal packages.
+
+## Lessons Learned: The Reality of Monorepos
+
+### What Worked Well
+
+1. **Shared component library** - Massive time savings and consistency
+2. **Unified configurations** - No more diverging standards
+3. **Atomic commits** - Features span multiple packages in one PR
+4. **Shared CI/CD** - One pipeline to maintain
+5. **Knowledge transfer** - Patterns learned in one app benefit all
+
+### Challenges and Solutions
+
+**Challenge**: Initial setup complexity  
+**Solution**: Created detailed documentation and starter templates
+
+**Challenge**: Dependency conflicts  
+**Solution**: Syncpack + strict version policies
+
+**Challenge**: Build times growing  
+**Solution**: Remote caching + granular package boundaries
+
+**Challenge**: Local development setup  
+**Solution**: Comprehensive README + automated setup scripts
+
+## Future Directions
+
+The monorepo architecture opens exciting possibilities:
+
+1. **Micro-frontends**: Deploy apps independently while sharing components
+2. **API Gateway**: Centralized API package for consistent backend patterns
+3. **Testing Library**: Shared testing utilities and fixtures
+4. **Design System**: Full Storybook integration for component documentation
+5. **Mobile Apps**: React Native apps sharing business logic
+
+## Conclusion: Monorepos Done Right
+
+Building a production-ready monorepo requires more than just putting projects in the same repository. It demands:
+
+- **Clear architectural boundaries**
+- **Robust tooling** (Turborepo is essential)
+- **Consistent standards** enforced by automation
+- **Performance focus** from day one
+- **Developer experience** as a priority
+
+The investment pays off quickly. What started as two separate projects is now a cohesive platform where improvements to one app benefit all apps. Features that would take days to port between repositories now work instantly across the monorepo.
+
+Turborepo transformed the monorepo from a good idea to a great implementation. Combined with modern tooling and clear architectural patterns, it enables building at scale without sacrificing speed or quality.
+
+The code is open source - explore the [repository](https://github.com/steliosmavro/mavro) to see these patterns in action.
+
+_Building something similar? [Let's connect](/contact) and discuss monorepo architectures._

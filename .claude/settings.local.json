@@ -53,7 +53,9 @@
       "Bash(yarn:*)",
       "Bash(pnpm:*)",
       "Bash(git checkout:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:turbo.build)",
+      "WebFetch(domain:turborepo.com)"
     ],
     "deny": [
       "Bash(rm -rf /)",
