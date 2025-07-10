@@ -1,9 +1,9 @@
 ---
-title: "Contributing to Open Source: My Journey with Nango"
-date: "2025-05-30"
-summary: "How I went from using Nango to becoming a proactive contributor to this open source developer tool. Learn about navigating large codebases, making meaningful contributions, and the unique impact of contributing to developer tools in the open source ecosystem."
-tags: ["Open Source", "Developer Tools", "TypeScript", "APIs"]
-relatedProject: "nango-contributions"
+title: 'Contributing to Open Source: My Journey with Nango'
+date: '2025-05-30'
+summary: 'How I went from using Nango to becoming a proactive contributor to this open source developer tool. Learn about navigating large codebases, making meaningful contributions, and the unique impact of contributing to developer tools in the open source ecosystem.'
+tags: ['Open Source', 'Developer Tools', 'TypeScript', 'APIs']
+relatedProject: 'nango-contributions'
 ---
 
 Contributing to open source developer tools carries unique rewards and challenges. The codebases are complex, the users are developers with high standards, and the impact is multiplied across thousands of projects. Here's how I went from Nango user to proactive contributor, and what I learned about the intersection of open source and developer tools.
@@ -29,82 +29,93 @@ That documentation review gave me something invaluable: a holistic understanding
 
 ## Building the ClickSend Integration
 
-My most significant contribution was the ClickSend SMS provider integration (#3959). Nango uses a dual-repository approach - provider authentication in the main repo and integration templates in a separate repo. 
+My most significant contribution was the ClickSend SMS provider integration (#3959). Nango uses a dual-repository approach - provider authentication in the main repo and integration templates in a separate repo.
 
 First, I defined the provider configuration:
+
 ```yaml
 # packages/providers/providers.yaml
 clicksend:
-  display_name: ClickSend
-  auth_mode: BASIC
-  proxy:
-    base_url: https://rest.clicksend.com
-  verification:
-    method: GET
-    endpoints:
-      - /v3/account
+    display_name: ClickSend
+    auth_mode: BASIC
+    proxy:
+        base_url: https://rest.clicksend.com
+    verification:
+        method: GET
+        endpoints:
+            - /v3/account
 ```
 
 Then built the integration with actions and syncs:
+
 ```yaml
 # integrations/clicksend/nango.yaml
 integrations:
-  clicksend:
-    actions:
-      send-sms:
-        description: Sends an SMS message via ClickSend's API.
-        endpoint:
-          method: POST
-          path: /sms/send
-        input: ClickSendSendSmsInput
-        output: Sms
-    syncs:
-      sms-history:
-        description: Fetches SMS history incrementally
-        sync_type: incremental
-        runs: every half hour
-        output: Sms
+    clicksend:
+        actions:
+            send-sms:
+                description: Sends an SMS message via ClickSend's API.
+                endpoint:
+                    method: POST
+                    path: /sms/send
+                input: ClickSendSendSmsInput
+                output: Sms
+        syncs:
+            sms-history:
+                description: Fetches SMS history incrementally
+                sync_type: incremental
+                runs: every half hour
+                output: Sms
 ```
 
 The actual implementation leverages Nango's powerful abstractions:
+
 ```typescript
 // syncs/sms-history.ts
 export default async function fetchData(nango: NangoSync): Promise<void> {
-  const config: ProxyConfiguration = {
-    endpoint: '/v3/sms/history',
-    params: nango.lastSyncDate ? { 
-      date_from: Math.floor(new Date(nango.lastSyncDate).getTime() / 1000) 
-    } : {},
-    paginate: {
-      type: 'link',
-      response_path: 'data.data',
-      link_path_in_response_body: 'data.next_page_url'
-    }
-  };
+    const config: ProxyConfiguration = {
+        endpoint: '/v3/sms/history',
+        params: nango.lastSyncDate
+            ? {
+                  date_from: Math.floor(
+                      new Date(nango.lastSyncDate).getTime() / 1000,
+                  ),
+              }
+            : {},
+        paginate: {
+            type: 'link',
+            response_path: 'data.data',
+            link_path_in_response_body: 'data.next_page_url',
+        },
+    };
 
-  for await (const messages of nango.paginate<ClickSendSms>(config)) {
-    const smsArray = messages.map(toSms);
-    await nango.batchSave(smsArray, 'Sms');
-  }
+    for await (const messages of nango.paginate<ClickSendSms>(config)) {
+        const smsArray = messages.map(toSms);
+        await nango.batchSave(smsArray, 'Sms');
+    }
 }
 ```
 
 Actions are equally elegant:
+
 ```typescript
 // actions/send-sms.ts
 export default async function runAction(
-  nango: NangoAction, 
-  input: ClickSendSendSmsInput
+    nango: NangoAction,
+    input: ClickSendSendSmsInput,
 ): Promise<Sms> {
-  await nango.zodValidateInput({ zodSchema: clickSendSendSmsInputSchema, input });
-  
-  const response = await nango.post<{ data: { messages: ClickSendSms[] } }>({
-    endpoint: '/v3/sms/send',
-    data: { messages: [{ to: input.to, body: input.body }] },
-    retries: 3
-  });
-  
-  return toSms(response.data?.data?.messages?.[0]);
+    await nango.zodValidateInput({
+        zodSchema: clickSendSendSmsInputSchema,
+        input,
+    });
+
+    const response = await nango.post<{ data: { messages: ClickSendSms[] } }>({
+        endpoint: '/v3/sms/send',
+        data: { messages: [{ to: input.to, body: input.body }] },
+        retries: 3,
+    });
+
+    return toSms(response.data?.data?.messages?.[0]);
 }
 ```
 
@@ -115,18 +126,21 @@ The elegance of this developer tool: authentication, pagination, incremental syn
 After the integration was merged, I stayed involved:
 
 ### Code Contributions
+
 - Fixed edge cases in OAuth flows (#3858 - auto-adding missing OAuth scopes)
 - Improved error messages and UI clarity (#3846 - handling duplicate integration names)
 - Added missing TypeScript types
 - Enhanced core functionality (#3882 - enabling integration name editing, #3881 - dynamic sync frequency updates)
 
 ### Documentation
+
 - Wrote integration guides
 - Added code examples
 - Clarified setup steps (#3826 - updated .env.example for better onboarding)
 - Created troubleshooting sections
 
 ### Community
+
 - Actively monitored and engaged in Slack discussions
 - Helped developers troubleshoot integration issues
 - Shared integration patterns and best practices
@@ -149,6 +163,7 @@ When developers hit roadblocks, I didn't just sympathize - I acted:
 ### Direct Leadership Engagement
 
 I developed a unique working relationship with Nango's CTO:
+
 - **Immediate Solutions**: When critical issues arose in Slack, I'd often have a PR ready before the team even triaged the problem
 - **Strategic Input**: My direct messages weren't just "here's a fix" - they included user impact analysis and implementation strategies
 
@@ -168,33 +183,37 @@ This architectural understanding was crucial. When implementing features like dy
 ## Technical Lessons
 
 ### 1. Reading Before Writing
+
 My comprehensive documentation review and architecture study paid dividends. Understanding the full system - from Kubernetes deployments to component responsibilities - made my contributions architecturally sound.
 
 ### 2. Tests Are Documentation
+
 Nango's test suite taught me how real-world integration testing should work:
 
 ```typescript
 describe('clicksend send-sms tests', () => {
-  const nangoMock = new NangoActionMock({
-    dirname: __dirname,
-    name: 'send-sms',
-    Model: 'Sms'
-  });
+    const nangoMock = new NangoActionMock({
+        dirname: __dirname,
+        name: 'send-sms',
+        Model: 'Sms',
+    });
 
-  it('should output the expected action output', async () => {
-    const input = await nangoMock.getInput();
-    const response = await runAction(nangoMock, input);
-    const output = await nangoMock.getOutput();
-    
-    expect(response).toEqual(output);
-  });
+    it('should output the expected action output', async () => {
+        const input = await nangoMock.getInput();
+        const response = await runAction(nangoMock, input);
+        const output = await nangoMock.getOutput();
+
+        expect(response).toEqual(output);
+    });
 });
 ```
 
 The magic: real API responses captured during development, stored as mocks with request-hash filenames.
 
 ### 3. Small PRs Win
+
 My successful PRs were focused:
+
 - One feature or fix
 - Clear description
 - Tests included
@@ -203,36 +222,43 @@ My successful PRs were focused:
 Large PRs sat in review longer and often needed major changes.
 
 ### 4. Communication Matters
+
 Clear PR descriptions saved everyone time:
 
 ```markdown
 ## What
+
 Add ClickSend SMS integration
 
-## Why  
+## Why
+
 Users requested ClickSend support for sending transactional SMS
 
 ## How
+
 - Implemented sync for messages
-- Added action for sending SMS  
+- Added action for sending SMS
 - Included rate limit handling
 - Added comprehensive tests
 
 ## Testing
+
 - Unit tests pass
 - Manually tested with real ClickSend account
 - Verified rate limiting works
 ```
 
 ### 5. Advanced Integration Patterns
+
 Nango's integration-templates repository revealed sophisticated patterns I could leverage:
 
 **Configuration-Based Syncs**: Dynamic field selection based on metadata
+
 ```yaml
 configuration-based-sync:
-  sync_type: full
-  input: DynamicFieldMetadata
-  description: Fetch fields configured by user
+    sync_type: full
+    input: DynamicFieldMetadata
+    description: Fetch fields configured by user
 ```
 
 **Selection-Based Syncs**: User-controlled sync scope for optimized performance
@@ -246,18 +272,22 @@ These patterns elevated my integrations from basic CRUD to enterprise-grade solu
 Working with Nango taught me professional development practices:
 
 ### Provider Configuration
+
 Nango's YAML-based approach keeps integrations clean:
+
 ```yaml
 # Define auth modes, proxy settings, and verification
 auth_mode: BASIC | OAUTH2 | API_KEY
 proxy:
-  base_url: https://api.provider.com
-  headers:
-    User-Agent: Nango
+    base_url: https://api.provider.com
+    headers:
+        User-Agent: Nango
 ```
 
 ### Documentation Standards
+
 Every integration needs comprehensive docs:
+
 ```markdown
 ---
 title: Provider Name
@@ -265,23 +295,28 @@ sidebarTitle: Provider Name
 ---
 
 ## API configuration
+
 - Base URL: `https://api.provider.com`
 - Auth: [Authentication details]
 - Rate limits: [Any specific limits]
 ```
 
 ### Testing Philosophy
+
 Nango's testing approach is brilliant - capture real API responses during development:
+
 ```bash
 npm run dryrun -- clicksend send-sms --save-responses
 ```
+
 The framework stores these responses as mocks with hashed filenames based on request payloads. During tests, requests are matched to their corresponding mock files, ensuring tests use real API behavior without network calls. This approach gives you the best of both worlds: real API responses with fast, deterministic tests.
 
 ## Career Impact
 
 Contributing to this open source developer tool transformed my career trajectory:
+
 - **Leadership Recognition**: Evolved from contributor to trusted problem-solver with direct CTO access
-- **Distributed Systems Expertise**: Gained hands-on experience with Kubernetes, AWS ECS, Redis queues, and microservice orchestration
+- **Distributed Systems Expertise**: Gained experience with Kubernetes, AWS ECS, Redis queues, and microservice orchestration
 - **DevOps Fundamentals**: Learned enterprise deployment patterns, scaling strategies, and infrastructure as code
 - **Developer Tool Design**: Understood what makes developer tools successful - API design, documentation, testing philosophy
 - **Full-Stack Architecture**: From React components to distributed backend systems, I touched every layer
@@ -293,25 +328,30 @@ The technical growth was immense - from typo fixes to architecting features in a
 ## Advice for New Contributors
 
 ### Start Where You Are
+
 - Use the project first
 - Find pain points
 - Fix what bothers you
 - Share your solutions
 
 ### Read Everything
+
 - Contribution guidelines
 - Code of conduct
 - Architecture docs
 - Existing PRs
 
 ### Be Professional
+
 - Clear communication
 - Responsive to feedback
 - Patient with reviews
 - Grateful for time
 
 ### Think Long Term
+
 Open source is a marathon:
+
 - Build reputation slowly
 - Quality over quantity
 - Relationships matter
@@ -320,6 +360,7 @@ Open source is a marathon:
 ## The Open Source Developer Tools Mindset
 
 Contributing to an open source developer tool like Nango fundamentally changed how I approach software:
+
 - **Developer Experience First**: Every feature must enhance how developers work
 - **Documentation as Code**: Clear docs are as critical as the tool itself
 - **API Design Thinking**: Developer tools live or die by their APIs
@@ -334,10 +375,10 @@ My journey with Nango evolved from fixing documentation typos to architecting di
 
 The most valuable lesson? Developer tools live at the intersection of technical excellence and developer empathy. Every feature must enhance how developers work. Every architectural decision impacts thousands of codebases. Every documentation fix reduces friction for someone building their next product.
 
-I continue to monitor Nango's Slack, identify patterns in developer struggles, and proactively build solutions. This approach - understanding infrastructure, anticipating needs, and shipping proactively - has become my blueprint for contributing to open source developer tools.
+This experience made me fall in love with the open source developer tools community. The approach I learned at Nango - understanding infrastructure, anticipating developer needs, and shipping proactively - has become my blueprint for future contributions. I'm now focused on applying these lessons to other open source developer tools, bringing the same proactive problem-solving mindset to new communities.
 
-If you're considering contributing to open source developer tools, start today. This space uniquely rewards those who understand distributed systems, DevOps practices, and developer experience. The technical growth - from Docker Compose to Kubernetes, from TypeScript to distributed architectures - is unmatched. 
+If you're considering contributing to open source developer tools, start today. This space uniquely rewards those who understand distributed systems, DevOps practices, and developer experience. The technical growth - from Docker Compose to Kubernetes, from TypeScript to distributed architectures - is unmatched.
 
 But more importantly, you're building the tools that empower other developers to build. That's the ultimate multiplier effect in open source.
 
-*Want to discuss open source or need help getting started? [Let's connect](/contact).*
+_Want to discuss open source or need help getting started? [Let's connect](/contact)._
