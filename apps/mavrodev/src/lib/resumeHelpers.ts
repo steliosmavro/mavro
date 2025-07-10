@@ -1,18 +1,22 @@
 import { resumeData } from '@/data/resume';
 import type { Project } from '@/types/resume';
+import {
+    getProjectBySlug as getProjectBySlugFromData,
+    getFeaturedProjects as getFeaturedProjectsFromData,
+} from '@repo/data';
 
 /**
  * Get featured projects for homepage or projects page
  */
 export function getFeaturedProjects(): Project[] {
-    return resumeData.projects.filter((project) => project.featured);
+    return getFeaturedProjectsFromData();
 }
 
 /**
  * Get project by slug
  */
 export function getProjectBySlug(slug: string): Project | undefined {
-    return resumeData.projects.find((project) => project.slug === slug);
+    return getProjectBySlugFromData(slug);
 }
 
 /**
@@ -55,20 +59,22 @@ export function getAllTechnologies(): string[] {
 
     // From projects
     resumeData.projects.forEach((project) => {
-        project.primaryTech.forEach((tech) => techSet.add(tech));
-        project.secondaryTech.forEach((tech) => techSet.add(tech));
+        project.primaryTech.forEach((tech: string) => techSet.add(tech));
+        project.secondaryTech.forEach((tech: string) => techSet.add(tech));
     });
 
     // From experience
     resumeData.experience.forEach((exp) => {
-        Object.values(exp.technologies).forEach((techs) => {
-            techs?.forEach((tech) => techSet.add(tech));
-        });
+        Object.values(exp.technologies).forEach(
+            (techs: string[] | undefined) => {
+                techs?.forEach((tech: string) => techSet.add(tech));
+            },
+        );
     });
 
     // From skills
     resumeData.skills.forEach((skill) => {
-        skill.items.forEach((item) => techSet.add(item));
+        skill.items.forEach((item: string) => techSet.add(item));
     });
 
     return Array.from(techSet).sort();

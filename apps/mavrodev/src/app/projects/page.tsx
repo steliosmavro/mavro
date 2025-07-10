@@ -20,6 +20,8 @@ import {
     TabsList,
     TabsTrigger,
     TabsContent,
+    FilterBar,
+    type FilterOption,
 } from '@repo/ui/components';
 import React from 'react';
 import { resumeData } from '@/data/resume';
@@ -60,7 +62,9 @@ export default function ProjectsPage() {
     const allCategories = React.useMemo(() => {
         const categories = new Set<ProjectCategory>();
         personalProjects.forEach((project) => {
-            project.categories.forEach((cat) => categories.add(cat));
+            project.categories.forEach((cat: ProjectCategory) =>
+                categories.add(cat),
+            );
         });
         return Array.from(categories).sort();
     }, [personalProjects]);
@@ -106,15 +110,39 @@ export default function ProjectsPage() {
             if (project.featured) {
                 grouped.featured.push(project);
             }
-            project.categories.forEach((cat) => {
+            project.categories.forEach((cat: ProjectCategory) => {
                 if (cat in grouped) {
-                    grouped[cat].push(project);
+                    grouped[cat as keyof typeof grouped].push(project);
                 }
             });
         });
 
         return grouped;
     }, [personalProjects]);
+
+    const filterOptions = React.useMemo(() => {
+        const options: FilterOption[] = [
+            {
+                value: 'featured',
+                label: 'Featured',
+                count: projectsByCategory.featured.length,
+                icon: <Star className="h-4 w-4 mr-2" />,
+            },
+        ];
+
+        allCategories.forEach((category) => {
+            const count = projectsByCategory[category]?.length || 0;
+            if (count > 0) {
+                options.push({
+                    value: category,
+                    label: getCategoryLabel(category),
+                    count,
+                });
+            }
+        });
+
+        return options;
+    }, [projectsByCategory, allCategories]);
 
     const renderExperienceCard = (experience: Experience, index: number) => {
         const isExpanded = expandedExperience.has(experience.company);
@@ -472,69 +500,25 @@ export default function ProjectsPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
-                                className="flex flex-wrap justify-center gap-3 mb-12"
+                                className="mb-12"
                             >
-                                <Button
-                                    variant={
+                                <FilterBar
+                                    options={filterOptions}
+                                    selectedValue={
                                         selectedFilter === 'all'
-                                            ? 'default'
-                                            : 'outline'
+                                            ? null
+                                            : selectedFilter
                                     }
-                                    onClick={() => setSelectedFilter('all')}
-                                    className="group"
-                                >
-                                    <Code2 className="h-4 w-4 mr-2" />
-                                    All Projects
-                                    <Badge variant="secondary" className="ml-2">
-                                        {personalProjects.length}
-                                    </Badge>
-                                </Button>
-                                <Button
-                                    variant={
-                                        selectedFilter === 'featured'
-                                            ? 'default'
-                                            : 'outline'
+                                    onValueChange={(value) =>
+                                        setSelectedFilter(
+                                            (value || 'all') as FilterType,
+                                        )
                                     }
-                                    onClick={() =>
-                                        setSelectedFilter('featured')
-                                    }
-                                    className="group"
-                                >
-                                    <Star className="h-4 w-4 mr-2" />
-                                    Featured
-                                    <Badge variant="secondary" className="ml-2">
-                                        {projectsByCategory.featured.length}
-                                    </Badge>
-                                </Button>
-                                {allCategories.map((category) => {
-                                    const count =
-                                        projectsByCategory[category]?.length ||
-                                        0;
-                                    if (count === 0) return null;
-
-                                    return (
-                                        <Button
-                                            key={category}
-                                            variant={
-                                                selectedFilter === category
-                                                    ? 'default'
-                                                    : 'outline'
-                                            }
-                                            onClick={() =>
-                                                setSelectedFilter(category)
-                                            }
-                                            className="group"
-                                        >
-                                            {getCategoryLabel(category)}
-                                            <Badge
-                                                variant="secondary"
-                                                className="ml-2"
-                                            >
-                                                {count}
-                                            </Badge>
-                                        </Button>
-                                    );
-                                })}
+                                    allLabel="All Projects"
+                                    allIcon={<Code2 className="h-4 w-4" />}
+                                    allCount={personalProjects.length}
+                                    showCounts={true}
+                                />
                             </motion.div>
 
                             {/* Projects Grid */}

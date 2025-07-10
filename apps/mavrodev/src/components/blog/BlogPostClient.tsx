@@ -232,15 +232,36 @@ export default function BlogPostClient({
                                                     ))}
                                                 </div>
                                             </div>
-                                            <Button asChild size="sm">
-                                                <Link
-                                                    href="/projects"
-                                                    className="flex items-center gap-1"
+                                            <div className="flex flex-col gap-2">
+                                                {project.github && (
+                                                    <Button asChild size="sm">
+                                                        <a
+                                                            href={
+                                                                project.github
+                                                            }
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="flex items-center gap-1"
+                                                        >
+                                                            View on GitHub
+                                                            <ExternalLink className="h-3 w-3" />
+                                                        </a>
+                                                    </Button>
+                                                )}
+                                                <Button
+                                                    asChild
+                                                    size="sm"
+                                                    variant="outline"
                                                 >
-                                                    View Project
-                                                    <ExternalLink className="h-3 w-3" />
-                                                </Link>
-                                            </Button>
+                                                    <Link
+                                                        href="/projects"
+                                                        className="flex items-center gap-1"
+                                                    >
+                                                        View Project
+                                                        <ExternalLink className="h-3 w-3" />
+                                                    </Link>
+                                                </Button>
+                                            </div>
                                         </div>
                                     </Card>
                                 </motion.div>

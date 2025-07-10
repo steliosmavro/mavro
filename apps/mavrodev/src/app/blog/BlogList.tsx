@@ -10,9 +10,15 @@ import {
     Sparkles,
     TrendingUp,
     Zap,
-    Filter,
 } from 'lucide-react';
-import { Card, Badge, Button, Input } from '@repo/ui/components';
+import {
+    Card,
+    Badge,
+    Button,
+    Input,
+    FilterBar,
+    type FilterOption,
+} from '@repo/ui/components';
 import Link from 'next/link';
 import React from 'react';
 import type { BlogPost } from '../../../lib/getBlogPosts';
@@ -25,17 +31,43 @@ interface BlogListProps {
 
 export default function BlogList({ posts }: BlogListProps) {
     const [searchQuery, setSearchQuery] = React.useState('');
-    const [selectedCategory, setSelectedCategory] =
-        React.useState<ProjectCategory | null>(null);
+    const [selectedFilter, setSelectedFilter] = React.useState<string | null>(
+        null,
+    );
     const [hoveredPost, setHoveredPost] = React.useState<string | null>(null);
 
-    const allCategories = React.useMemo(() => {
-        const categories = new Set<ProjectCategory>();
+    const filterOptions = React.useMemo(() => {
+        const options: FilterOption[] = [];
+
+        // Add featured option if there are any posts (first post is featured)
+        if (posts.length > 0) {
+            options.push({
+                value: 'featured',
+                label: 'Featured',
+                count: 1,
+                icon: <Sparkles className="h-4 w-4 mr-2" />,
+            });
+        }
+
+        // Add category options
+        const categoryCount: Partial<Record<ProjectCategory, number>> = {};
         posts.forEach((post) => {
-            post.categories?.forEach((category) => categories.add(category));
+            post.categories?.forEach((category) => {
+                categoryCount[category] = (categoryCount[category] || 0) + 1;
+            });
         });
-        return Array.from(categories);
-    }, [posts]);
+
+        Object.entries(categoryCount)
+            .map(([category, count]) => ({
+                value: category,
+                label: getCategoryLabel(category as ProjectCategory),
+                count,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label))
+            .forEach((option) => options.push(option));
+
+        return options;
+    }, [posts]) as FilterOption[];
 
     const filteredPosts = React.useMemo(() => {
         return posts.filter((post) => {
@@ -51,17 +83,21 @@ export default function BlogList({ posts }: BlogListProps) {
                         .includes(searchQuery.toLowerCase()),
                 );
 
-            const matchesCategory =
-                !selectedCategory ||
-                post.categories?.includes(selectedCategory);
+            const matchesFilter =
+                !selectedFilter ||
+                (selectedFilter === 'featured' && posts.indexOf(post) === 0) ||
+                (selectedFilter !== 'featured' &&
+                    post.categories?.includes(
+                        selectedFilter as ProjectCategory,
+                    ));
 
-            return matchesSearch && matchesCategory;
+            return matchesSearch && matchesFilter;
         });
-    }, [posts, searchQuery, selectedCategory]);
+    }, [posts, searchQuery, selectedFilter]);
 
     const featuredPost = posts[0];
     const regularPosts = filteredPosts.slice(
-        featuredPost && !searchQuery && !selectedCategory ? 1 : 0,
+        featuredPost && !searchQuery && !selectedFilter ? 1 : 0,
     );
 
     return (
@@ -119,38 +155,15 @@ export default function BlogList({ posts }: BlogListProps) {
                                 />
                             </div>
                         </div>
-                        <div className="flex gap-2 flex-wrap justify-center">
-                            <Button
-                                variant={
-                                    selectedCategory === null
-                                        ? 'default'
-                                        : 'outline'
-                                }
-                                size="sm"
-                                onClick={() => setSelectedCategory(null)}
-                                className="flex items-center gap-2"
-                            >
-                                <Filter className="h-4 w-4" />
-                                All Posts
-                            </Button>
-                            {allCategories.map((category) => (
-                                <Button
-                                    key={category}
-                                    variant={
-                                        selectedCategory === category
-                                            ? 'default'
-                                            : 'outline'
-                                    }
-                                    size="sm"
-                                    onClick={() =>
-                                        setSelectedCategory(category)
-                                    }
-                                    className="hover:scale-105 transition-transform"
-                                >
-                                    {getCategoryLabel(category)}
-                                </Button>
-                            ))}
-                        </div>
+                        <FilterBar
+                            options={filterOptions}
+                            selectedValue={selectedFilter}
+                            onValueChange={(value) => setSelectedFilter(value)}
+                            allLabel="All Posts"
+                            allCount={posts.length}
+                            size="sm"
+                            showCounts={true}
+                        />
                     </motion.div>
                 </div>
             </section>
@@ -159,7 +172,7 @@ export default function BlogList({ posts }: BlogListProps) {
             <section className="px-4 pt-12 pb-24">
                 <div className="max-w-6xl mx-auto space-y-16">
                     {/* Featured Post */}
-                    {featuredPost && !searchQuery && !selectedCategory && (
+                    {featuredPost && !searchQuery && !selectedFilter && (
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -355,7 +368,7 @@ export default function BlogList({ posts }: BlogListProps) {
                                 variant="outline"
                                 onClick={() => {
                                     setSearchQuery('');
-                                    setSelectedCategory(null);
+                                    setSelectedFilter(null);
                                 }}
                             >
                                 Clear filters
