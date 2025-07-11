@@ -440,7 +440,13 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                                         {exp.role}
                                     </Text>
                                     <Text style={styles.experienceCompany}>
-                                        {exp.company}{' '}
+                                        {exp.website ? (
+                                            <Link src={exp.website} style={styles.link}>
+                                                {exp.company}
+                                            </Link>
+                                        ) : (
+                                            exp.company
+                                        )}{' '}
                                         {exp.location && `• ${exp.location}`}
                                     </Text>
                                 </View>
@@ -520,9 +526,18 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                                         style={styles.projectItem}
                                     >
                                         <View style={styles.projectHeader}>
-                                            <Text style={styles.projectTitle}>
-                                                {project.name}
-                                            </Text>
+                                            {project.live || project.github ? (
+                                                <Link
+                                                    src={project.live || project.github || ''}
+                                                    style={[styles.projectTitle, styles.link]}
+                                                >
+                                                    {project.name}
+                                                </Link>
+                                            ) : (
+                                                <Text style={styles.projectTitle}>
+                                                    {project.name}
+                                                </Text>
+                                            )}
                                             {project.metrics?.users && (
                                                 <Text
                                                     style={styles.projectMetric}
@@ -584,9 +599,18 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                                         style={styles.projectItem}
                                     >
                                         <View style={styles.projectHeader}>
-                                            <Text style={styles.projectTitle}>
-                                                {project.name}
-                                            </Text>
+                                            {project.live || project.github ? (
+                                                <Link
+                                                    src={project.live || project.github || ''}
+                                                    style={[styles.projectTitle, styles.link]}
+                                                >
+                                                    {project.name}
+                                                </Link>
+                                            ) : (
+                                                <Text style={styles.projectTitle}>
+                                                    {project.name}
+                                                </Text>
+                                            )}
                                             {project.impact && (
                                                 <Text
                                                     style={styles.projectMetric}
@@ -637,9 +661,18 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                                             key={index}
                                             style={styles.projectItem}
                                         >
-                                            <Text style={styles.projectTitle}>
-                                                {project.name}
-                                            </Text>
+                                            {project.live || project.github ? (
+                                                <Link
+                                                    src={project.live || project.github || ''}
+                                                    style={[styles.projectTitle, styles.link]}
+                                                >
+                                                    {project.name}
+                                                </Link>
+                                            ) : (
+                                                <Text style={styles.projectTitle}>
+                                                    {project.name}
+                                                </Text>
+                                            )}
                                             <Text
                                                 style={
                                                     styles.projectDescription
