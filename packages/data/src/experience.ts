@@ -58,7 +58,7 @@ export const experience: Experience[] = [
         role: 'Software Engineer',
         period: {
             start: new Date('2023-01-01'),
-            end: new Date('2025-12-31'),
+            end: new Date('2025-06-01'),
         },
         current: false,
         website: 'https://instashop.com/en-ae',

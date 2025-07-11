@@ -13,7 +13,7 @@ Full-stack Engineer - AI Integrations - Developer Tooling
 
 ### **Summary**
 
-Full-stack engineer since 2020, specializing in AI integrations and developer tooling. Built and sold crypto trading tools (1.2K+ users), contributed to open-source projects (Nango), and delivered enterprise SaaS at scale. Passionate about clean, testable code and turning complex ideas into elegant solutions.
+Full-stack engineer since 2020, specializing in AI integrations and developer tooling. Passionate about open-source, clean code, and creating seamless experiences that empower developers. Built MavroChat (ChatGPT clone for developers), created and sold high-impact Telegram trading bot (EzPump) serving 1.2K+ users, contributed to Nango (popular open-source developer tool), and delivered enterprise SaaS at scale. Turning complex ideas into elegant solutions.
 
 Available for full-time, part-time, and freelance collaborations.
 
@@ -28,12 +28,12 @@ Available for full-time, part-time, and freelance collaborations.
 Built a variety of full-stack applications for personal use and freelance clients, spanning automation tools, crypto utilities, developer tools, and SaaS platforms. Highlights include:
 
 - **MavroChat (2025)** — Open-Source AI-Powered Chat Platform for Developers:
-    - Built and open-sourced a ChatGPT-like platform specifically designed for developers with code-aware features.
-    - Implemented real-time streaming responses, syntax highlighting, and code execution capabilities.
-    - Designed modular architecture supporting multiple AI providers (OpenAI, Claude, etc.).
-    - Created intuitive UI with dark mode, conversation history, and export functionality.
-    - Built with Next.js 15, TypeScript, Tailwind CSS, and Framer Motion.
-    - Focused on developer experience with keyboard shortcuts, markdown support, and API integration tools.
+    - Built open-source AI chat platform optimized for focused developer workflows and quick code assistance.
+    - Implemented real-time streaming responses with sub-50ms latency using Server-Sent Events.
+    - Integrated multiple AI providers (OpenAI GPT-4o/3.5, Claude 3.5 Sonnet/Haiku) with seamless switching.
+    - Designed extensible tool system with type-safe Zod schemas for custom developer functions.
+    - Added sustainable rate limiting at the edge to maintain generous free tier while preventing abuse.
+    - Built with Next.js 15, TypeScript, Tailwind CSS, Shiki, Turborepo, Edge Functions, and Upstash Redis.
     - Live at [mavro.chat](https://mavro.chat/landing) - try it out!
 
 - **MavroDev (2025)** — Personal Portfolio & Blog Platform:
@@ -89,17 +89,17 @@ Built a variety of full-stack applications for personal use and freelance client
 
 - **Frontend:** React 19, Next.js 15, Angular, TypeScript, Tailwind CSS 4, SCSS, Bootstrap, Framer Motion
 - **Backend:** Node.js, NestJS, Express, REST APIs, GraphQL, WebSockets
-- **Databases:** PostgreSQL, MongoDB, Mongoose
+- **Databases:** PostgreSQL, MongoDB, Mongoose, Redis, Prisma, ElasticSearch
 - **Blockchain:** Solana Web3.js, SPL Token
-- **AI/ML:** Vercel AI SDK, OpenAI API, Claude API
+- **AI/ML:** OpenAI API, Claude API
 - **Content:** MDX, gray-matter, react-markdown, rehype, remark
 - **Authentication:** OAuth (Google), next-auth, JWT, bcrypt
 - **Bot Development:** Telegram Bot API, Telegraf
-- **DevOps & Tools:** Turborepo, Docker, CI/CD, GitHub Actions, Git, MCP server, Cursor IDE
+- **DevOps & Tools:** Kubernetes, Docker, AWS ECS, Helm, CI/CD, GitHub Actions, Turborepo, Git, MCP server, Cursor IDE
 - **Testing:** Vitest, Jasmine, Karma, Angular CLI
 - **UI Libraries:** Radix UI, CVA, clsx, tailwind-merge
 - **Code Quality:** ESLint, Prettier, Husky, Commitlint, Syncpack
-- **Libraries:** Zod, Winston, Axios, lodash, date-fns, class-validator
+- **Libraries:** Zod, Winston, lodash, date-fns, class-validator, class-transformer, axios, Puppeteer, dotenv
 
 ---
 
@@ -136,6 +136,29 @@ Projects:
 - **Rich Text:** Quill, TinyMCE
 - **Authentication:** Passport.js, JWT, CASL, bcrypt, role and permission-based access control
 - **Libraries:** Winston, class-validator, class-transformer, lodash, date-fns
+
+---
+
+### **MicroPump (Remote)**
+
+**Technical Consultant**  
+**2025 - Present**
+
+Providing ongoing technical consultation and development services after the acquisition of my EzPump bot ecosystem. Working on scaling infrastructure and implementing new features.
+
+**Post-Acquisition Integration:**
+- Extended the architecture of EzPump into a more scalable and modular system
+- Developed advanced Token Bundler for pump.fun Solana program - creates tokens and executes first buy in same atomic transaction
+- Engineered multi-wallet coordination system that generates multiple wallets and orchestrates simultaneous token purchases
+- Built one-click sell functionality enabling rapid token liquidation through atomic transaction execution
+- Implemented anti-MEV protection and transaction priority optimization for reliable execution
+- Created automated wallet management system with secure key generation and transaction signing
+- Currently serving 3.6K+ active users
+
+**Technologies Used:**
+- **Backend:** Node.js, Express, TypeScript, Solana Web3.js, Node.js Telegram Bot API
+- **Databases:** MongoDB, Mongoose
+- **Other:** Anchor Framework, Jupiter API, Metaplex, Jito MEV, Axios, Cheerio, 2captcha
 
 ---
 
@@ -184,6 +207,6 @@ Key Contributions:
 ### **Education**
 
 - **Vocational Education - Mechatronics Engineering**
-    - Oct 2015 - Aug 2020
+    - 2015 - 2020
     - Grade: 18/20 (Certified by the National Organization for Certification of Qualifications)
     - Studied a field that combines computer science, electrical engineering, and mechanical systems. Gained hands-on experience with embedded programming, circuit design, and automation, with real-world applications in robotics, smart devices, and industrial control systems.
