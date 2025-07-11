@@ -7,6 +7,9 @@
   "scripts": {
     "type-check": "tsc --noEmit"
   },
+  "dependencies": {
+    "@repo/ui": "0.0.0"
+  },
   "devDependencies": {
     "@repo/typescript-config": "0.0.0",
     "typescript": "^5.8.2"

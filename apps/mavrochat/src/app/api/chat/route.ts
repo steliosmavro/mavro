@@ -1,9 +1,15 @@
 import { openai } from '@ai-sdk/openai';
+import { createAnthropic } from '@ai-sdk/anthropic';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { headers } from 'next/headers';
+
+// Create Anthropic instance with custom API key
+const anthropic = createAnthropic({
+    apiKey: process.env.CLAUDE_API_KEY,
+});
 
 export const maxDuration = 30;
 
@@ -20,8 +26,28 @@ const chatRequestSchema = z.object({
 });
 
 // Define allowed models
-const allowedModels = ['gpt-4o', 'gpt-4o-mini', 'gpt-3.5-turbo'] as const;
+const allowedModels = [
+    'gpt-4o',
+    'gpt-4o-mini',
+    'gpt-3.5-turbo',
+    'claude-3-5-sonnet-latest',
+    'claude-3-5-haiku-latest',
+] as const;
 type AllowedModel = (typeof allowedModels)[number];
+
+// Provider configuration
+const modelProviders = {
+    'gpt-4o': openai,
+    'gpt-4o-mini': openai,
+    'gpt-3.5-turbo': openai,
+    'claude-3-5-sonnet-latest': anthropic,
+    'claude-3-5-haiku-latest': anthropic,
+} as const;
+
+function getModelProvider(model: AllowedModel) {
+    const provider = modelProviders[model];
+    return provider(model);
+}
 
 export async function POST(req: Request) {
     try {
@@ -111,6 +137,7 @@ export async function POST(req: Request) {
 
         // Validate and sanitize model selection
         const requestedModel = req.headers.get('x-model') ?? 'gpt-4o';
+
         const model: AllowedModel = allowedModels.includes(
             requestedModel as AllowedModel,
         )
@@ -127,7 +154,7 @@ export async function POST(req: Request) {
         // Create the stream
         const result = streamText({
             system: 'You are a helpful assistant. Respond to the user in Markdown format.',
-            model: openai(model),
+            model: getModelProvider(model),
             messages,
             tools: {
                 weather: tool({

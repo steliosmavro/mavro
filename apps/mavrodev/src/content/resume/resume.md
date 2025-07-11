@@ -34,7 +34,7 @@ Built a variety of full-stack applications for personal use and freelance client
     - Created intuitive UI with dark mode, conversation history, and export functionality.
     - Built with Next.js 15, TypeScript, Tailwind CSS, and Framer Motion.
     - Focused on developer experience with keyboard shortcuts, markdown support, and API integration tools.
-    - Live at [mavro.chat](https://mavro.chat) - try it out!
+    - Live at [mavro.chat](https://mavro.chat/landing) - try it out!
 
 - **MavroDev (2025)** — Personal Portfolio & Blog Platform:
     - Built a modern portfolio website showcasing projects, blog, and professional experience.

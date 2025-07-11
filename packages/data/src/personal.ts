@@ -1,4 +1,5 @@
 import type { PersonalInfo, Social } from './types';
+import { getOriginFor } from '@repo/ui/lib/utils';
 
 export const personalInfo: PersonalInfo = {
     name: 'Stelios Mavro',
@@ -6,7 +7,7 @@ export const personalInfo: PersonalInfo = {
     location: 'Athens, Greece',
     mobile: '+30 6976750964',
     email: 'stelios@mavro.dev',
-    website: 'https://mavro.dev',
+    website: getOriginFor('mavrodev'),
     linkedin: 'https://www.linkedin.com/in/steliosmavro',
     github: 'https://github.com/steliosmavro',
     twitter: 'https://twitter.com/mavrodev',
@@ -38,7 +39,7 @@ export const socials: Social[] = [
     },
     {
         platform: 'website',
-        url: 'https://mavro.dev',
+        url: getOriginFor('mavrodev'),
     },
 ];
 

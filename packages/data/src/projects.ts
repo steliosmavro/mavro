@@ -1,4 +1,5 @@
 import type { Project } from './types';
+import { getOriginFor } from '@repo/ui/lib/utils';
 
 export const projects: Project[] = [
     {
@@ -28,7 +29,7 @@ export const projects: Project[] = [
             'Claude API',
         ],
         featured: true,
-        live: 'https://mavro.chat',
+        live: `${getOriginFor('mavrochat')}/landing`,
         github: 'https://github.com/steliosmavro/mavro',
     },
     {
@@ -54,7 +55,7 @@ export const projects: Project[] = [
         primaryTech: ['Next.js', 'MDX', 'Monorepo'],
         secondaryTech: ['Tailwind CSS', 'Turborepo', 'Framer Motion', 'Resend'],
         featured: false,
-        live: 'https://mavro.dev',
+        live: getOriginFor('mavrodev'),
         github: 'https://github.com/steliosmavro/mavro',
     },
     {
