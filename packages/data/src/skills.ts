@@ -46,7 +46,7 @@ export const skills: Skill[] = [
     },
     {
         category: 'AI/ML',
-        items: ['Vercel AI SDK', 'OpenAI API', 'Claude API'],
+        items: ['Vercel AI SDK', 'OpenAI API', 'Claude API', 'MCP server'],
     },
     {
         category: 'DevOps & Tools',
@@ -59,8 +59,6 @@ export const skills: Skill[] = [
             'GitHub Actions',
             'Turborepo',
             'Git',
-            'MCP server',
-            'Cursor IDE',
         ],
     },
     {

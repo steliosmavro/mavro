@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getBlogPost, getBlogPosts } from '../../../../lib/getBlogPosts';
 import BlogPostClient from '@/components/blog/BlogPostClient';
 import { MDXContent } from '@/components/blog/MDXContent';
-import { resumeData } from '@/data/resume';
+import { resumeData } from '@repo/data';
 
 interface BlogPostPageProps {
     params: Promise<{

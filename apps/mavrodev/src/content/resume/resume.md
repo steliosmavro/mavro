@@ -147,6 +147,7 @@ Projects:
 Providing ongoing technical consultation and development services after the acquisition of my EzPump bot ecosystem. Working on scaling infrastructure and implementing new features.
 
 **Post-Acquisition Integration:**
+
 - Extended the architecture of EzPump into a more scalable and modular system
 - Developed advanced Token Bundler for pump.fun Solana program - creates tokens and executes first buy in same atomic transaction
 - Engineered multi-wallet coordination system that generates multiple wallets and orchestrates simultaneous token purchases
@@ -156,6 +157,7 @@ Providing ongoing technical consultation and development services after the acqu
 - Currently serving 3.6K+ active users
 
 **Technologies Used:**
+
 - **Backend:** Node.js, Express, TypeScript, Solana Web3.js, Node.js Telegram Bot API
 - **Databases:** MongoDB, Mongoose
 - **Other:** Anchor Framework, Jupiter API, Metaplex, Jito MEV, Axios, Cheerio, 2captcha

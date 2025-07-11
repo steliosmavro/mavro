@@ -57,7 +57,7 @@ export const experience: Experience[] = [
         workModel: 'Remote',
         role: 'Software Engineer',
         period: {
-            start: new Date('2023-01-01'),
+            start: new Date('2023-10-01'),
             end: new Date('2025-06-01'),
         },
         current: false,
@@ -126,8 +126,8 @@ export const experience: Experience[] = [
         workModel: 'Remote',
         role: 'Full-Stack Software Engineer',
         period: {
-            start: new Date('2021-09-01'),
-            end: new Date('2023-03-31'),
+            start: new Date('2021-06-01'),
+            end: new Date('2023-05-31'),
         },
         current: false,
         website: 'https://www.mind-alliance.com',

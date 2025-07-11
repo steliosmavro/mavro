@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { resumeData } from '@/data/resume';
+import { resumeData } from '@repo/data';
 import { getPrimarySkills } from '@/lib/resumeHelpers';
 import { Mail, FileText, Code2, Sparkles, Rocket } from 'lucide-react';
 import { Badge, Button } from '@repo/ui/components';

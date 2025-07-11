@@ -37,7 +37,7 @@ export const projects: Project[] = [
         name: 'MavroDev',
         slug: 'mavrodev',
         period: {
-            start: new Date('2024-10-01'),
+            start: new Date('2023-07-01'),
         },
         type: 'personal',
         categories: ['website'],

@@ -5,3 +5,8 @@ export * from './projects';
 export * from './experience';
 export * from './skills';
 export * from './testimonials';
+export * from './education';
+export * from './faqs';
+export * from './contact';
+export * from './homepage';
+export * from './resume';

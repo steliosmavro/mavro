@@ -1,6 +1,6 @@
-import { resumeData } from '@/data/resume';
-import type { Project } from '@/types/resume';
+import type { Project, SkillData } from '@repo/data';
 import {
+    resumeData,
     getProjectBySlug as getProjectBySlugFromData,
     getFeaturedProjects as getFeaturedProjectsFromData,
 } from '@repo/data';
@@ -73,8 +73,13 @@ export function getAllTechnologies(): string[] {
     });
 
     // From skills
-    resumeData.skills.forEach((skill) => {
-        skill.items.forEach((item: string) => techSet.add(item));
+    resumeData.skills.forEach((skill: SkillData) => {
+        if ('items' in skill) {
+            skill.items.forEach((item: string) => techSet.add(item));
+        } else {
+            skill.primary.forEach((item: string) => techSet.add(item));
+            skill.secondary?.forEach((item: string) => techSet.add(item));
+        }
     });
 
     return Array.from(techSet).sort();
@@ -125,10 +130,20 @@ export function getPrimarySkills(): string[] {
     }
 
     // Otherwise return skills marked as primary
-    const primarySkills = resumeData.skills
-        .filter((skill) => skill.isPrimary)
+    const primarySkills: string[] = [];
+
+    resumeData.skills
+        .filter((skill: SkillData) =>
+            'isPrimary' in skill ? skill.isPrimary : true,
+        )
         .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
-        .flatMap((skill) => skill.items.slice(0, 3)); // Take top 3 from each primary category
+        .forEach((skill: SkillData) => {
+            if ('items' in skill) {
+                primarySkills.push(...skill.items.slice(0, 3));
+            } else {
+                primarySkills.push(...skill.primary.slice(0, 3));
+            }
+        });
 
     return primarySkills.slice(0, 5); // Return top 5 skills
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import BlogList from './BlogList';
 import { getBlogPosts } from '../../../lib/getBlogPosts';
-import { resumeData } from '@/data/resume';
+import { resumeData } from '@repo/data';
 
 export const metadata: Metadata = {
     title: `Blog | ${resumeData.personal.name}`,

@@ -33,6 +33,21 @@ export interface CategoryConfig {
     color: string; // Tailwind gradient classes
 }
 
+export interface HighlightGroup {
+    summary?: string; // One-line impact statement
+    primary: string[]; // Core achievements with metrics
+    secondary?: string[]; // Technical details, implementation specifics
+    leadership?: string[]; // Leadership/mentorship highlights (for experience)
+}
+
+export interface ProjectMetrics {
+    users?: string;
+    performance?: string;
+    revenue?: string;
+    scale?: string;
+    reliability?: string;
+}
+
 export interface Project {
     name: string;
     slug: string;
@@ -44,7 +59,7 @@ export interface Project {
     categories: ProjectCategory[];
     description: string;
     longDescription?: string;
-    highlights: string[];
+    highlights: string[] | HighlightGroup; // Support both old and new format
     primaryTech: string[];
     secondaryTech: string[];
     featured: boolean;
@@ -56,11 +71,20 @@ export interface Project {
         by: string;
         details?: string;
     };
-    metrics?: {
-        users?: string;
-        revenue?: string;
-        other?: string[];
-    };
+    metrics?:
+        | {
+              users?: string;
+              revenue?: string;
+              other?: string[];
+          }
+        | ProjectMetrics; // Support both old and new format
+}
+
+export interface ExperienceProject {
+    name: string;
+    role?: string;
+    description: string;
+    highlights: string[] | HighlightGroup; // Support both old and new format
 }
 
 export interface Experience {
@@ -76,12 +100,8 @@ export interface Experience {
     website?: string;
     logo?: string;
     description: string;
-    projects: Array<{
-        name: string;
-        role?: string;
-        description: string;
-        highlights: string[];
-    }>;
+    roleImpact?: string; // One-line role summary for highlights mode
+    projects: ExperienceProject[];
     technologies: {
         frontend?: string[];
         backend?: string[];
@@ -91,12 +111,22 @@ export interface Experience {
     };
 }
 
+export interface EnhancedSkill {
+    category: string;
+    primary: string[]; // Core, production-ready skills
+    secondary?: string[]; // Familiar, learning, or supplementary
+    displayOrder?: number;
+}
+
 export interface Skill {
     category: string;
     items: string[];
     isPrimary?: boolean;
     displayOrder?: number;
 }
+
+// Union type to support both formats
+export type SkillData = Skill | EnhancedSkill;
 
 export interface Testimonial {
     quote: string;
@@ -114,4 +144,45 @@ export interface ContactMethod {
     value: string;
     href: string;
     color: string;
+}
+
+export interface Education {
+    degree: string;
+    period: string;
+    grade: string;
+    description: string;
+}
+
+export interface FAQ {
+    question: string;
+    answer: string;
+    category: 'technical' | 'work' | 'personal';
+}
+
+export interface Homepage {
+    heroSkillBadges: string[];
+    featuredProjectSlugs: string[];
+}
+
+export interface Summary {
+    headline: string;
+    bio: string;
+    bioExtension: string;
+    availability: string;
+    startYear: number;
+}
+
+export type ResumeMode = 'concise' | 'standard' | 'comprehensive';
+
+export interface Resume {
+    personal: PersonalInfo;
+    summary: Summary;
+    projects: Project[];
+    experience: Experience[];
+    education: Education[];
+    skills: SkillData[]; // Support both old and new skill formats
+    testimonials: Testimonial[];
+    faqs: FAQ[];
+    contactMethods: ContactMethod[];
+    homepage: Homepage;
 }

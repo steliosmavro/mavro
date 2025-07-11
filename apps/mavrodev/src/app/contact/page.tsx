@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { resumeData } from '@/data/resume';
+import { resumeData } from '@repo/data';
 import { getFAQs, getContactMethods } from '@/lib/resumeHelpers';
 import {
     Mail,

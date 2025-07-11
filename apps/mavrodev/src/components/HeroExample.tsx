@@ -1,6 +1,6 @@
 // EXAMPLE: How to update your homepage hero section
 
-import { resumeData } from '@/data/resume';
+import { resumeData } from '@repo/data';
 import {
     getHeroContent,
     getExperienceDuration,

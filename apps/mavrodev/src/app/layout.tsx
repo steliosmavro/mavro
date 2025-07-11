@@ -11,7 +11,7 @@ import {
     ElementHeightObserver,
 } from '@repo/ui/components';
 import './globals.css';
-import { resumeData } from '@/data/resume';
+import { resumeData } from '@repo/data';
 import { sharedConfig } from '@repo/shared-config';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -98,7 +98,7 @@ export default function RootLayout({
                                 </Button>
                                 <Button asChild variant="link">
                                     <Link
-                                        href="/resume.pdf"
+                                        href="/resume-comprehensive.pdf"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >

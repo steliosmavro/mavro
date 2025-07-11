@@ -65,9 +65,17 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
         ? getCategoryColor(primaryCategory)
         : 'from-gray-500 to-gray-600';
 
+    const highlightsArray = Array.isArray(project.highlights)
+        ? project.highlights
+        : project.highlights
+          ? [
+                ...project.highlights.primary,
+                ...(project.highlights.secondary || []),
+            ]
+          : [];
+
     const hasExpandableContent =
-        (project.highlights && project.highlights.length > 0) ||
-        project.longDescription;
+        highlightsArray.length > 0 || project.longDescription;
 
     const toggleExpansion = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -183,31 +191,28 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
                                 )}
 
                                 {/* Highlights */}
-                                {project.highlights &&
-                                    project.highlights.length > 0 && (
-                                        <div className="border-l-2 border-primary/20 pl-4 space-y-2">
-                                            <h4 className="text-sm font-semibold mb-2">
-                                                Key Highlights:
-                                            </h4>
-                                            <ul className="space-y-1">
-                                                {project.highlights.map(
-                                                    (highlight, idx) => (
-                                                        <li
-                                                            key={idx}
-                                                            className="text-sm text-muted-foreground flex items-start gap-2"
-                                                        >
-                                                            <span className="text-primary mt-1">
-                                                                •
-                                                            </span>
-                                                            <span>
-                                                                {highlight}
-                                                            </span>
-                                                        </li>
-                                                    ),
-                                                )}
-                                            </ul>
-                                        </div>
-                                    )}
+                                {highlightsArray.length > 0 && (
+                                    <div className="border-l-2 border-primary/20 pl-4 space-y-2">
+                                        <h4 className="text-sm font-semibold mb-2">
+                                            Key Highlights:
+                                        </h4>
+                                        <ul className="space-y-1">
+                                            {highlightsArray.map(
+                                                (highlight, idx) => (
+                                                    <li
+                                                        key={idx}
+                                                        className="text-sm text-muted-foreground flex items-start gap-2"
+                                                    >
+                                                        <span className="text-primary mt-1">
+                                                            •
+                                                        </span>
+                                                        <span>{highlight}</span>
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </div>
+                                )}
 
                                 {/* Technologies */}
                                 <div className="text-sm text-muted-foreground">

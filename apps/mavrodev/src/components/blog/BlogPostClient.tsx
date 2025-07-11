@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { resumeData } from '@/data/resume';
+import { resumeData } from '@repo/data';
 import { getProjectBySlug } from '@/lib/resumeHelpers';
 import {
     Calendar,

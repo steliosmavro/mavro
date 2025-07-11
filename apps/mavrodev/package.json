@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start -p 3000",
         "lint": "next lint",
-        "check-types": "tsc --noEmit"
+        "check-types": "tsc --noEmit",
+        "generate:resume": "tsx scripts/generate-resume-pdf.tsx"
     },
     "dependencies": {
         "@radix-ui/react-slot": "^1.2.3",
@@ -32,6 +33,7 @@
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
+        "@react-pdf/renderer": "^4.3.0",
         "@repo/eslint-config": "0.0.0",
         "@repo/typescript-config": "0.0.0",
         "@tailwindcss/postcss": "^4.1.10",
@@ -41,6 +43,7 @@
         "eslint": "^9.29.0",
         "eslint-config-next": "15.3.4",
         "tailwindcss": "^4.1.10",
+        "tsx": "^4.20.3",
         "typescript": "^5.8.2"
     }
 }

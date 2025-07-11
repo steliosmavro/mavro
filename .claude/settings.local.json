@@ -55,7 +55,9 @@
       "Bash(git checkout:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:turbo.build)",
-      "WebFetch(domain:turborepo.com)"
+      "WebFetch(domain:turborepo.com)",
+      "Bash(open:*)",
+      "WebFetch(domain:react-pdf.org)"
     ],
     "deny": [
       "Bash(rm -rf /)",

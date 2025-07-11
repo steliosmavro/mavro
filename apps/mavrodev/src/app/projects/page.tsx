@@ -24,7 +24,7 @@ import {
     type FilterOption,
 } from '@repo/ui/components';
 import React from 'react';
-import { resumeData } from '@/data/resume';
+import { resumeData } from '@repo/data';
 import { getProjects } from '@/lib/resumeHelpers';
 import type { Project, ProjectCategory, Experience } from '@/types/resume';
 import { getCategoryLabel } from '@/lib/categories';
@@ -344,21 +344,27 @@ export default function ProjectsPage() {
                                                 {project.description}
                                             </p>
                                             <ul className="space-y-1">
-                                                {project.highlights.map(
-                                                    (highlight, hidx) => (
-                                                        <li
-                                                            key={hidx}
-                                                            className="text-sm text-muted-foreground flex items-start gap-2"
-                                                        >
-                                                            <span className="text-primary mt-1">
-                                                                •
-                                                            </span>
-                                                            <span>
-                                                                {highlight}
-                                                            </span>
-                                                        </li>
-                                                    ),
-                                                )}
+                                                {(Array.isArray(
+                                                    project.highlights,
+                                                )
+                                                    ? project.highlights
+                                                    : [
+                                                          ...project.highlights
+                                                              .primary,
+                                                          ...(project.highlights
+                                                              .secondary || []),
+                                                      ]
+                                                ).map((highlight, hidx) => (
+                                                    <li
+                                                        key={hidx}
+                                                        className="text-sm text-muted-foreground flex items-start gap-2"
+                                                    >
+                                                        <span className="text-primary mt-1">
+                                                            •
+                                                        </span>
+                                                        <span>{highlight}</span>
+                                                    </li>
+                                                ))}
                                             </ul>
                                         </div>
                                     ))}
