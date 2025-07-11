@@ -1,0 +1,192 @@
+---
+title: 'Building MavroChat: An Open Source AI Chat for Developers'
+summary: 'How I built MavroChat - an open source, lightweight alternative to expensive AI coding assistants. Learn about the technical challenges, architecture decisions, and why I believe developer tools should be open and accessible.'
+date: '2025-01-10'
+category: 'ai-ml'
+featured: true
+---
+
+I love AI coding assistants, but I noticed something: they're becoming increasingly expensive and complex. Tools like Cursor and Copilot are powerful, but they process entire codebases, require subscriptions, and can be overkill for many tasks.
+
+So I built [MavroChat](https://github.com/steliosmavro/mavro) - exploring what happens when you take a different approach: lightweight, focused, and accessible.
+
+## The Inspiration: Focused Development
+
+While building various projects, I kept finding myself in situations where I needed quick AI assistance for specific code snippets. I didn't need my entire codebase analyzed - just a function explained, an error debugged, or a pattern suggested.
+
+This "zen mode" approach became the core philosophy of MavroChat:
+
+- **Paste only what matters** - No codebase indexing needed
+- **Get instant answers** - Optimized for speed over comprehensive analysis
+- **Stay in control** - You decide exactly what code to share
+- **Keep it accessible** - Free tier for everyone, premium features for power users
+
+## What I Built
+
+MavroChat is an open source AI chat interface specifically designed for developers. As a developer tool, it focuses on what matters most:
+
+- **Beautiful code formatting** - Syntax highlighting with Shiki
+- **Real-time streaming** - Responses appear as they're generated
+- **Developer tool integration** - Extensible tool system for custom functions
+- **Multiple model support** - Choose from various AI models including ChatGPT, Claude, Gemini, and open source alternatives
+- **Open source first** - Fork, customize, and self-host with your own API keys
+
+## When MavroChat Shines
+
+### Perfect for Focused Development
+
+MavroChat excels when you need:
+
+- **Quick code reviews** - Paste a function, get instant feedback
+- **Error debugging** - Share just the stack trace and relevant code
+- **API exploration** - Ask about specific endpoints without sharing your entire app
+- **Learning new concepts** - Get explanations without subscription pressure
+- **Code generation** - Generate boilerplate without token limits
+
+### Real Developer Workflows
+
+Here's how I use MavroChat daily:
+
+```typescript
+// Instead of sharing my entire app, I paste just what matters:
+function processPayment(amount: number) {
+    // ... 20 lines of code ...
+}
+// "How can I add retry logic to this function?"
+```
+
+This focused approach means faster responses, lower costs, and better privacy.
+
+## Technical Architecture: Built for Simplicity
+
+### Making It Sustainable
+
+One of the biggest challenges was figuring out how to keep it accessible while sustainable. The solution:
+
+- **Rate limiting** - Fair usage limits prevent abuse while keeping it free
+- **Optional premium features** - Power users can upgrade for more requests
+- **Self-hosting** - Developers can use their own API keys for unlimited usage
+
+The lightweight architecture means running costs stay minimal, allowing for generous free tiers that actually work for daily development.
+
+### Core Developer Features
+
+- **Model flexibility** - Unlike ChatGPT or Claude that lock you into their models, choose from multiple AI providers
+- **Tool integration** - Built on Vercel AI SDK's tool system, easily extend with custom developer tools
+- **Open source foundation** - Full transparency and customization, a true developer tool
+- **Instant streaming** - Sub-50ms response times using Server-Sent Events
+- **Beautiful code handling** - Syntax highlighting, one-click copy, proper formatting
+
+## Built with Modern Stack
+
+The tech choices prioritize performance and developer experience:
+
+- **Next.js 15** - For blazing-fast performance and edge functions
+- **Vercel AI SDK** - Seamless streaming and tool integration
+- **TypeScript** - Type safety throughout
+- **Tailwind CSS** - Rapid UI development
+- **Turborepo** - Monorepo structure for future growth
+
+## Why Open Source Matters
+
+MavroChat is completely open source because I believe developer tools should be:
+
+- **Transparent** - See exactly how it works
+- **Extensible** - Add your own features
+- **Self-hostable** - Your data, your servers
+- **Community-driven** - Built by developers, for developers
+
+### The GitHub Advantage
+
+The entire codebase is on [GitHub](https://github.com/steliosmavro/mavro), which means:
+
+- Fork it and customize for your team
+- Contribute features you need
+- Learn from the implementation
+- Use it as a starter for your own AI projects
+
+## Getting Started is Simple
+
+```bash
+# Clone the repository
+git clone https://github.com/steliosmavro/mavro
+cd mavrochat
+
+# Install dependencies
+npm install
+
+# Add your OpenAI API key
+cp .env.example .env.local
+
+# Start developing
+npm run dev
+```
+
+Or try the [live demo](https://mavro.chat) - no signup required!
+
+## Technical Challenges I Overcame
+
+### 1. Building an Extensible Tool System
+
+One of the most interesting challenges was creating a developer-friendly tool system. Using Vercel AI SDK's tool framework, I built a foundation where developers can easily add custom functions:
+
+- Type-safe tool definitions with Zod schemas
+- Seamless integration with the chat flow
+- Easy to extend with your own developer tools
+
+### 2. Rate Limiting at the Edge
+
+Implementing fair rate limiting without a traditional backend taught me about:
+
+- Edge function capabilities
+- IP-based identification challenges
+- Balancing user experience with sustainability
+
+### 3. Making It Truly Open Source
+
+There's a difference between "source available" and genuinely open source:
+
+- Clear documentation for contributors
+- Easy local development setup
+- Flexible deployment options
+
+## Who Benefits Most
+
+MavroChat is perfect for:
+
+- **Students** learning to code without monthly subscriptions
+- **Indie developers** watching their budget
+- **Open source contributors** who prefer free tools
+- **Privacy-conscious developers** who want control
+- **Anyone** who prefers focused, zen-mode coding
+
+## What I Learned
+
+Building MavroChat as an open source developer tool taught me valuable lessons:
+
+1. **Open Source Developer Tools** - The unique challenges of building tools for developers who will read your code
+2. **AI Integration** - Deep understanding of streaming, tool calling, and model management
+3. **Sustainable Open Source** - How to balance free access with operational costs
+4. **Developer Experience** - Why focused, lightweight tools still have their place alongside AI agents
+
+## The Philosophy
+
+I believe AI assistance should be accessible to every developer. Not everyone needs or can afford $20-40/month subscriptions. By keeping MavroChat lightweight and focused, it can offer:
+
+- A generous free tier for everyday use
+- Affordable premium options for power users
+- Complete transparency through open source
+- Self-hosting for ultimate control
+
+## Try It Out
+
+If you're curious about the project:
+
+- Check out the [live demo](https://mavro.chat) - no signup required
+- Explore the [source code](https://github.com/steliosmavro/mavro)
+- Self-host with your own API keys
+- Contribute features or improvements
+
+MavroChat might not replace your AI coding agent, but for quick questions, code reviews, and focused development sessions, it offers a refreshing alternative.
+
+Because sometimes, you just need a simple chat that understands code.
