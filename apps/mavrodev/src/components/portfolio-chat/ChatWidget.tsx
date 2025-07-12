@@ -74,7 +74,7 @@ export function ChatWidget() {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.8, y: 10 }}
                         transition={{ type: 'spring', duration: 0.4 }}
-                        className="fixed bottom-20 right-4 sm:right-6 z-40 max-w-[280px]"
+                        className="fixed bottom-20 right-4 sm:right-6 z-40 max-w-[320px]"
                     >
                         <div className="bg-card border border-border rounded-xl shadow-xl p-5 relative overflow-hidden">
                             {/* Gradient background accent */}
@@ -90,21 +90,19 @@ export function ChatWidget() {
                             </Button>
 
                             <div className="relative z-10">
-                                <div className="flex items-start gap-3 mb-2">
+                                <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                         <MessageCircle className="w-5 h-5 text-primary" />
                                     </div>
-                                    <div className="pr-4">
-                                        <h4 className="font-semibold text-sm mb-1">
-                                            AI Portfolio Assistant
-                                        </h4>
-                                        <p className="text-sm text-muted-foreground leading-relaxed">
-                                            Chat with my AI to learn about my
-                                            experience and projects!
-                                        </p>
-                                    </div>
+                                    <h4 className="font-semibold text-sm">
+                                        AI Portfolio Assistant
+                                    </h4>
                                 </div>
-                                <div className="flex justify-end mt-3">
+                                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                                    Chat with my AI to learn about my experience
+                                    and projects!
+                                </p>
+                                <div className="flex justify-end">
                                     <span className="text-xs font-medium text-primary">
                                         Ask anything!
                                     </span>
