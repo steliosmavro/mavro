@@ -579,6 +579,13 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                             <Text style={styles.contactDivider}>•</Text>
                             <Link
                                 style={[styles.contactItem, styles.link]}
+                                src={resumeData.personal.website}
+                            >
+                                mavro.dev
+                            </Link>
+                            <Text style={styles.contactDivider}>•</Text>
+                            <Link
+                                style={[styles.contactItem, styles.link]}
                                 src={`mailto:${resumeData.personal.email}`}
                             >
                                 {resumeData.personal.email}
@@ -597,20 +604,6 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                             >
                                 LinkedIn
                             </Link>
-                            {mode !== 'concise' && (
-                                <>
-                                    <Text style={styles.contactDivider}>•</Text>
-                                    <Link
-                                        style={[
-                                            styles.contactItem,
-                                            styles.link,
-                                        ]}
-                                        src={resumeData.personal.website}
-                                    >
-                                        mavro.dev
-                                    </Link>
-                                </>
-                            )}
                         </View>
                     </View>
                 </View>
