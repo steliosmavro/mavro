@@ -14,6 +14,7 @@ import './globals.css';
 import { resumeData } from '@repo/data';
 import { sharedConfig } from '@repo/shared-config';
 import { Analytics } from '@vercel/analytics/react';
+import { ChatWidget } from '@/components/portfolio-chat/ChatWidget';
 
 const origin = getOriginFor('mavrodev');
 
@@ -141,6 +142,7 @@ export default function RootLayout({
                             {resumeData.personal.name}. All rights reserved.
                         </div>
                     </footer>
+                    <ChatWidget />
                     <Analytics />
                 </ThemeProvider>
             </body>
