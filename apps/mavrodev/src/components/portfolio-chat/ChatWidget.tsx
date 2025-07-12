@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X } from 'lucide-react';
 import { Button } from '@repo/ui/components';
@@ -9,6 +9,27 @@ import { PortfolioChat } from './PortfolioChat';
 
 export function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false);
+    const [showNotification, setShowNotification] = useState(false);
+
+    useEffect(() => {
+        // Show notification after 3 seconds
+        const timer = setTimeout(() => {
+            const hasSeenNotification = localStorage.getItem(
+                'portfolio-chat-notification-seen',
+            );
+            if (!hasSeenNotification) {
+                setShowNotification(true);
+            }
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    const dismissNotification = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setShowNotification(false);
+        localStorage.setItem('portfolio-chat-notification-seen', 'true');
+    };
 
     return (
         <>
@@ -25,10 +46,10 @@ export function ChatWidget() {
                             <div className="flex items-center justify-between p-4 border-b">
                                 <div>
                                     <h3 className="font-semibold">
-                                        Chat with my Portfolio
+                                        AI Portfolio Assistant
                                     </h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Ask about my experience
+                                        Ask my AI about my experience
                                     </p>
                                 </div>
                                 <Button
@@ -41,6 +62,58 @@ export function ChatWidget() {
                                 </Button>
                             </div>
                             <PortfolioChat />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {showNotification && !isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                        transition={{ type: 'spring', duration: 0.4 }}
+                        className="fixed bottom-20 right-4 sm:right-6 z-40 max-w-[280px]"
+                    >
+                        <div className="bg-card border border-border rounded-xl shadow-xl p-5 relative overflow-hidden">
+                            {/* Gradient background accent */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 pointer-events-none" />
+
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={dismissNotification}
+                                className="absolute top-3 right-3 h-7 w-7 hover:bg-muted/80 transition-colors z-20"
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+
+                            <div className="relative z-10">
+                                <div className="flex items-start gap-3 mb-2">
+                                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                        <MessageCircle className="w-5 h-5 text-primary" />
+                                    </div>
+                                    <div className="pr-4">
+                                        <h4 className="font-semibold text-sm mb-1">
+                                            AI Portfolio Assistant
+                                        </h4>
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            Chat with my AI to learn about my
+                                            experience and projects!
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-end mt-3">
+                                    <span className="text-xs font-medium text-primary">
+                                        Ask anything!
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Arrow pointing to chat button */}
+                            <div className="absolute bottom-[-8px] right-8 w-0 h-0 border-t-[8px] border-t-card border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent" />
+                            <div className="absolute bottom-[-9px] right-8 w-0 h-0 border-t-[8px] border-t-border border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent" />
                         </div>
                     </motion.div>
                 )}

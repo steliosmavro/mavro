@@ -23,7 +23,7 @@ export function PortfolioChat() {
                     id: 'welcome',
                     role: 'assistant',
                     content:
-                        "Hi! I'm here to help you learn about Stelios's experience and projects. What would you like to know?",
+                        "Hey! I'm an AI assistant trained on Stelios's portfolio 🤖 I can tell you all about his experience as a Senior Full-Stack Engineer, his projects, and his expertise in AI and developer tools. What would you like to know?",
                 },
             ],
         });
