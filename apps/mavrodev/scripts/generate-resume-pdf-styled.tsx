@@ -506,6 +506,17 @@ const groupProjectsByImpact = (projects: Project[]) => {
         }
     });
 
+    // Sort each group to put featured projects first
+    const sortByFeatured = (a: Project, b: Project) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return 0;
+    };
+
+    groups.exits.sort(sortByFeatured);
+    groups.openSource.sort(sortByFeatured);
+    groups.technical.sort(sortByFeatured);
+
     return groups;
 };
 
@@ -545,9 +556,17 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
     // Get limited experiences
     const experiences = resumeData.experience.slice(0, limits.experiences);
 
-    // Get and group projects
-    const featuredProjects = resumeData.projects.filter((p) => p.featured);
-    const projectGroups = groupProjectsByImpact(featuredProjects);
+    // Get projects based on mode
+    const projectsToShow =
+        mode === 'comprehensive'
+            ? resumeData.projects.sort((a, b) => {
+                  // Sort featured projects first
+                  if (a.featured && !b.featured) return -1;
+                  if (!a.featured && b.featured) return 1;
+                  return 0;
+              })
+            : resumeData.projects.filter((p) => p.featured);
+    const projectGroups = groupProjectsByImpact(projectsToShow);
 
     // Get avatar path - using the new business photo
     const avatarPath = path.join(
@@ -666,7 +685,14 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
 
                             {/* Show key project highlights */}
                             {exp.projects
-                                .slice(0, mode === 'concise' ? 1 : 2)
+                                .slice(
+                                    0,
+                                    mode === 'concise'
+                                        ? 1
+                                        : mode === 'comprehensive'
+                                          ? exp.projects.length
+                                          : 2,
+                                )
                                 .map((project, pIndex) => (
                                     <View key={pIndex}>
                                         {mode !== 'concise' && (
@@ -699,13 +725,31 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                                     {[
                                         ...(
                                             exp.technologies.backend || []
-                                        ).slice(0, 3),
+                                        ).slice(
+                                            0,
+                                            mode === 'comprehensive'
+                                                ? exp.technologies.backend
+                                                      ?.length
+                                                : 3,
+                                        ),
                                         ...(
                                             exp.technologies.frontend || []
-                                        ).slice(0, 2),
+                                        ).slice(
+                                            0,
+                                            mode === 'comprehensive'
+                                                ? exp.technologies.frontend
+                                                      ?.length
+                                                : 2,
+                                        ),
                                         ...(
                                             exp.technologies.databases || []
-                                        ).slice(0, 1),
+                                        ).slice(
+                                            0,
+                                            mode === 'comprehensive'
+                                                ? exp.technologies.databases
+                                                      ?.length
+                                                : 1,
+                                        ),
                                     ].map((tech, tIndex) => (
                                         <Text
                                             key={tIndex}
@@ -722,7 +766,11 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
 
                 {/* Projects */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Featured Projects</Text>
+                    <Text style={styles.sectionTitle}>
+                        {mode === 'comprehensive'
+                            ? 'Projects'
+                            : 'Featured Projects'}
+                    </Text>
 
                     {/* Group: Successful Exits */}
                     {projectGroups.exits.length > 0 && (
@@ -800,7 +848,14 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                                         {mode !== 'concise' && (
                                             <View style={styles.techStack}>
                                                 {project.primaryTech
-                                                    .slice(0, 4)
+                                                    .slice(
+                                                        0,
+                                                        mode === 'comprehensive'
+                                                            ? project
+                                                                  .primaryTech
+                                                                  .length
+                                                            : 4,
+                                                    )
                                                     .map((tech, tIndex) => (
                                                         <Text
                                                             key={tIndex}
@@ -884,7 +939,14 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                                         {mode !== 'concise' && (
                                             <View style={styles.techStack}>
                                                 {project.primaryTech
-                                                    .slice(0, 4)
+                                                    .slice(
+                                                        0,
+                                                        mode === 'comprehensive'
+                                                            ? project
+                                                                  .primaryTech
+                                                                  .length
+                                                            : 4,
+                                                    )
                                                     .map((tech, tIndex) => (
                                                         <Text
                                                             key={tIndex}
@@ -902,12 +964,12 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                         </View>
                     )}
 
-                    {/* Group: Technical Excellence */}
+                    {/* Group: Technical Projects */}
                     {mode !== 'concise' &&
                         projectGroups.technical.length > 0 && (
                             <View style={styles.projectGroup}>
                                 <Text style={styles.projectGroupTitle}>
-                                    Technical Excellence
+                                    Technical Projects
                                 </Text>
                                 {projectGroups.technical
                                     .slice(0, limits.projectsPerGroup)
@@ -946,7 +1008,7 @@ const ResumePDF = ({ mode = 'standard' }: { mode?: ResumeMode }) => {
                                             </Text>
                                             {getHighlights(
                                                 project.highlights,
-                                                2,
+                                                limits.highlightsPerItem,
                                                 mode,
                                             ).map((highlight, hIndex) => (
                                                 <Text

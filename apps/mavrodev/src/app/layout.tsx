@@ -95,6 +95,9 @@ export default function RootLayout({
                                     <Link href="/blog">Blog</Link>
                                 </Button>
                                 <Button asChild variant="link">
+                                    <Link href="/book">Book</Link>
+                                </Button>
+                                <Button asChild variant="link">
                                     <Link href="/contact">Contact</Link>
                                 </Button>
                                 <Button asChild variant="link">
