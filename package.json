@@ -13,11 +13,13 @@
         "sync:check": "syncpack list-mismatches",
         "sync:fix": "syncpack fix-mismatches",
         "clean": "find . -type d -name 'node_modules' -prune -exec rm -rf '{}' + && find . -name 'package-lock.json' -exec rm -f '{}' +",
-        "clean:cache": "rm -rf apps/*/.next packages/*/.next"
+        "clean:cache": "rm -rf apps/*/.next packages/*/.next",
+        "setup:calendar": "node scripts/get-google-refresh-token.js"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.8.1",
         "@commitlint/config-conventional": "^19.8.1",
+        "googleapis": "^152.0.0",
         "husky": "^9.1.7",
         "prettier": "^3.5.3",
         "syncpack": "^13.0.4",

@@ -49,6 +49,7 @@ export const projects: Project[] = [
             'Built a modern portfolio website showcasing projects, blog, and professional experience',
             'Integrated AI-powered portfolio assistant using OpenAI GPT-3.5 for natural conversation about my experience',
             'Implemented real-time streaming responses with intelligent context-aware tools for querying projects and skills',
+            'Added Google Calendar integration allowing visitors to check availability and schedule meetings directly through AI chat',
             'Added rate limiting and comprehensive error handling for sustainable AI feature usage',
             'Implemented MDX-based blog system with syntax highlighting, reading time, and category filtering',
             'Created responsive design with dark/light theme support and smooth Framer Motion animations',
@@ -59,6 +60,7 @@ export const projects: Project[] = [
         primaryTech: ['Next.js', 'AI Integration', 'MDX', 'Monorepo'],
         secondaryTech: [
             'OpenAI API',
+            'Google Calendar API',
             'Tailwind CSS',
             'Turborepo',
             'Framer Motion',

@@ -43,6 +43,8 @@ An AI-powered chat platform for developers with features including:
 
 A developer portfolio and blog site featuring:
 
+- AI-powered chat assistant with calendar integration
+- Google Calendar integration for scheduling meetings
 - Project showcase
 - Technical blog with MDX support
 - Resume generation
@@ -111,6 +113,9 @@ Required environment variables:
 - `OPENAI_API_KEY`: For AI chat functionality
 - `UPSTASH_REDIS_REST_URL`: Redis URL for rate limiting (optional)
 - `UPSTASH_REDIS_REST_TOKEN`: Redis token for rate limiting (optional)
+- `GOOGLE_CLIENT_ID`: Google OAuth client ID for calendar integration
+- `GOOGLE_CLIENT_SECRET`: Google OAuth client secret
+- `GOOGLE_REFRESH_TOKEN`: Google OAuth refresh token
 
 ### Code Standards
 

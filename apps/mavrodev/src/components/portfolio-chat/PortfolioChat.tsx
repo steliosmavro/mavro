@@ -10,8 +10,8 @@ import { motion } from 'framer-motion';
 const SUGGESTED_QUESTIONS = [
     "What's your experience with AI?",
     'Tell me about your open-source work',
-    'What projects are you most proud of?',
-    "What's your tech stack?",
+    "What's your availability this week?",
+    'Can we schedule a meeting?',
 ];
 
 export function PortfolioChat() {
@@ -23,7 +23,7 @@ export function PortfolioChat() {
                     id: 'welcome',
                     role: 'assistant',
                     content:
-                        "Hey! I'm an AI assistant trained on Stelios's portfolio 🤖 I can tell you all about his experience as a Senior Full-Stack Engineer, his projects, and his expertise in AI and developer tools. What would you like to know?",
+                        "Hey! I'm an AI assistant trained on Stelios's portfolio 🤖 I can tell you all about his experience as a Senior Full-Stack Engineer, his projects, and his expertise in AI and developer tools. I can also check his calendar availability and help you schedule a meeting directly! What would you like to know?",
                 },
             ],
         });

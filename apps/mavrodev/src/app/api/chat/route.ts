@@ -3,12 +3,15 @@ import { streamText, tool } from 'ai';
 import { z } from 'zod';
 import { personalInfo, projects, experience, skills } from '@repo/data';
 import { rateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
+import { GoogleCalendarService } from '@/lib/google-calendar';
 
-const systemPrompt = `You are Stelios Mavro, a Senior Full-Stack Software Engineer. Speak in first person as if you're having a friendly conversation. Be personable and authentic. You are an AI assistant that has been trained to represent Stelios accurately.
+const systemPrompt = `You are an AI assistant representing ${personalInfo.name}, a ${personalInfo.title}. You help visitors learn about ${personalInfo.name.split(' ')[0]}'s experience and schedule meetings with him. Be friendly, professional, and helpful.
+
+IMPORTANT: Today's date is ${new Date().toISOString().split('T')[0]} (${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}).
 
 About me:
-- I'm ${personalInfo.name}, based in ${personalInfo.location}
-- ${personalInfo.title} with deep expertise in AI integrations and developer tools
+- Stelios is based in ${personalInfo.location}
+- He's a ${personalInfo.title} with deep expertise in AI integrations and developer tools
 - Email: ${personalInfo.email}
 - GitHub: ${personalInfo.github}
 - LinkedIn: ${personalInfo.linkedin}
@@ -25,13 +28,34 @@ I have:
 - ${skills.flatMap((s) => s.items).length} technical skills across ${skills.length} categories
 - Proven track record of building production systems serving thousands of users
 
+Meeting availability:
+- I'm available for meetings Monday through Saturday, 8 AM to 8 PM Athens time (Europe/Athens)
+- You can check my calendar availability and schedule meetings directly through this chat
+- All meetings include a Google Meet link
+
 Guidelines:
-- Speak naturally in first person ("I built...", "I worked on...", "My experience includes...")
-- Be confident about my Senior-level expertise
-- Share specific examples from my projects when relevant
+- When discussing Stelios's work, speak clearly about his accomplishments ("Stelios built...", "He worked on...", "His experience includes...")
+- Be confident about Stelios's Senior-level expertise
+- Share specific examples from his projects when relevant
 - Be enthusiastic about AI, developer tools, and open source
-- If asked about opportunities, mention I'm open to discussing interesting projects
+- If asked about opportunities, mention Stelios is open to discussing interesting projects
+- When someone wants to schedule a meeting, use the calendar tools to check availability and book it
+- For calendar operations: always use YYYY-MM-DD format for dates (e.g., tomorrow would be ${new Date(Date.now() + 86400000).toISOString().split('T')[0]})
+- When someone asks about availability without specifying a date, assume they mean tomorrow or the next few days and use checkCalendarAvailability
+- When someone mentions scheduling or availability, ALWAYS use the calendar tools (checkCalendarAvailability or scheduleMeeting), NOT scheduleContact
+- When scheduling meetings, you MUST get the person's name and email BEFORE attempting to book. Never use placeholder values like "user@example.com"
+- If someone tries to schedule without providing their name and email, politely ask for these details first
 - Keep responses conversational but professional`;
+
+// Create a singleton calendar service
+let calendarService: GoogleCalendarService | null = null;
+
+function getCalendarService() {
+    if (!calendarService) {
+        calendarService = new GoogleCalendarService();
+    }
+    return calendarService;
+}
 
 export async function POST(req: Request) {
     try {
@@ -178,9 +202,143 @@ export async function POST(req: Request) {
                         }));
                     },
                 }),
+                checkCalendarAvailability: tool({
+                    description:
+                        'Check my calendar availability for a specific date. Use this when someone asks about availability, free time, or when I can meet. Always use YYYY-MM-DD format.',
+                    parameters: z.object({
+                        date: z.string().describe('Date in YYYY-MM-DD format'),
+                        durationMinutes: z
+                            .number()
+                            .optional()
+                            .default(30)
+                            .describe('Meeting duration in minutes'),
+                    }),
+                    execute: async ({ date, durationMinutes }) => {
+                        try {
+                            console.log('Checking calendar for date:', date);
+                            const calendar = getCalendarService();
+                            const slots = await calendar.getAvailableSlots(
+                                date,
+                                durationMinutes,
+                            );
+
+                            if (slots.length === 0) {
+                                return {
+                                    available: false,
+                                    message: `I don't have any available ${durationMinutes}-minute slots on ${date}. Would you like to check another date?`,
+                                };
+                            }
+
+                            return {
+                                available: true,
+                                date,
+                                slots,
+                                message: `I have ${slots.length} available ${durationMinutes}-minute slots on ${date}. Available times: ${slots.slice(0, 5).join(', ')}${slots.length > 5 ? ', and more' : ''}. Which time works best for you?`,
+                            };
+                        } catch (error) {
+                            console.error('Calendar check error:', error);
+                            return {
+                                error: true,
+                                message: `Sorry, I had trouble checking my calendar. Please try again or email me directly at ${personalInfo.email}`,
+                            };
+                        }
+                    },
+                }),
+                scheduleMeeting: tool({
+                    description: 'Schedule a meeting on my calendar',
+                    parameters: z.object({
+                        name: z
+                            .string()
+                            .min(2, 'Name must be at least 2 characters')
+                            .describe("The person's full name"),
+                        email: z
+                            .string()
+                            .email('Must be a valid email address')
+                            .refine(
+                                (email) => !email.includes('example.com'),
+                                'Please provide a real email address',
+                            )
+                            .describe(
+                                "The person's email address for calendar invitation",
+                            ),
+                        date: z.string().describe('Date in YYYY-MM-DD format'),
+                        time: z
+                            .string()
+                            .describe('Time in HH:MM format (24-hour)'),
+                        durationMinutes: z
+                            .number()
+                            .optional()
+                            .default(30)
+                            .describe('Meeting duration in minutes'),
+                        description: z
+                            .string()
+                            .optional()
+                            .describe('What would you like to discuss?'),
+                    }),
+                    execute: async ({
+                        name,
+                        email,
+                        date,
+                        time,
+                        durationMinutes,
+                        description,
+                    }) => {
+                        try {
+                            // Extra validation to ensure we never use placeholder values
+                            if (
+                                !name ||
+                                name.length < 2 ||
+                                email.includes('example.com')
+                            ) {
+                                return {
+                                    success: false,
+                                    message:
+                                        'I need your full name and email address to schedule the meeting. Could you please provide those details?',
+                                };
+                            }
+
+                            const calendar = getCalendarService();
+                            const result = await calendar.scheduleMeeting({
+                                name,
+                                email,
+                                date,
+                                time,
+                                durationMinutes,
+                                description,
+                            });
+
+                            return {
+                                success: true,
+                                message: `Perfect! I've scheduled our ${durationMinutes}-minute meeting for ${date} at ${time} Athens time. You'll receive a calendar invitation at ${email} with a Google Meet link. Looking forward to our conversation!`,
+                                details: {
+                                    meetLink: result.meetLink,
+                                    calendarLink: result.htmlLink,
+                                },
+                            };
+                        } catch (error) {
+                            console.error('Scheduling error:', error);
+
+                            // Check if it's a time conflict error
+                            if (
+                                error instanceof Error &&
+                                error.message.includes('already booked')
+                            ) {
+                                return {
+                                    success: false,
+                                    message: `I'm sorry, but I already have a meeting scheduled at ${time} on ${date}. Would you like to check my availability for that day and pick a different time?`,
+                                };
+                            }
+
+                            return {
+                                success: false,
+                                message: `I couldn't schedule the meeting automatically. Please email me at ${personalInfo.email} and we'll coordinate a time that works for both of us.`,
+                            };
+                        }
+                    },
+                }),
                 scheduleContact: tool({
                     description:
-                        'Provide contact information for scheduling a call or sending an email',
+                        'ONLY use this for general contact information requests, NOT for scheduling meetings or checking availability',
                     parameters: z.object({
                         purpose: z
                             .string()

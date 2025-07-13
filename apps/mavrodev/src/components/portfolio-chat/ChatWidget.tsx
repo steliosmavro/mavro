@@ -49,7 +49,8 @@ export function ChatWidget() {
                                         AI Portfolio Assistant
                                     </h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Ask my AI about my experience
+                                        Ask about experience or schedule a
+                                        meeting
                                     </p>
                                 </div>
                                 <Button
@@ -99,8 +100,8 @@ export function ChatWidget() {
                                     </h4>
                                 </div>
                                 <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                                    Chat with my AI to learn about my experience
-                                    and projects!
+                                    Chat with my AI to learn about my
+                                    experience, projects, or schedule a meeting!
                                 </p>
                                 <div className="flex justify-end">
                                     <span className="text-xs font-medium text-primary">

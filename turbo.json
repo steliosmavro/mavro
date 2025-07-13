@@ -25,6 +25,12 @@
         "UPSTASH_REDIS_REST_URL",
         "UPSTASH_REDIS_REST_TOKEN",
         "RESEND_API_KEY",
-        "CONTACT_EMAIL"
+        "CONTACT_EMAIL",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET",
+        "GOOGLE_REFRESH_TOKEN",
+        "TIMEZONE",
+        "WORKING_HOURS_START",
+        "WORKING_HOURS_END"
     ]
 }

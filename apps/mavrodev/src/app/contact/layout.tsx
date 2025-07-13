@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
+import { personalInfo } from '@repo/data';
 
 export const metadata: Metadata = {
-    title: 'Contact | Stelios Mavro',
-    description:
-        'Get in touch with Stelios Mavro for freelance projects, collaborations, or technical consulting.',
+    title: `Contact | ${personalInfo.name}`,
+    description: `Get in touch with ${personalInfo.name} for freelance projects, collaborations, or technical consulting.`,
 };
 
 export default function ContactLayout({

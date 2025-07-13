@@ -34,6 +34,7 @@ Monorepo containing:
 5. **Commits**: Use conventional commits: `type(scope): message`
 6. **Performance**: Lazy load routes, use React.memo for expensive components
 7. **State**: Context for global, local state when possible, avoid prop drilling >3 levels
+8. **Personal Data**: Always import and use personal information from `@repo/data` (personalInfo, projects, experience, skills). Never hardcode names, emails, or other personal details
 
 ## Project-Specific Patterns
 

@@ -10,6 +10,8 @@ Personal portfolio and blog site with MDX support.
 - 🌓 Dark/light theme support
 - 📱 Mobile-first design
 - 🚀 Optimized performance
+- 💬 AI-powered chat assistant
+- 📅 Google Calendar integration for meeting scheduling
 
 ## Development
 
@@ -101,13 +103,60 @@ The site uses Tailwind CSS and components from `@repo/ui`. To customize:
 
 ## Environment Variables
 
-No environment variables required for basic operation. For contact form or analytics:
+Create `.env.local` file:
 
 ```env
-# Optional
+# Required for AI Chat
+OPENAI_API_KEY=sk-your_openai_api_key
+
+# Required for Contact Form
+RESEND_API_KEY=re_your_api_key
+CONTACT_EMAIL=your-email@domain.com
+
+# Required for Calendar Integration
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REFRESH_TOKEN=your_google_refresh_token
+
+# Optional Analytics
 NEXT_PUBLIC_ANALYTICS_ID=your_analytics_id
-EMAIL_SERVICE_API_KEY=your_email_api_key
 ```
+
+### Google Calendar Setup
+
+To enable calendar scheduling in the AI chat:
+
+1. **Create Google Cloud Project:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project
+   - Enable Google Calendar API
+
+2. **Create OAuth Credentials:**
+   - Go to APIs & Services → Credentials
+   - Create Credentials → OAuth client ID
+   - Application type: **Web application**
+   - Add authorized redirect URI: `http://localhost:3000/callback`
+   - Save the credentials
+
+3. **Get your refresh token:**
+   ```bash
+   # From the root directory, run:
+   npm run setup:calendar
+   
+   # This will open your browser for authentication
+   # After signing in, you'll see the environment variables to copy
+   ```
+
+4. **Add to your .env file:**
+   ```env
+   GOOGLE_CLIENT_ID=your_client_id_here
+   GOOGLE_CLIENT_SECRET=your_client_secret_here
+   GOOGLE_REFRESH_TOKEN=your_refresh_token_here
+   ```
+
+5. **Deploy to Vercel:**
+   - Add the same environment variables to your Vercel project
+   - No JSON files needed - everything works with env vars!
 
 ## Deployment
 
