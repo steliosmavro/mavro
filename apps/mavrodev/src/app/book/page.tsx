@@ -2,20 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@repo/ui/components';
-import { Calendar, MessageCircle, ArrowDown } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Calendar, MessageCircle } from 'lucide-react';
 
 export default function BookMeetingPage() {
-    const [showChatHint, setShowChatHint] = useState(false);
-
-    useEffect(() => {
-        // Show hint after a delay
-        const timer = setTimeout(() => {
-            setShowChatHint(true);
-        }, 2000);
-        return () => clearTimeout(timer);
-    }, []);
-
     const openChat = () => {
         // Find and click the chat widget button - it's the floating button with MessageCircle icon
         const chatButtons = document.querySelectorAll('button');
@@ -114,30 +103,6 @@ export default function BookMeetingPage() {
                         Open AI Assistant
                     </Button>
                 </motion.div>
-
-                {showChatHint && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="fixed bottom-20 right-10 hidden sm:block"
-                    >
-                        <div className="relative">
-                            <motion.div
-                                animate={{ y: [0, 10, 0] }}
-                                transition={{
-                                    repeat: Infinity,
-                                    duration: 2,
-                                    ease: 'easeInOut',
-                                }}
-                            >
-                                <ArrowDown className="w-8 h-8 text-primary" />
-                            </motion.div>
-                            <p className="absolute top-10 right-0 whitespace-nowrap text-sm text-muted-foreground">
-                                Or click here! →
-                            </p>
-                        </div>
-                    </motion.div>
-                )}
             </motion.div>
 
             {/* Fun facts while they wait */}
