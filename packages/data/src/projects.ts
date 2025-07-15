@@ -6,7 +6,7 @@ export const projects: Project[] = [
         name: 'MavroChat',
         slug: 'mavrochat',
         period: {
-            start: new Date('2025-01-01'),
+            start: new Date('2025-06-01'),
         },
         type: 'open-source',
         categories: ['ai-ml', 'developer-tools', 'open-source'],
@@ -40,11 +40,11 @@ export const projects: Project[] = [
             start: new Date('2023-07-01'),
         },
         type: 'personal',
-        categories: ['website', 'ai-ml'],
-        description: 'AI-Enhanced Portfolio & Blog Platform',
+        categories: ['website', 'ai-ml', 'open-source'],
+        description: 'Open-Source AI-Enhanced Portfolio & Blog Platform',
         icon: 'Palette',
         longDescription:
-            'Modern portfolio website featuring an AI-powered assistant that helps visitors learn about my experience through natural conversation. Built with MDX support and beautiful animations.',
+            'Open-source modern portfolio website featuring an AI-powered assistant that helps visitors learn about my experience through natural conversation. Built with MDX support and beautiful animations.',
         highlights: [
             'Built a modern portfolio website showcasing projects, blog, and professional experience',
             'Integrated AI-powered portfolio assistant using OpenAI GPT-3.5 for natural conversation about my experience',
@@ -106,7 +106,7 @@ export const projects: Project[] = [
         },
         type: 'acquired',
         categories: ['web3', 'automation', 'open-source'],
-        description: 'Suite of Solana trading tools that gained 1.2K+ users',
+        description: 'Open-Source Suite of Solana trading tools that gained 1.2K+ users',
         icon: 'Bot',
         longDescription:
             'Comprehensive ecosystem of trading bots for Solana including volume generation, growth automation, and token bundling. Successfully acquired by MicroPump after reaching 1.2K+ active users.',
