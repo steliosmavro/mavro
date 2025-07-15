@@ -44,7 +44,6 @@ export function ChatInput({
                 onKeyDown={handleKeyDown}
                 placeholder="Ask about my experience, projects, or skills..."
                 className="resize-none min-h-[60px] max-h-[120px]"
-                disabled={isLoading}
             />
             <Button
                 type="submit"
