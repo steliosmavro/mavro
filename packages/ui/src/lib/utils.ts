@@ -20,5 +20,5 @@ export function getOriginFor(app: 'mavrodev' | 'mavrochat') {
         mavrochat: 'http://localhost:3001',
     } as const;
 
-    return env === 'production' ? prod[app] : dev[app];
+    return env === 'development' ? dev[app] : prod[app];
 }
