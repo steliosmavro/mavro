@@ -12,6 +12,9 @@ export const gradientSafelist = [
     'from-violet-400 to-purple-400',
     'from-green-500 to-emerald-500',
     'from-gray-500 to-gray-600',
+    'from-blue-400 to-blue-600',
+    'from-gray-700 to-gray-900',
+    'from-blue-500 to-blue-700',
 ];
 
 // Tailwind classes that need to be included in the build
@@ -25,6 +28,9 @@ export const tailwindClasses = `
     from-violet-400 to-purple-400
     from-green-500 to-emerald-500
     from-gray-500 to-gray-600
+    from-blue-400 to-blue-600
+    from-gray-700 to-gray-900
+    from-blue-500 to-blue-700
     bg-gradient-to-br from-purple-500 to-pink-500
     bg-gradient-to-br from-orange-500 to-amber-500
     bg-gradient-to-br from-yellow-500 to-orange-500
@@ -33,4 +39,7 @@ export const tailwindClasses = `
     bg-gradient-to-br from-violet-400 to-purple-400
     bg-gradient-to-br from-green-500 to-emerald-500
     bg-gradient-to-br from-gray-500 to-gray-600
+    bg-gradient-to-br from-blue-400 to-blue-600
+    bg-gradient-to-br from-gray-700 to-gray-900
+    bg-gradient-to-br from-blue-500 to-blue-700
 `;

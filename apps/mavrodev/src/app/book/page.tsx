@@ -35,7 +35,7 @@ export default function BookMeetingPage() {
     };
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-20">
+        <div className="container flex-1 max-w-4xl mx-auto px-4 py-20">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

@@ -5,6 +5,7 @@ import type { ProjectCategory, CategoryConfig } from './types';
  * @safelist from-purple-500 to-pink-500 from-orange-500 to-amber-500 from-yellow-500 to-orange-500
  * @safelist from-cyan-500 to-blue-500 from-red-500 to-rose-500 from-violet-400 to-purple-400
  * @safelist from-green-500 to-emerald-500
+ * @safelist from-blue-400 to-blue-600 from-gray-700 to-gray-900 from-blue-500 to-blue-700
  */
 export const categoryConfig: Record<ProjectCategory, CategoryConfig> = {
     'ai-ml': {
