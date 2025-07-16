@@ -5,6 +5,7 @@ import './globals.css';
 import { Providers } from '../providers';
 import { Header, ThemeToggle, LogoButton } from '@repo/ui/components';
 import { ConditionalModelSelector } from '../components/ConditionalModelSelector';
+import { ApiTokenIndicator } from '../components/ApiTokenIndicator';
 import { getOriginFor } from '@repo/ui/lib/utils';
 import { sharedConfig } from '@repo/shared-config';
 import { Analytics } from '@vercel/analytics/react';
@@ -75,7 +76,7 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
             >
                 <Providers>
-                    <Header className="bg-background border-b xl:bg-transparent xl:border-none">
+                    <Header className="bg-background border-b 2xl:bg-transparent 2xl:border-none">
                         <div className="flex items-center justify-between w-full">
                             <div className="flex items-center gap-4">
                                 <LogoButton
@@ -84,11 +85,12 @@ export default function RootLayout({
                                     href={getOriginFor('mavrodev')}
                                 />
                                 <ConditionalModelSelector />
+                                <ApiTokenIndicator />
                             </div>
                             <ThemeToggle />
                         </div>
                     </Header>
-                    {children}
+                    <div className="flex-1 flex flex-col">{children}</div>
                     <Analytics />
                 </Providers>
             </body>

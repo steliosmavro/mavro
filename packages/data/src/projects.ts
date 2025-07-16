@@ -20,6 +20,7 @@ export const projects: Project[] = [
             'Integrated multiple AI providers (OpenAI GPT-4o/3.5, Claude 3.5 Sonnet/Haiku) with seamless switching',
             'Designed extensible tool system with type-safe Zod schemas for custom developer functions',
             'Added sustainable rate limiting at the edge to maintain generous free tier while preventing abuse',
+            'Implemented Bring Your Own Key (BYOK) feature with secure browser-based storage for unlimited usage',
         ],
         primaryTech: ['Next.js 15', 'TypeScript', 'Monorepo'],
         secondaryTech: [

@@ -7,7 +7,6 @@ import {
     ChevronsDown,
     Sparkles,
     Code2,
-    Wrench,
     GitBranch,
     Bug,
     FileCode,
@@ -16,15 +15,23 @@ import {
     ArrowRight,
     Github,
     Star,
+    Key,
+    Infinity as InfinityIcon,
 } from 'lucide-react';
 import { useRef } from 'react';
 
 export default function LandingPage() {
     const features = [
         {
+            title: 'Bring Your Own Key',
+            description:
+                'Use your own OpenAI or Anthropic API keys for unlimited usage with no rate limits.',
+            icon: Key,
+        },
+        {
             title: 'Model Selector',
             description:
-                "Swap between AI models on the fly so you're ready for every new release.",
+                'Choose between GPT-4, GPT-3.5, Claude 3.5 Sonnet & Haiku models on the fly.',
             icon: Sparkles,
         },
         {
@@ -32,12 +39,6 @@ export default function LandingPage() {
             description:
                 'Streaming responses with syntax-highlighted code blocks you can copy in one click.',
             icon: Code2,
-        },
-        {
-            title: 'Built-in Tools',
-            description:
-                'Instant function calling for weather, unit conversion, and any custom logic you add.',
-            icon: Wrench,
         },
         {
             title: 'Open Source',
@@ -157,7 +158,10 @@ export default function LandingPage() {
                         <span>Open Source</span>
                     </div>
                     <div className="w-1 h-1 bg-muted-foreground rounded-full" />
-                    <span>Self-Hostable</span>
+                    <div className="flex items-center gap-1">
+                        <InfinityIcon className="h-4 w-4" />
+                        <span>Unlimited with BYOK</span>
+                    </div>
                     <div className="w-1 h-1 bg-muted-foreground rounded-full" />
                     <span>Developer First</span>
                 </motion.div>
@@ -275,11 +279,15 @@ export default function LandingPage() {
                     {[
                         {
                             q: 'Is MavroChat free?',
-                            a: 'Yes, MavroChat is completely open-source. You can self-host or use the public instance for free.',
+                            a: 'Yes! You get 10 free messages per day. For unlimited usage, bring your own API key from OpenAI or Anthropic - no subscription required.',
                         },
                         {
                             q: 'Which AI models are supported?',
-                            a: 'Currently GPT-4o. More models (Anthropic, Gemini, Llama) are on the roadmap and the selector is future-proof.',
+                            a: 'GPT-4o, GPT-4o-mini, GPT-3.5-turbo, Claude 3.5 Sonnet, and Claude 3.5 Haiku. Switch between them instantly.',
+                        },
+                        {
+                            q: 'How does Bring Your Own Key work?',
+                            a: 'Simply click the key icon next to the model selector and enter your OpenAI or Anthropic API key. Keys are stored locally in your browser for security and give you unlimited usage.',
                         },
                         {
                             q: 'Can I add my own tools?',

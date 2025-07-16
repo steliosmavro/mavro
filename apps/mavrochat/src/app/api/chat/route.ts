@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai';
+import { openai, createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
@@ -6,8 +6,8 @@ import { NextResponse } from 'next/server';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { headers } from 'next/headers';
 
-// Create Anthropic instance with custom API key
-const anthropic = createAnthropic({
+// Create default Anthropic instance (can be overridden with custom API key)
+const defaultAnthropic = createAnthropic({
     apiKey: process.env.CLAUDE_API_KEY,
 });
 
@@ -36,66 +36,93 @@ const allowedModels = [
 type AllowedModel = (typeof allowedModels)[number];
 
 // Provider configuration
-const modelProviders = {
+const defaultModelProviders = {
     'gpt-4o': openai,
     'gpt-4o-mini': openai,
     'gpt-3.5-turbo': openai,
-    'claude-3-5-sonnet-latest': anthropic,
-    'claude-3-5-haiku-latest': anthropic,
+    'claude-3-5-sonnet-latest': defaultAnthropic,
+    'claude-3-5-haiku-latest': defaultAnthropic,
 } as const;
 
-function getModelProvider(model: AllowedModel) {
-    const provider = modelProviders[model];
+function getModelProvider(model: AllowedModel, customApiKey?: string) {
+    // If custom API key is provided, create a new provider instance
+    if (customApiKey) {
+        if (model.includes('claude')) {
+            const customAnthropic = createAnthropic({
+                apiKey: customApiKey,
+            });
+            return customAnthropic(model);
+        } else if (model.includes('gpt') || model.includes('o1')) {
+            const customOpenai = createOpenAI({
+                apiKey: customApiKey,
+            });
+            return customOpenai(model);
+        }
+    }
+
+    // Use default provider
+    const provider = defaultModelProviders[model];
     return provider(model);
 }
 
 export async function POST(req: Request) {
     try {
-        // Check rate limit using IP address
+        // Get custom API key from headers
         const headersList = await headers();
-        const ipAddress =
-            headersList.get('x-forwarded-for') ||
-            headersList.get('x-real-ip') ||
-            'anonymous';
+        const customApiKey = headersList.get('x-api-key') || undefined;
 
-        // TODO: When auth is implemented, determine tier based on user
-        // For now, everyone is anonymous
-        const userTier = 'anonymous'; // Will be: getUserTier(request)
+        // Skip rate limiting if custom API key is provided
+        if (!customApiKey) {
+            // Check rate limit using IP address
+            const ipAddress =
+                headersList.get('x-forwarded-for') ||
+                headersList.get('x-real-ip') ||
+                'anonymous';
 
-        const { success, limit, reset, remaining } = await checkRateLimit(
-            ipAddress,
-            userTier,
-        );
+            // TODO: When auth is implemented, determine tier based on user
+            // For now, everyone is anonymous
+            const userTier = 'anonymous'; // Will be: getUserTier(request)
 
-        if (!success) {
-            const resetDate = new Date(reset);
-            const hoursUntilReset = Math.ceil(
-                (reset - Date.now()) / (1000 * 60 * 60),
+            const { success, limit, reset, remaining } = await checkRateLimit(
+                ipAddress,
+                userTier,
             );
 
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: {
-                        code: 'RATE_LIMIT_EXCEEDED',
-                        message: `You've reached your daily limit of ${limit} messages. Come back in ${hoursUntilReset} hours or check out the code on GitHub to run your own instance!`,
-                        details: {
-                            limit,
-                            reset: resetDate.toISOString(),
-                            remaining,
-                            resetIn: `${hoursUntilReset} hours`,
+            if (!success) {
+                const resetDate = new Date(reset);
+                const msUntilReset = reset - Date.now();
+                const hoursUntilReset = Math.ceil(
+                    msUntilReset / (1000 * 60 * 60),
+                );
+                const secondsUntilReset = Math.ceil(msUntilReset / 1000);
+
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: {
+                            code: 'RATE_LIMIT_EXCEEDED',
+                            message:
+                                secondsUntilReset < 60
+                                    ? `You've reached your limit of ${limit} message. Try again in ${secondsUntilReset} seconds or bring your own API key for unlimited usage!`
+                                    : `You've reached your daily limit of ${limit} messages. Come back in ${hoursUntilReset} hours or bring your own API key for unlimited usage!`,
+                            details: {
+                                limit,
+                                reset: resetDate.toISOString(),
+                                remaining,
+                                resetIn: `${hoursUntilReset} hours`,
+                            },
                         },
                     },
-                },
-                {
-                    status: 429,
-                    headers: {
-                        'X-RateLimit-Limit': limit.toString(),
-                        'X-RateLimit-Remaining': remaining.toString(),
-                        'X-RateLimit-Reset': new Date(reset).toISOString(),
+                    {
+                        status: 429,
+                        headers: {
+                            'X-RateLimit-Limit': limit.toString(),
+                            'X-RateLimit-Remaining': remaining.toString(),
+                            'X-RateLimit-Reset': new Date(reset).toISOString(),
+                        },
                     },
-                },
-            );
+                );
+            }
         }
 
         // Parse request body
@@ -148,13 +175,14 @@ export async function POST(req: Request) {
         console.log('Chat API request:', {
             model,
             messageCount: messages.length,
+            usingCustomApiKey: !!customApiKey,
             timestamp: new Date().toISOString(),
         });
 
         // Create the stream
         const result = streamText({
             system: 'You are a helpful assistant. Respond to the user in Markdown format.',
-            model: getModelProvider(model),
+            model: getModelProvider(model, customApiKey),
             messages,
             tools: {
                 weather: tool({

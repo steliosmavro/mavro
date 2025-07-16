@@ -43,8 +43,19 @@ export async function checkRateLimit(
 
     // Fallback to in-memory rate limiting for development
     const now = Date.now();
-    const windowMs =
-        tierConfig.window === '24 h' ? 24 * 60 * 60 * 1000 : 60 * 60 * 1000;
+    let windowMs: number;
+
+    // Parse window duration
+    if (tierConfig.window === '24 h') {
+        windowMs = 24 * 60 * 60 * 1000; // 24 hours
+    } else if (tierConfig.window === '10 s') {
+        windowMs = 10 * 1000; // 10 seconds
+    } else if (tierConfig.window === '1 h') {
+        windowMs = 60 * 60 * 1000; // 1 hour
+    } else {
+        windowMs = 60 * 60 * 1000; // Default to 1 hour
+    }
+
     const limit = tierConfig.requests;
 
     const tierKey = `${identifier}:${tier}`;

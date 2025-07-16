@@ -5,8 +5,10 @@ import { useRef, useEffect, useState } from 'react';
 import { MemoizedMarkdown } from './MemoizedMarkdown';
 import { useHighlightTheme } from '../hooks/useHighlightTheme';
 import { useModel } from '../context/ModelContext';
+import { useApiTokenContext } from '../context/ApiTokenContext';
 import { Card, CardContent } from '@repo/ui/components';
 import { CopyableMessage } from './CopyableMessage';
+import { getChatHeaders } from '../lib/chat-utils';
 
 export interface ChatContainerProps {
     className?: string;
@@ -41,13 +43,18 @@ export function ChatContainer({ className }: ChatContainerProps) {
     };
 
     const { model } = useModel();
+    const { getTokenForModel } = useApiTokenContext();
     const lastUserMessageRef = useRef<HTMLDivElement | null>(null);
     const [spacerHeight, setSpacerHeight] = useState<number>(0);
+
+    const apiToken = getTokenForModel(model);
+    const headers = getChatHeaders(model, apiToken);
+
     const { messages, setMessages, error } = useChat({
         id: 'chat',
         maxSteps: 5,
         experimental_throttle: 50,
-        headers: { 'x-model': model },
+        headers,
     });
     const displayMessages = messages;
 

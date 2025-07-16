@@ -4,9 +4,15 @@ import React from 'react';
 import { useChat } from '@ai-sdk/react';
 import { Textarea } from '@repo/ui/components';
 import { useModel } from '../context/ModelContext';
+import { useApiTokenContext } from '../context/ApiTokenContext';
+import { getChatHeaders } from '../lib/chat-utils';
 
 export function MessageInput() {
     const { model } = useModel();
+    const { getTokenForModel } = useApiTokenContext();
+
+    const apiToken = getTokenForModel(model);
+    const headers = getChatHeaders(model, apiToken);
 
     // Destructure additional helpers from `useChat` to control the stream state.
     // `status` tells us if a generation is in progress, while `stop` aborts it.
@@ -18,7 +24,7 @@ export function MessageInput() {
         stop,
     } = useChat({
         id: 'chat',
-        headers: { 'x-model': model },
+        headers,
     });
 
     // Wrapper that aborts any ongoing generation before dispatching the new prompt.
