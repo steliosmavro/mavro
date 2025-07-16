@@ -101,15 +101,15 @@
     }
 
     /* Code blocks - replicated by inspecting shadcn website */
-    pre {
-        code,
-        code.hljs {
-            @apply p-0 font-mono bg-secondary/50 rounded-lg p-4 overflow-x-auto text-lg font-mono;
-
-            display: block;
-            font-size: 1rem;
-            font-family: var(--font-mono);
-            font-weight: 400;
-        }
+    pre code,
+    pre code.hljs {
+        @apply p-0 font-mono rounded-lg p-4 overflow-x-auto text-lg font-mono;
+        
+        /* Override highlight.js background with important */
+        background-color: color-mix(in oklab, var(--secondary) 50%, transparent) !important;
+        display: block;
+        font-size: 1rem;
+        font-family: var(--font-mono);
+        font-weight: 400;
     }
 }
