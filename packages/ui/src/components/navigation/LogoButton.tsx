@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { Button } from '../form/Button';
+import { useState, useEffect } from 'react';
 
 export function LogoButton({
     className,
@@ -15,8 +16,18 @@ export function LogoButton({
     darkLogoSrc: string;
     href?: string;
 }) {
-    const { theme } = useTheme();
-    const logoSrc = theme === 'light' ? lightLogoSrc : darkLogoSrc;
+    const { theme, systemTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    // Avoid hydration mismatch by only rendering theme-specific content after mount
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Use dark logo as default until we know the actual theme
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+    const logoSrc =
+        mounted && currentTheme === 'light' ? lightLogoSrc : darkLogoSrc;
     const isExternal = href.startsWith('http');
 
     return (
