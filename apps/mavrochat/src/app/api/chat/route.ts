@@ -1,6 +1,6 @@
 import { openai, createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
-import { streamText, tool } from 'ai';
+import { streamText } from 'ai';
 import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { checkRateLimit } from '@/lib/rate-limit';
@@ -184,58 +184,6 @@ export async function POST(req: Request) {
             system: 'You are a helpful assistant. Respond to the user in Markdown format.',
             model: getModelProvider(model, customApiKey),
             messages,
-            tools: {
-                weather: tool({
-                    description: 'Get the weather in a location (fahrenheit)',
-                    parameters: z.object({
-                        location: z
-                            .string()
-                            .describe('The location to get the weather for'),
-                    }),
-                    execute: async ({ location }) => {
-                        try {
-                            // In a real app, this would call a weather API
-                            const temperature = Math.round(
-                                Math.random() * (90 - 32) + 32,
-                            );
-                            return {
-                                location,
-                                temperature,
-                            };
-                        } catch (error) {
-                            console.error('Weather tool error:', error);
-                            throw new Error('Failed to get weather data');
-                        }
-                    },
-                }),
-                convertFahrenheitToCelsius: tool({
-                    description:
-                        'Convert a temperature in fahrenheit to celsius',
-                    parameters: z.object({
-                        temperature: z
-                            .number()
-                            .describe(
-                                'The temperature in fahrenheit to convert',
-                            ),
-                    }),
-                    execute: async ({ temperature }) => {
-                        try {
-                            const celsius = Math.round(
-                                (temperature - 32) * (5 / 9),
-                            );
-                            return {
-                                celsius,
-                            };
-                        } catch (error) {
-                            console.error(
-                                'Temperature conversion error:',
-                                error,
-                            );
-                            throw new Error('Failed to convert temperature');
-                        }
-                    },
-                }),
-            },
             onFinish: ({ usage, finishReason }) => {
                 // Log completion metrics
                 console.log('Chat completion:', {
