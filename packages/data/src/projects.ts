@@ -107,7 +107,8 @@ export const projects: Project[] = [
         },
         type: 'acquired',
         categories: ['web3', 'automation', 'open-source'],
-        description: 'Open-Source Suite of Solana trading tools that gained 1.2K+ users',
+        description:
+            'Open-Source Suite of Solana trading tools that gained 1.2K+ users',
         icon: 'Bot',
         longDescription:
             'Comprehensive ecosystem of trading bots for Solana including volume generation, growth automation, and token bundling. Successfully acquired by MicroPump after reaching 1.2K+ active users.',
@@ -117,7 +118,7 @@ export const projects: Project[] = [
             'Comment Bot - Automated engagement tool that posts contextual comments on new token listings',
             'Token Bundler - Creates tokens and executes first buy in same transaction',
             'Built anti-detection system with rotating proxies and randomized behavior',
-            'Built active Twitter/X presence @EzPumpFun for updates and community engagement',
+            'Built active Twitter/X presence https://x.com/EzPumpFun for updates and community engagement',
             'Reached 1.2K+ users through custom automation and community marketing',
         ],
         primaryTech: ['TypeScript', 'Solana Web3.js', 'MongoDB', 'NestJS'],
