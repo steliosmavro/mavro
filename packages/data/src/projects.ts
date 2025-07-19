@@ -22,7 +22,7 @@ export const projects: Project[] = [
             'Added sustainable rate limiting at the edge to maintain generous free tier while preventing abuse',
             'Implemented Bring Your Own Key (BYOK) feature with secure browser-based storage for unlimited usage',
         ],
-        primaryTech: ['Next.js 15', 'TypeScript', 'Monorepo'],
+        primaryTech: ['Next.js 15', 'TypeScript', 'Generative AI', 'Monorepo'],
         secondaryTech: [
             'Tailwind CSS',
             'Shiki',
@@ -60,6 +60,7 @@ export const projects: Project[] = [
         ],
         primaryTech: ['Next.js', 'AI Integration', 'MDX', 'Monorepo'],
         secondaryTech: [
+            'Generative AI',
             'OpenAI API',
             'Google Calendar API',
             'Tailwind CSS',
@@ -93,7 +94,7 @@ export const projects: Project[] = [
             'Mastered advanced integration patterns: configuration-based syncs, event-based scripts, and enterprise deployment',
         ],
         primaryTech: ['Express', 'Next.js', 'PostgreSQL', 'OAuth'],
-        secondaryTech: ['Zod', 'Vitest', 'Redis', 'Docker', 'Knex'],
+        secondaryTech: ['Zod', 'Vitest', 'Redis', 'Docker', 'Knex', 'OpenTelemetry'],
         featured: true,
         live: 'https://www.nango.dev',
         github: 'https://github.com/pulls?q=is%3Apr+author%3Asteliosmavro+org%3ANangoHQ',
