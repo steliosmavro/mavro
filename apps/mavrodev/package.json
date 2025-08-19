@@ -8,10 +8,7 @@
         "start": "next start -p 3000",
         "lint": "next lint",
         "check-types": "tsc --noEmit",
-        "generate:resume": "tsx scripts/generate-resume-pdf-styled.tsx",
-        "generate:resume:concise": "tsx scripts/generate-resume-pdf-styled.tsx concise",
-        "generate:resume:standard": "tsx scripts/generate-resume-pdf-styled.tsx standard",
-        "generate:resume:comprehensive": "tsx scripts/generate-resume-pdf-styled.tsx comprehensive"
+        "generate:resume": "tsx scripts/generate-comprehensive-resume.tsx"
     },
     "dependencies": {
         "@ai-sdk/openai": "^1.3.23",
