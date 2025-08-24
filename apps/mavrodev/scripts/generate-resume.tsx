@@ -684,11 +684,14 @@ const ResumePDF = () => {
                                     .slice(0, 2)
                                     .map((project, pIndex) => (
                                         <View key={pIndex}>
-                                            <Text
-                                                style={styles.projectSubtitle}
-                                            >
-                                                {project.name}
-                                            </Text>
+                                            {/* Only show project name if there are multiple projects */}
+                                            {exp.projects.length > 1 && (
+                                                <Text
+                                                    style={styles.projectSubtitle}
+                                                >
+                                                    {project.name}
+                                                </Text>
+                                            )}
                                             {getHighlights(
                                                 project.highlights,
                                             ).map((highlight, hIndex) => (
@@ -737,7 +740,7 @@ const ResumePDF = () => {
                 </View>
 
                 {/* Contributions Section - Only Nango */}
-                <View style={styles.section}>
+                <View style={[styles.section, { marginTop: 20, breakBefore: 'page' }] as any}>
                     <Text style={styles.sectionTitle}>Contributions</Text>
 
                     {nangoContribution && (
