@@ -300,19 +300,22 @@ export default function PortfolioPage() {
                                             key={idx}
                                             className="border-l-2 border-primary/20 pl-4"
                                         >
-                                            <h5 className="text-sm font-semibold mb-1">
-                                                {project.name}
-                                                {project.role && (
-                                                    <span className="font-normal text-muted-foreground">
-                                                        {' '}
-                                                        - {project.role}
-                                                    </span>
-                                                )}
-                                            </h5>
-                                            <p className="text-sm text-muted-foreground mb-2">
+                                            {/* Only show project name if there are multiple projects */}
+                                            {experience.projects.length > 1 && (
+                                                <h5 className="text-sm font-semibold mb-1">
+                                                    {project.name}
+                                                    {project.role && (
+                                                        <span className="font-normal text-muted-foreground">
+                                                            {' '}
+                                                            - {project.role}
+                                                        </span>
+                                                    )}
+                                                </h5>
+                                            )}
+                                            <p className="text-sm text-muted-foreground mb-2 m-0">
                                                 {project.description}
                                             </p>
-                                            <ul className="space-y-1">
+                                            <ul className="space-y-1 mt-2">
                                                 {(Array.isArray(
                                                     project.highlights,
                                                 )
@@ -584,9 +587,16 @@ export default function PortfolioPage() {
                         {/* Professional Work Tab */}
                         <TabsContent value="professional" className="mt-0">
                             <div className="space-y-6">
-                                {resumeData.experience.map((exp, index) =>
-                                    renderExperienceCard(exp, index),
-                                )}
+                                {resumeData.experience
+                                    .sort((a, b) => {
+                                        // Sort by start date, most recent first
+                                        const aDate = a.period.start.getTime();
+                                        const bDate = b.period.start.getTime();
+                                        return bDate - aDate;
+                                    })
+                                    .map((exp, index) =>
+                                        renderExperienceCard(exp, index),
+                                    )}
                             </div>
                         </TabsContent>
 
