@@ -158,8 +158,8 @@ function HeroActions() {
             transition={{ duration: 0.6, delay: 0.6 }}
         >
             <Button asChild size="lg" className="group">
-                <Link href="/projects" className="flex items-center gap-2">
-                    View Projects
+                <Link href="/portfolio" className="flex items-center gap-2">
+                    View Portfolio
                     <motion.span
                         className="inline-block"
                         animate={{ x: [0, 4, 0] }}

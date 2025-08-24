@@ -1,4 +1,4 @@
-import type { Project } from './types';
+import type { Project, Contribution, ProjectCategory } from './types';
 import { getOriginFor } from '@repo/ui/lib/utils';
 
 export const projects: Project[] = [
@@ -73,34 +73,8 @@ export const projects: Project[] = [
         github: 'https://github.com/steliosmavro/mavro',
     },
     {
-        name: 'Nango Contributions',
-        slug: 'nango-contributions',
-        period: {
-            start: new Date('2025-03-20'),
-            end: new Date('2025-05-23'),
-        },
-        type: 'open-source',
-        categories: ['contributions', 'open-source', 'developer-tools'],
-        description: 'Open Source Developer Tool Contributions',
-        icon: 'GitPullRequest',
-        longDescription:
-            'Contributed across multiple areas of Nango — a popular open-source platform for unified API integrations.',
-        highlights: [
-            'Built full integration support for external provider (ClickSend), including syncs, actions, and configuration',
-            'Deep-dived into distributed architecture: Kubernetes/Helm deployments, AWS ECS, Redis queues, ElasticSearch logging',
-            'Proactively identified and solved user pain points from Slack discussions, often with PRs ready before issues were triaged',
-            'Developed direct working relationship with CTO, providing solutions with user impact analysis and implementation strategies',
-            'Contributed improvements across full stack: Dashboard (React), API (Express), infrastructure configs, and documentation',
-            'Mastered advanced integration patterns: configuration-based syncs, event-based scripts, and enterprise deployment',
-        ],
-        primaryTech: ['Express', 'Next.js', 'PostgreSQL', 'OAuth'],
-        secondaryTech: ['Zod', 'Vitest', 'Redis', 'Docker', 'Knex', 'OpenTelemetry'],
-        featured: true,
-        live: 'https://www.nango.dev',
-        github: 'https://github.com/pulls?q=is%3Apr+author%3Asteliosmavro+org%3ANangoHQ',
-    },
-    {
-        name: 'Crypto Trading Bot Ecosystem',
+        name: 'EzPump',
+        descriptor: 'Trading Bot Ecosystem',
         slug: 'crypto-trading-bots',
         period: {
             start: new Date('2024-11-01'),
@@ -176,6 +150,24 @@ export function getProjectBySlug(slug: string): Project | undefined {
 
 export function getFeaturedProjects(): Project[] {
     return projects.filter((project) => project.featured);
+}
+
+export function getFeaturedProjectsWithContributions(): Array<Project | (Contribution & { isContribution: true })> {
+    const featuredProjects = projects.filter((project) => project.featured);
+    
+    // Import contributions and add those that are featured
+    const { contributions } = require('./contributions');
+    const featuredContributions = contributions
+        .filter((c: Contribution) => c.featured)
+        .map((c: Contribution) => ({
+            ...c,
+            isContribution: true as const,
+            // Map contribution to project-like structure for compatibility
+            type: 'open-source' as const,
+            categories: ['contributions', 'open-source'] as ProjectCategory[],
+        }));
+    
+    return [...featuredProjects, ...featuredContributions];
 }
 
 export function getProjectsByCategory(category: string): Project[] {

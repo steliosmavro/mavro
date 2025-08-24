@@ -51,7 +51,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 interface ProjectCardProps {
-    project: Project;
+    project: Project & { displayName?: string };
     index?: number;
 }
 
@@ -125,7 +125,7 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
                                 <Icon className="h-5 w-5" />
                             </motion.div>
                             <h3 className="text-xl font-bold">
-                                {project.name}
+                                {project.displayName || project.name}
                             </h3>
                         </div>
                         <div className="flex items-center gap-2">

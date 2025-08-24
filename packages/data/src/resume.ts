@@ -2,6 +2,7 @@ import type { Resume } from './types';
 import { personalInfo } from './personal';
 import { summary } from './personal';
 import { projects } from './projects';
+import { contributions } from './contributions';
 import { experience } from './experience';
 import { education } from './education';
 import { skills } from './skills';
@@ -14,6 +15,7 @@ export const resumeData: Resume = {
     personal: personalInfo,
     summary,
     projects,
+    contributions,
     experience,
     education,
     skills,

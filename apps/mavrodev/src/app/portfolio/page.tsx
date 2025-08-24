@@ -24,17 +24,16 @@ import {
     type FilterOption,
 } from '@repo/ui/components';
 import React from 'react';
-import { resumeData } from '@repo/data';
-import { getProjects } from '@/lib/resumeHelpers';
+import { resumeData, contributions } from '@repo/data';
 import type { Project, ProjectCategory, Experience } from '@/types/resume';
 import { getCategoryLabel } from '@/lib/categories';
 import { formatPeriod } from '@/lib/dateUtils';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 
 type FilterType = ProjectCategory | 'all' | 'featured';
-type TabType = 'personal' | 'professional';
+type TabType = 'personal' | 'professional' | 'contributions';
 
-export default function ProjectsPage() {
+export default function PortfolioPage() {
     const [selectedFilter, setSelectedFilter] =
         React.useState<FilterType>('all');
     const [expandedExperience, setExpandedExperience] = React.useState<
@@ -42,9 +41,9 @@ export default function ProjectsPage() {
     >(new Set());
     const [activeTab, setActiveTab] = React.useState<TabType>('personal');
 
-    const allProjects = getProjects();
-    const personalProjects = allProjects.filter((p) => p.type !== 'client');
-    const clientProjects = allProjects.filter((p) => p.type === 'client');
+    const allProjects = resumeData.projects;
+    const personalProjects = allProjects;
+    const allContributions = contributions;
 
     const toggleExperienceExpansion = (company: string) => {
         setExpandedExperience((prev) => {
@@ -252,36 +251,6 @@ export default function ProjectsPage() {
                         <p className="text-muted-foreground mb-4">
                             {experience.description}
                         </p>
-
-                        {/* Client Projects */}
-                        {clientProjects.filter((p) =>
-                            experience.projects.some((ep) =>
-                                ep.name.includes(p.name),
-                            ),
-                        ).length > 0 && (
-                            <div className="mb-4">
-                                <h4 className="text-sm font-semibold mb-2">
-                                    Related Projects:
-                                </h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {clientProjects
-                                        .filter((p) =>
-                                            experience.projects.some((ep) =>
-                                                ep.name.includes(p.name),
-                                            ),
-                                        )
-                                        .map((project) => (
-                                            <Badge
-                                                key={project.slug}
-                                                variant="outline"
-                                            >
-                                                {project.name}
-                                            </Badge>
-                                        ))}
-                                </div>
-                            </div>
-                        )}
-
                         {/* Show More Button */}
                         {experience.projects.length > 0 && (
                             <Button
@@ -465,7 +434,7 @@ export default function ProjectsPage() {
                         className="text-center mb-12"
                     >
                         <h1 className="text-5xl md:text-[3.75rem] font-bold mb-6 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                            Projects & Experience
+                            Portfolio
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                             {resumeData.summary.headline}
@@ -484,7 +453,7 @@ export default function ProjectsPage() {
                         }
                         className="w-full"
                     >
-                        <TabsList className="grid w-full max-w-md mx-auto mb-12 mt-8 grid-cols-2 h-12 p-1 bg-muted/50 backdrop-blur-sm border border-border/50 shadow-sm">
+                        <TabsList className="grid w-full max-w-md mx-auto mb-12 mt-8 grid-cols-3 h-12 p-1 bg-muted/50 backdrop-blur-sm border border-border/50 shadow-sm">
                             <TabsTrigger
                                 value="personal"
                                 className="data-[state=active]:!bg-primary data-[state=active]:!text-primary-foreground data-[state=active]:shadow-sm"
@@ -496,6 +465,12 @@ export default function ProjectsPage() {
                                 className="data-[state=active]:!bg-primary data-[state=active]:!text-primary-foreground data-[state=active]:shadow-sm"
                             >
                                 Work Experience
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="contributions"
+                                className="data-[state=active]:!bg-primary data-[state=active]:!text-primary-foreground data-[state=active]:shadow-sm"
+                            >
+                                Contributions
                             </TabsTrigger>
                         </TabsList>
 
@@ -612,32 +587,34 @@ export default function ProjectsPage() {
                                 {resumeData.experience.map((exp, index) =>
                                     renderExperienceCard(exp, index),
                                 )}
+                            </div>
+                        </TabsContent>
 
-                                {clientProjects.length > 0 && (
-                                    <>
-                                        <div className="text-center my-8">
-                                            <h3 className="text-2xl font-bold">
-                                                Client Projects
-                                            </h3>
-                                            <p className="text-muted-foreground mt-2">
-                                                Projects delivered for clients
-                                            </p>
-                                        </div>
-
-                                        {/* Client Projects Grid */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            {clientProjects.map(
-                                                (project, index) => (
-                                                    <ProjectCard
-                                                        key={project.slug}
-                                                        project={project}
-                                                        index={index}
-                                                    />
-                                                ),
-                                            )}
-                                        </div>
-                                    </>
-                                )}
+                        {/* Contributions Tab */}
+                        <TabsContent value="contributions" className="mt-0">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {allContributions.map((contribution, index) => (
+                                    <ProjectCard
+                                        key={contribution.slug}
+                                        project={
+                                            {
+                                                ...contribution,
+                                                displayName:
+                                                    contribution.descriptor
+                                                        ? `${contribution.name} - ${contribution.descriptor}`
+                                                        : contribution.name,
+                                                type: 'open-source' as const,
+                                                categories: [
+                                                    'contributions',
+                                                    'open-source',
+                                                ] as ProjectCategory[],
+                                            } as Project & {
+                                                displayName: string;
+                                            }
+                                        }
+                                        index={index}
+                                    />
+                                ))}
                             </div>
                         </TabsContent>
                     </Tabs>

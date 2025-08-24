@@ -50,6 +50,7 @@ export interface ProjectMetrics {
 
 export interface Project {
     name: string;
+    descriptor?: string; // Short description like "Trading Bot Ecosystem"
     slug: string;
     period: {
         start: Date;
@@ -78,6 +79,28 @@ export interface Project {
               other?: string[];
           }
         | ProjectMetrics; // Support both old and new format
+}
+
+export interface Contribution {
+    name: string;
+    descriptor?: string; // Short description like "Open Source API Platform"
+    slug: string;
+    period: {
+        start: Date;
+        end?: Date;
+    };
+    organization: string; // The org/project contributed to
+    description: string;
+    longDescription?: string;
+    highlights: string[] | HighlightGroup;
+    primaryTech: string[];
+    secondaryTech: string[];
+    featured: boolean;
+    live?: string;
+    github?: string;
+    icon?: string;
+    impact?: string;
+    metrics?: ProjectMetrics;
 }
 
 export interface ExperienceProject {
@@ -178,6 +201,7 @@ export interface Resume {
     personal: PersonalInfo;
     summary: Summary;
     projects: Project[];
+    contributions: Contribution[];
     experience: Experience[];
     education: Education[];
     skills: SkillData[]; // Support both old and new skill formats

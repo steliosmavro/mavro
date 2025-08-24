@@ -89,7 +89,7 @@ export default function RootLayout({
                                     darkLogoSrc="/dark-theme-logo.svg"
                                 />
                                 <Button asChild variant="link">
-                                    <Link href="/projects">Projects</Link>
+                                    <Link href="/portfolio">Portfolio</Link>
                                 </Button>
                                 <Button asChild variant="link">
                                     <Link href="/blog">Blog</Link>
@@ -102,7 +102,7 @@ export default function RootLayout({
                                 </Button>
                                 <Button asChild variant="link">
                                     <Link
-                                        href="/resume-comprehensive.pdf"
+                                        href="/resume.pdf"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >

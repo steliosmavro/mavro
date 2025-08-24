@@ -2,14 +2,34 @@ import type { Project, SkillData } from '@repo/data';
 import {
     resumeData,
     getProjectBySlug as getProjectBySlugFromData,
-    getFeaturedProjects as getFeaturedProjectsFromData,
+    getFeaturedProjectsWithContributions,
 } from '@repo/data';
 
 /**
  * Get featured projects for homepage or projects page
+ * Now includes featured contributions with "Contributions" suffix
  */
-export function getFeaturedProjects(): Project[] {
-    return getFeaturedProjectsFromData();
+export function getFeaturedProjects(): Array<
+    Project & { displayName?: string }
+> {
+    const items = getFeaturedProjectsWithContributions();
+
+    return items.map((item) => {
+        // Check if this is a contribution
+        if ('isContribution' in item && item.isContribution) {
+            return {
+                ...item,
+                displayName: `${item.name} Contributions`,
+                // Ensure compatibility with Project type
+                type: 'open-source' as const,
+                categories: [
+                    'contributions',
+                    'open-source',
+                ] as Project['categories'],
+            } as Project & { displayName: string };
+        }
+        return item as Project;
+    });
 }
 
 /**

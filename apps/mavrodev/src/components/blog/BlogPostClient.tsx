@@ -254,10 +254,10 @@ export default function BlogPostClient({
                                                     variant="outline"
                                                 >
                                                     <Link
-                                                        href="/projects"
+                                                        href="/portfolio"
                                                         className="flex items-center gap-1"
                                                     >
-                                                        View Project
+                                                        View Portfolio
                                                         <ExternalLink className="h-3 w-3" />
                                                     </Link>
                                                 </Button>

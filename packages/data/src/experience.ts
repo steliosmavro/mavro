@@ -121,6 +121,38 @@ export const experience: Experience[] = [
         },
     },
     {
+        company: '',
+        location: '',
+        workModel: 'Remote',
+        role: 'Freelance Full-Stack Developer',
+        period: {
+            start: new Date('2020-03-01'),
+            end: new Date('2021-05-31'),
+        },
+        current: false,
+        description:
+            'Built websites and landing pages for small businesses and local clients. Focused on responsive design and basic SEO.',
+        projects: [
+            {
+                name: 'Client Projects',
+                description: 'Developed websites and landing pages for small businesses',
+                highlights: [
+                    'Created responsive websites and landing pages for 10+ small businesses',
+                    'Implemented SEO best practices and meta tags',
+                    'Built contact forms and integrated Google Analytics',
+                    'Customized templates and created clean, professional designs',
+                    'Provided maintenance and content updates for clients',
+                ],
+            },
+        ],
+        technologies: {
+            frontend: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Bootstrap', 'jQuery'],
+            backend: ['Node.js', 'Express'],
+            databases: ['MongoDB'],
+            other: ['Google Analytics', 'SEO Tools', 'Stripe', 'PayPal'],
+        },
+    },
+    {
         company: 'Mind Alliance',
         location: 'New Jersey, USA',
         workModel: 'Remote',
