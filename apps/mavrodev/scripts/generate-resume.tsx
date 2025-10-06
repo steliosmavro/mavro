@@ -449,7 +449,7 @@ const getHighlights = (
         if (!limit) {
             return [...highlights.primary, ...(highlights.secondary || [])];
         }
-        
+
         const primary = highlights.primary.slice(
             0,
             Math.min(limit, highlights.primary.length),
@@ -467,7 +467,7 @@ const getHighlights = (
     if (!limit) {
         return highlights;
     }
-    
+
     return highlights.slice(0, limit);
 };
 
@@ -483,12 +483,8 @@ const ResumePDF = () => {
         return b.period.start.getTime() - a.period.start.getTime();
     });
     const experiences = sortedExperiences.slice(0, 4); // Show top 4 experiences
-    const ezPumpProject = resumeData.projects.find(
-        (p) => p.name === 'EzPump',
-    );
-    const nangoContribution = resumeData.contributions.find(
-        (c) => c.featured,
-    );
+    const ezPumpProject = resumeData.projects.find((p) => p.name === 'EzPump');
+    const nangoContribution = resumeData.contributions.find((c) => c.featured);
 
     // Get other featured projects in specific order: MavroChat first, then MavroDev, then Next.js Auth Template
     const mavrochatProject = resumeData.projects.find(
@@ -582,7 +578,7 @@ const ResumePDF = () => {
                     <View style={styles.metricDivider} />
                     <View style={styles.metric}>
                         <Text style={styles.metricValue}>
-                            {metrics.projectsDelivered}+
+                            {metrics.projectsDelivered}
                         </Text>
                         <Text style={styles.metricLabel}>Projects</Text>
                     </View>
@@ -687,7 +683,9 @@ const ResumePDF = () => {
                                             {/* Only show project name if there are multiple projects */}
                                             {exp.projects.length > 1 && (
                                                 <Text
-                                                    style={styles.projectSubtitle}
+                                                    style={
+                                                        styles.projectSubtitle
+                                                    }
                                                 >
                                                     {project.name}
                                                 </Text>
@@ -740,7 +738,14 @@ const ResumePDF = () => {
                 </View>
 
                 {/* Contributions Section - Only Nango */}
-                <View style={[styles.section, { marginTop: 20, breakBefore: 'page' }] as any}>
+                <View
+                    style={
+                        [
+                            styles.section,
+                            { marginTop: 20, breakBefore: 'page' },
+                        ] as any
+                    }
+                >
                     <Text style={styles.sectionTitle}>Contributions</Text>
 
                     {nangoContribution && (
@@ -754,7 +759,8 @@ const ResumePDF = () => {
                                 style={[styles.contributionTitle, styles.link]}
                             >
                                 {nangoContribution.name}
-                                {nangoContribution.descriptor && ` - ${nangoContribution.descriptor}`}
+                                {nangoContribution.descriptor &&
+                                    ` - ${nangoContribution.descriptor}`}
                             </Link>
                             <Text style={styles.contributionDescription}>
                                 {nangoContribution.longDescription}
