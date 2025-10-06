@@ -124,7 +124,7 @@ export const experience: Experience[] = [
         company: '',
         location: '',
         workModel: 'Remote',
-        role: 'Freelance Full-Stack Developer',
+        role: 'Software Engineer (Freelance)',
         period: {
             start: new Date('2020-03-01'),
             end: new Date('2021-05-31'),
@@ -135,7 +135,8 @@ export const experience: Experience[] = [
         projects: [
             {
                 name: 'Client Projects',
-                description: 'Developed websites and landing pages for small businesses',
+                description:
+                    'Developed websites and landing pages for small businesses',
                 highlights: [
                     'Created responsive websites and landing pages for 10+ small businesses',
                     'Implemented SEO best practices and meta tags',
@@ -146,7 +147,14 @@ export const experience: Experience[] = [
             },
         ],
         technologies: {
-            frontend: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Bootstrap', 'jQuery'],
+            frontend: [
+                'React',
+                'JavaScript',
+                'HTML5',
+                'CSS3',
+                'Bootstrap',
+                'jQuery',
+            ],
             backend: ['Node.js', 'Express'],
             databases: ['MongoDB'],
             other: ['Google Analytics', 'SEO Tools', 'Stripe', 'PayPal'],
@@ -156,7 +164,7 @@ export const experience: Experience[] = [
         company: 'Mind Alliance',
         location: 'New Jersey, USA',
         workModel: 'Remote',
-        role: 'Full-Stack Software Engineer',
+        role: 'Software Engineer',
         period: {
             start: new Date('2021-06-01'),
             end: new Date('2023-05-31'),

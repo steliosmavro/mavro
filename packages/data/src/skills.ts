@@ -86,6 +86,15 @@ export const skills: Skill[] = [
     },
     {
         category: 'Testing',
-        items: ['Vitest', 'Jasmine', 'Karma', 'Angular CLI'],
+        items: [
+            'Unit Testing',
+            'End-to-End Testing',
+            'Integration Testing',
+            'Playwright',
+            'Jest',
+            'Vitest',
+            'Jasmine',
+            'Karma',
+        ],
     },
 ];
