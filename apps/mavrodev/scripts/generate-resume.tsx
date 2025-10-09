@@ -409,25 +409,30 @@ const calculateMetrics = () => {
     const currentYear = new Date().getFullYear();
     const years = currentYear - startYear;
 
-    const totalUsers = resumeData.projects.reduce((sum, project) => {
-        if (
-            project.metrics?.users &&
-            typeof project.metrics.users === 'string'
-        ) {
-            const userMatch = project.metrics.users.match(/(\d+\.?\d*)K?\+?/);
-            if (userMatch && userMatch[1]) {
-                const num = parseFloat(userMatch[1]);
-                return (
-                    sum +
-                    (project.metrics.users.includes('K') ? num * 1000 : num)
-                );
-            }
+    const parseUsers = (users: string): number => {
+        const match = users.match(/(\d+\.?\d*)K?\+?/);
+        if (!match || !match[1]) return 0; // <- guard both cases
+        const num = parseFloat(match[1]);
+        return users.includes('K') ? num * 1000 : num;
+    };
+
+    // Projects
+    const totalProjectUsers = resumeData.projects.reduce((sum, project) => {
+        if (project.metrics?.users) {
+            return sum + parseUsers(project.metrics.users);
         }
         return sum;
     }, 0);
 
-    const projectCount = resumeData.projects.length;
-    const openSourcePRs = 10;
+    // Experiences
+    const totalExperienceUsers = resumeData.experience.reduce((sum, exp) => {
+        if (exp.metrics?.users) {
+            return sum + parseUsers(exp.metrics.users);
+        }
+        return sum;
+    }, 0);
+
+    const totalUsers = totalProjectUsers + totalExperienceUsers;
 
     return {
         years,
@@ -435,8 +440,8 @@ const calculateMetrics = () => {
             totalUsers >= 1000
                 ? `${(totalUsers / 1000).toFixed(1)}K+`
                 : `${totalUsers}+`,
-        projectsDelivered: projectCount,
-        openSourcePRs,
+        projectsDelivered: resumeData.projects.length,
+        openSourcePRs: 10,
     };
 };
 

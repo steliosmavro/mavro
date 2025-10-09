@@ -103,6 +103,15 @@ export interface Contribution {
     metrics?: ProjectMetrics;
 }
 
+export interface ExperienceMetrics {
+    users?: string;
+    revenue?: string;
+    performance?: string;
+    scale?: string;
+    reliability?: string;
+    other?: string[];
+}
+
 export interface ExperienceProject {
     name: string;
     role?: string;
@@ -132,6 +141,7 @@ export interface Experience {
         devops?: string[];
         other?: string[];
     };
+    metrics?: ExperienceMetrics;
 }
 
 export interface EnhancedSkill {

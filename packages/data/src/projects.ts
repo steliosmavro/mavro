@@ -73,54 +73,6 @@ export const projects: Project[] = [
         github: 'https://github.com/steliosmavro/mavro',
     },
     {
-        name: 'EzPump',
-        descriptor: 'Trading Bot Ecosystem',
-        slug: 'crypto-trading-bots',
-        period: {
-            start: new Date('2024-11-01'),
-            end: new Date('2025-06-30'),
-        },
-        type: 'acquired',
-        categories: ['web3', 'automation', 'open-source'],
-        description:
-            'Open-Source Suite of Solana trading tools that gained 1.2K+ users',
-        icon: 'Bot',
-        longDescription:
-            'Comprehensive ecosystem of trading bots for Solana including volume generation, growth automation, and token bundling. Successfully acquired by MicroPump after reaching 1.2K+ active users.',
-        highlights: [
-            'ezpump.fun - Telegram trading bot for Solana meme coins',
-            'Generated simulated volume to boost token visibility on pump.fun',
-            'Comment Bot - Automated engagement tool that posts contextual comments on new token listings',
-            'Token Bundler - Creates tokens and executes first buy in same transaction',
-            'Built anti-detection system with rotating proxies and randomized behavior',
-            'Built active Twitter/X presence https://x.com/EzPumpFun for updates and community engagement',
-            'Reached 1.2K+ users through custom automation and community marketing',
-        ],
-        primaryTech: ['TypeScript', 'Solana Web3.js', 'MongoDB', 'NestJS'],
-        secondaryTech: [
-            'Telegraf',
-            'Solana SPL Token',
-            'Mongoose',
-            'Anchor Framework',
-            'Jito MEV',
-            'Helius RPC',
-            'Cheerio',
-            'Puppeteer',
-        ],
-        featured: true,
-        acquired: {
-            by: 'MicroPump',
-            details:
-                'Successfully acquired in June 2025. Entire ecosystem transitioned to new ownership.',
-        },
-        metrics: {
-            users: '1.2K+',
-        },
-        impact: '1.2K+ active users',
-        live: 'https://www.micropump.fun',
-        github: 'https://github.com/steliosmavro/pump-fun-telegram-bot',
-    },
-    {
         name: 'Next.js Auth Template',
         slug: 'nextjs13-template',
         period: {
@@ -152,9 +104,11 @@ export function getFeaturedProjects(): Project[] {
     return projects.filter((project) => project.featured);
 }
 
-export function getFeaturedProjectsWithContributions(): Array<Project | (Contribution & { isContribution: true })> {
+export function getFeaturedProjectsWithContributions(): Array<
+    Project | (Contribution & { isContribution: true })
+> {
     const featuredProjects = projects.filter((project) => project.featured);
-    
+
     // Import contributions and add those that are featured
     const { contributions } = require('./contributions');
     const featuredContributions = contributions
@@ -166,7 +120,7 @@ export function getFeaturedProjectsWithContributions(): Array<Project | (Contrib
             type: 'open-source' as const,
             categories: ['contributions', 'open-source'] as ProjectCategory[],
         }));
-    
+
     return [...featuredProjects, ...featuredContributions];
 }
 
