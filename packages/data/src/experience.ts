@@ -5,7 +5,7 @@ export const experience: Experience[] = [
         company: 'EzPump (Acquired by MicroPump)',
         location: '',
         workModel: 'Remote',
-        role: 'Founder & Software Engineer',
+        role: 'Founder & Lead Software Engineer',
         period: {
             start: new Date('2024-11-01'),
         },
@@ -26,7 +26,7 @@ export const experience: Experience[] = [
                     'Developed ezpump.fun — Telegram trading bot for Solana meme coins',
                     'Generated simulated volume to boost token visibility on pump.fun',
                     'Built Comment Bot for automated engagement on new token listings',
-                    'Created Token Bundler that executes token creation and first buy within the same transaction',
+                    'Created Token Bundler that executes token creation and first buy from multiple wallets at the same time',
                     'Implemented anti-detection system with rotating proxies and randomized behavior',
                     'Built active Twitter/X presence (https://x.com/EzPumpFun) for updates and community engagement',
                     'Reached 1.2K+ active users through automation and community marketing',
