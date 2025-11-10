@@ -2,14 +2,35 @@ import type { Experience } from './types';
 
 export const experience: Experience[] = [
     {
+        company: 'Elastic',
+        location: '',
+        workModel: 'Remote',
+        role: 'Software Engineer',
+        period: {
+            start: new Date('2025-11-10'),
+        },
+        current: true,
+        website: 'https://www.elastic.co/',
+        logo: '/elastic.png',
+        description: '',
+        metrics: {},
+        projects: [],
+        technologies: {
+            backend: [],
+            databases: [],
+            other: [],
+        },
+    },
+    {
         company: 'EzPump (Acquired by MicroPump)',
         location: '',
         workModel: 'Remote',
         role: 'Founder & Lead Software Engineer',
         period: {
             start: new Date('2024-11-01'),
+            end: new Date('2025-10-01'),
         },
-        current: true,
+        current: false,
         website: 'https://www.micropump.fun',
         logo: '/micropump-logo.webp',
         description:
